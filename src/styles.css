@@ -1,6 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /* ngx-toast vs boostrap use same animation name so do this*/
 #toast-container > div {
     opacity:1;
+}
+.color-white{
+    color: #f8f8fa;
+}
+.color-gray{
+    color: #a2b1a4;
+}
+.color-organe{
+    color: #dd8f36;
+}
+.color-yellow{
+    color: #cdbc43;
+}
+.color-dark-blue{
+    color: #324a45;
 }

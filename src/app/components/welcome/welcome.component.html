@@ -1,3 +1,13 @@
-<p>
-  welcome works!
-</p>
+<div class="position-relative">
+  <slideshow [height]="'100vh'"
+            [autoPlay]="true"
+            [showArrows]="false"
+            [showDots]="true"
+            [imageUrls]="imageSources"
+            [autoPlayInterval]="2000"
+            [lazyLoad]="imageSources?.length > 1"
+            [autoPlayWaitForLazyLoad]="true">
+  </slideshow>
+</div>
+
+
