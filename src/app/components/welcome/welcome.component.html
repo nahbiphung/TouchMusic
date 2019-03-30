@@ -1,13 +1,52 @@
-<div class="position-relative">
-  <slideshow [height]="'100vh'"
-            [autoPlay]="true"
-            [showArrows]="false"
-            [showDots]="true"
-            [imageUrls]="imageSources"
-            [autoPlayInterval]="2000"
-            [lazyLoad]="imageSources?.length > 1"
-            [autoPlayWaitForLazyLoad]="true">
-  </slideshow>
-</div>
+<section class="background-color-dark-blue">
+  <div class="position-relative width-90 slideshow shadow">
+    <slideshow [height]="'90vh'"
+              [autoPlay]="true"
+              [showArrows]="false"
+              [showDots]="true"
+              [imageUrls]="imageSources"
+              [autoPlayInterval]="2000"
+              [lazyLoad]="imageSources?.length > 1"
+              [autoPlayWaitForLazyLoad]="true">
+    </slideshow>
+  </div>
+  <div class="position-relative margin-top-10 statistics ">
+    <div class="charts color-organe background-color-white">
+      <div>In this div will contain the charts of music</div>
+    </div>
+  </div>
+  <div class="position-relative margin-top-10 topten">
+    <div class="music-player background-color-white margin-left-right-20 shadow">
+      This one will contain music player
+    </div>
+    <div class="playlist background-color-white margin-left-right-20 shadow">
+      This one will contain playlist 
+    </div>
+  </div>
+  <div class="position-relative margin-top-10 padding-left-right-10 registration">
+    <div class="background-color-white define-form">
+      <h3>Be join</h3>
+      <mat-form-field class="form">
+        <input matInput placeholder="Email">
+      </mat-form-field>
+  
+      <mat-form-field class="form">
+          <input matInput placeholder="Username">
+        </mat-form-field>
+    
+      <mat-form-field class="form">
+        <input matInput placeholder="Password">
+      </mat-form-field>
+      <div class="button-sign">
+        <button mat-button>Sign up</button>
+        <button mat-button>Sign in</button>
+      </div>
+    </div> 
+  </div>
+  <footer>
+
+  </footer>
+</section>
+
 
 

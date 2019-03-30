@@ -14,8 +14,12 @@ import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {SlideshowModule} from 'ng-simple-slideshow';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SlideshowModule } from 'ng-simple-slideshow';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,11 @@ import {SlideshowModule} from 'ng-simple-slideshow';
     FormsModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    SlideshowModule
+    SlideshowModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
