@@ -1,14 +1,38 @@
-<section class="background-color-dark-blue">
-  <div class="position-relative width-90 slideshow shadow">
-    <slideshow [height]="'90vh'"
+<section class="position-relative background-color-dark-blue">
+  <div class="position-relative slideshow shadow">
+    <div class="position-absolute display-center-center banner display-column row">
+      <div class="col s12 title">
+        <div class="width-height-100 display-center-bottom"> Welcome to Touch Music</div>
+      </div>
+      <div class="col s12 content">
+        <div class="width-height-100 display-center-top">"Music make your soul be better!"</div>
+      </div>
+    </div>
+    <slideshow [height]="'100vh'"
               [autoPlay]="true"
               [showArrows]="false"
               [showDots]="true"
               [imageUrls]="imageSources"
               [autoPlayInterval]="2000"
               [lazyLoad]="imageSources?.length > 1"
-              [autoPlayWaitForLazyLoad]="true">
+              [autoPlayWaitForLazyLoad]="true"
+              class="position-relative">
     </slideshow>
+    
+  </div>
+  <div class="position-relative musictype">
+    <div class="round-button">
+      <img src="./../../../assets/images/StockSnap_J6RKMHOQBO.jpg" alt="Type 1" class="type1">
+      <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
+    </div>
+    <div class="round-button">
+      <img src="./../../../assets/images/StockSnap_NOLZXJLYKF.jpg" alt="Type 1" class="type1">
+      <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
+    </div>
+    <div class="round-button">
+      <img src="./../../../assets/images/StockSnap_X3Z67W9XV4.jpg" alt="Type 1" class="type1">
+      <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
+    </div>
   </div>
   <div class="position-relative margin-top-10 statistics ">
     <div class="charts color-organe background-color-white">
@@ -26,20 +50,27 @@
   <div class="position-relative margin-top-10 padding-left-right-10 registration">
     <div class="background-color-white define-form">
       <h3>Be join</h3>
-      <mat-form-field class="form">
-        <input matInput placeholder="Email">
-      </mat-form-field>
+      <div class="form input-field">
+          <input id="email" type="email" class="validate">
+          <label for="email">Email</label>
+      </div>
   
-      <mat-form-field class="form">
-          <input matInput placeholder="Username">
-        </mat-form-field>
+      <div class="form input-field">
+        <input id="username" type="text" class="validate">
+        <label for="username">Username</label>
+      </div>
     
-      <mat-form-field class="form">
-        <input matInput placeholder="Password">
-      </mat-form-field>
-      <div class="button-sign">
-        <button mat-button>Sign up</button>
-        <button mat-button>Sign in</button>
+      <div class="form input-field">
+        <input id="password" type="password" class="validate">
+        <label for="password">Password</label>
+      </div>
+      <div class="position-relative form button-sign">
+        <button class="btn waves-effect waves-light" name="action">
+          Sign up
+        </button>
+        <button class="btn waves-effect waves-light" name="action">
+          Sign in
+        </button>
       </div>
     </div> 
   </div>
