@@ -34,3 +34,10 @@
 .background-color-dark-blue{
     background-color: #324a45;
 }
+
+/* nav-bar component css */
+@media screen and (max-width: 768px){
+    body{
+        overflow-x: hidden;
+    }
+}
