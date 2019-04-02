@@ -1,0 +1,29 @@
+.group-btn-player{
+    color: aliceblue;
+}
+.playing-song{
+    background-color: aliceblue;
+    width: 40vh;
+    height: 2px;
+}
+.player-display-song{
+    line-height: 5px;
+    margin-left: 5vh;
+    color: aliceblue;
+}
+.player-display-song{
+    font-size: 14px;
+}
+.player-icon{
+    color: aliceblue;
+    margin-left: 5vh;
+}
+.player-icon i{
+    margin-right: 10px;
+}
+.nav-slash{
+    background-color: aliceblue;
+    width: 1px;
+    height: 5vh;
+    margin-left: 5vh;
+}
