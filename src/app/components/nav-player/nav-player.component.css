@@ -27,3 +27,29 @@
     height: 5vh;
     margin-left: 5vh;
 }
+
+@media screen and (max-width: 991px){
+    .playing-song{
+        width: 30vh;
+    }
+    .player-display-song{
+        margin-left: 2vh;
+    }
+    .nav-slash{
+        margin-left: 1vh;
+    }
+    .player-icon{
+        margin-left: 2vh;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .playing-song{
+        width: 30vh;
+    }
+    .player-display-song{
+        margin-left: 2vh;
+        margin-right: 10vh;
+    }
+    
+}
