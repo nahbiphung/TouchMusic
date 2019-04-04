@@ -23,7 +23,6 @@ header .logo {
   color: #fff;
   height: 60px;
   line-height: 60px;
-  font-size: 24px;
   float: left;
   font-weight: bold;
   transition: 0.5s;
@@ -143,9 +142,17 @@ header.scroll-effect .inline-search form{
   line-height: 50px;
 }
 
-@media (max-width: 1200px){
+@media (max-width: 1540px){
   .width-50vh{
     width: 30vh;
   }
-  
+}
+@media (max-width: 1220px){
+  .width-50vh{
+    width: 25vh;
+  }
+}
+.mat-search {
+  background-color: #cdbc43;
+  color: #fff;
 }
