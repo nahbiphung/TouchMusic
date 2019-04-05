@@ -1,48 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* ngx-toast vs boostrap use same animation name so do this*/
-#toast-container > div {
-    opacity:1;
+#toast-container>div {
+  opacity: 1;
 }
-.color-white{
-    color: #f8f8fa;
+
+.color-white {
+  color: #f8f8fa;
 }
-.color-gray{
-    color: #a2b1a4;
+
+.color-gray {
+  color: #a2b1a4;
 }
-.color-organe{
-    color: #dd8f36;
+
+.color-organe {
+  color: #dd8f36;
 }
-.color-yellow{
-    color: #cdbc43;
+
+.color-yellow {
+  color: #cdbc43;
 }
-.color-dark-blue{
-    color: #324a45;
+
+.color-dark-blue {
+  color: #324a45;
 }
-.background-color-white{
-    background-color: #f8f8fa;
+
+.background-color-white {
+  background-color: #f8f8fa;
 }
-.background-color-gray{
-    background-color: #a2b1a4;
+
+.background-color-gray {
+  background-color: #a2b1a4;
 }
-.background-color-organe{
-    background-color: #dd8f36;
+
+.background-color-organe {
+  background-color: #dd8f36;
 }
-.background-color-yellow{
-    background-color: #cdbc43;
+
+.background-color-yellow {
+  background-color: #cdbc43;
 }
-.background-color-dark-blue{
-    background-color: #324a45;
+
+.background-color-dark-blue {
+  background-color: #324a45;
 }
 
 /* nav-bar component css */
-@media screen and (max-width: 991px){
-    body{
-        overflow-x: hidden;
-    }
+@media screen and (max-width: 991px) {
+  body {
+    overflow-x: hidden;
+  }
 }
-@media screen and (max-width: 768px){
-    body{
-        overflow-x: hidden;
-    }
+
+@media screen and (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  background: transparent;
 }

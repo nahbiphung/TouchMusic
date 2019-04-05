@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NavPlayerComponent } from './components/nav-player/nav-player.component';
+// import {AudioPlayerNgModule} from 'audio-player-ng';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
     MatNativeDateModule,
     MatInputModule,
     MatButtonModule
+    // AudioPlayerNgModule
   ],
   providers: [],
   bootstrap: [AppComponent]
