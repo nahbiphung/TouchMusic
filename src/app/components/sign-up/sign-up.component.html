@@ -1,3 +1,49 @@
-<p>
-  sign-up works!
-</p>
+<div class="form-sign-up">
+  <!-- Email -->
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Enter Your Email" type="email" required>
+    <mat-icon matSuffix>email</mat-icon>
+  </mat-form-field>
+  <!-- Password -->
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" required>
+    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </mat-form-field>
+  <!-- First Name v Last Name -->
+  <table cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="Enter your First Name" type="text" required>
+          <mat-icon matSuffix>perm_identity</mat-icon>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Enter your Last Name" type="text" required>
+          <mat-icon matSuffix>perm_identity</mat-icon>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  <!-- Date of Birth -->
+  <mat-form-field>
+    <mat-label>Date of Birth</mat-label>
+    <input matInput [matDatepicker]="testpicker" placeholder="Choose a date" required>
+    <mat-datepicker-toggle matSuffix [for]="testpicker">
+      <mat-icon matDatepickerToggleIcon (click)="datetime=true">date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #testpicker></mat-datepicker>
+  </mat-form-field>
+  <!-- Phone -->
+  <mat-form-field>
+    <mat-label>Phone</mat-label>
+    <input matInput placeholder="Enter your Phone number" class="example-right-align" type="number" required>
+    <mat-icon matSuffix>smartphone</mat-icon>
+  </mat-form-field>
+  <button mat-raised-button color="primary">Register</button>
+</div>

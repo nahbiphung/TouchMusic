@@ -15,6 +15,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // Components
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -47,7 +50,10 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

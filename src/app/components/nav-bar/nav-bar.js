@@ -23,7 +23,7 @@ function showRegisterForm(){
             $('.register-footer').fadeIn('fast');
         })
 
-        $('.modal-title').html('Register with');
+        $('.modal-title').html('Register');
     })
 }
 function showLoginForm(){
@@ -33,7 +33,7 @@ function showLoginForm(){
             $('.login-footer').fadeIn('fast');
         })
 
-        $('.modal-title').html('Login with');
+        $('.modal-title').html('Login');
     })
 }
 

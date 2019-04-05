@@ -1,0 +1,45 @@
+.login-branch{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.login-branch button{
+    margin: 0 10px;
+}
+
+.divide{
+    margin: 30px auto;
+    display: flex;
+}
+
+.divide .line1{
+    height: 1px;
+    width: 40%;
+    background-color: black;
+}
+
+.divide .line2{
+    margin-left: auto;
+    height: 1px;
+    width: 40%;
+    background-color: black;
+}
+
+.divide span{
+    position: relative;
+    width: 20%;
+    text-align: center;
+    margin-top: -10px;
+}
+
+.form-login{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-login button{
+    width: 40%;
+    margin: auto;
+    height: 50px;
+    font-size: 18px;
+}
