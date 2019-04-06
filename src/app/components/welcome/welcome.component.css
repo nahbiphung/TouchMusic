@@ -6,6 +6,33 @@
   position: absolute;
 }
 
+.display-flex {
+  display: flex;
+}
+
+.display-flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.display-flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.display-flex-center{
+  display: flex;
+  justify-content: center;
+}
+
+.flex-grow-2 {
+  flex-grow: 2;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
 .width-90 {
   width: 90%;
 }
@@ -29,6 +56,15 @@
 
 .padding-10 {
   padding: 10px;
+}
+
+.padding-bottom-0 {
+  padding-bottom: 0;
+}
+
+.padding-left-right-10 {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .charts {
@@ -56,6 +92,7 @@
   width: 400px;
   height: 375px;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .margin-left-right-20 {
@@ -190,9 +227,60 @@
 }
 
 .imageTitle {
-  flex-grow: 2;
+  flex-grow: 3;
 }
 
 .playerString {
   flex-grow: 1;
+}
+
+.play {
+  font-size: 50px;
+}
+
+.material-icons{
+  cursor: pointer;
+}
+
+.noBackground{
+  background-color: transparent;
+}
+
+.song {
+  width: 100%;
+  padding: 20px 10px;
+  border-bottom: solid 1px #f8f8fa;
+  color: #f8f8fa;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: transparent;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.song:last-child {
+  border: none;
+}
+
+.listSong.cdk-drop-list-dragging .song:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

@@ -38,16 +38,47 @@
     </div>
   </div> 
   <div class="position-relative margin-top-10 topten row">
-    <div class="music-player display-center-center display-column background-color-white margin-left-right-20 shadow margin-top-10">
+    <div class="music-player display-center-center display-column margin-left-right-20 shadow margin-top-10">
       <div class="imageTitle">
         <img src="./../../../assets/images/concert-768722_1920.jpg" class="width-height-100 padding-10" style="object-fit: cover" alt="Top of playlist">
       </div>
-      <div class="playerString">
-        <!-- <app-player [options]="options" [playlist]="playlist"></app-player>        -->
+      <div class="playerString width-height-100 padding-left-right-10">
+        <div class="position-relative">
+          <mat-slider
+            class="width-100"
+            [max]="100"
+            [min]="0"
+            [(ngModel)]="duration"
+            (input)="moveCurrentTime($event)"
+            id="progressBar">
+          </mat-slider>
+        </div>
+        <div class="optionButton display-center-center">
+          <div class="display-flex-start flex-grow-2">
+              <i class="material-icons color-white" id="loop" (click)="onSelectLoopSongs()">loop</i>
+          </div>
+          <div class="display-flex-end flex-grow-1">
+              <i class="material-icons color-white" (click)="onSelectPlayBackward()">skip_previous</i>
+          </div>
+          <div class="display-flex-center flex-grow-1"  *ngIf="!isPlay">
+              <i class="material-icons play color-white" (click)="onSelectPlayOrPauseSong()">play_circle_outline</i>
+          </div>
+          <div class="display-flex-center flex-grow-1" *ngIf="isPlay">
+              <i class="material-icons play color-white" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
+          </div>
+          <div class="display-flex-start flex-grow-1">
+              <i class="material-icons color-white" (click)="onSelectPlayForward()">skip_next</i>
+          </div>
+          <div class="display-flex-end flex-grow-2">
+            <i class="material-icons color-white" id="shuffle" (click)="onSelectShuffleSongs(playlistSong)">shuffle</i>
+          </div> 
+        </div>
       </div>
     </div>
-    <div class="playlist background-color-white margin-left-right-20 shadow margin-top-10">
-      This one will contain playlist 
+    <div class="playlist margin-left-right-20 shadow margin-top-10">
+      <div cdkDropList class="listSong display-flex width-height-100 display-column" (cdkDropListDropped)="drop($event)">
+        <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>{{item.title}} - {{item.author}}</div>
+      </div>
     </div>
   </div>
   <div class="position-relative padding-left-right-10 registration">
