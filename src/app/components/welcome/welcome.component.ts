@@ -81,8 +81,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   private onClickSong(data: any) {
     this.duration = 0;
-    this.currentSong = this.playlistSong.findIndex(x => x.title = data.title);
+    this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
     this.audio.src = data.url;
+    this.audio.title = data.title;
     this.audio.setAttribute('id', 'playing');
     this.audio.load();
     this.isPlay = true;
@@ -102,11 +103,20 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
       this.audio.addEventListener('timeupdate', () => {
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
         if (this.audio.ended) {
-          this.onSelectPlayForward();
+          if (this.isLoop) {
+            this.onSelectPlayForward();
+          } else {
+            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+            if (index === this.playlistSong.length - 1) {
+              this.isPlay = false;
+              this.duration = 0;
+            }
+          }
         }
       });
     } else {
       this.audio.src = this.playlistSong[0].url;
+      this.audio.title = this.playlistSong[0].title;
       this.audio.setAttribute('id', 'playing');
       this.audio.load();
       this.isPlay = true;
@@ -115,21 +125,25 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private onSelectPlayBackward() {
+    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
     this.currentSong--;
     if (this.currentSong < 0) {
       this.currentSong = this.playlistSong.length - 1;
     }
     this.audio.src = this.playlistSong[this.currentSong].url;
+    this.audio.title = this.playlistSong[this.currentSong].title;
     this.audio.load();
     this.onSelectPlayOrPauseSong();
   }
 
   private onSelectPlayForward() {
+    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
     this.currentSong++;
     if (this.currentSong > this.playlistSong.length - 1) {
       this.currentSong = 0;
     }
     this.audio.src = this.playlistSong[this.currentSong].url;
+    this.audio.title = this.playlistSong[this.currentSong].title;
     this.audio.load();
     this.onSelectPlayOrPauseSong();
   }
@@ -138,10 +152,8 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     const loop = document.getElementById('loop');
     this.isLoop = !this.isLoop;
     if (this.isLoop) {
-      this.audio.loop = true;
       loop.classList.add('color-yellow');
     } else {
-      this.audio.loop = false;
       loop.classList.remove('color-yellow');
     }
   }
