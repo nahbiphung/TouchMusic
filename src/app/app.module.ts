@@ -21,6 +21,11 @@ import { MatNativeDateModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NavPlayerComponent } from './components/nav-player/nav-player.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -42,7 +47,12 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule,
+    HttpModule,
+    MatProgressBarModule,
+    DragDropModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

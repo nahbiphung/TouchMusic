@@ -149,3 +149,8 @@ header.scroll-effect .inline-search form{
   }
   
 }
+
+.mat-search {
+  background-color: #cdbc43;
+  color: #fff;
+}
