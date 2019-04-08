@@ -26,6 +26,7 @@ import { HttpModule } from '@angular/http';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSliderModule} from '@angular/material/slider';
+import { SongComponent } from './components/song/song.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatSliderModule} from '@angular/material/slider';
     SignUpComponent,
     WelcomeComponent,
     PageNotFoundComponent,
-    NavPlayerComponent
+    NavPlayerComponent,
+    SongComponent
   ],
   imports: [
     BrowserModule,
