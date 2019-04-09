@@ -49,8 +49,7 @@ export class SignUpComponent implements OnInit, AfterContentChecked {
   onSubmitAddUser() {
     this.authService.registerUser(this.email, this.password, this.firstName, this.lastName, this.birthday, this.phone)
       .then(res => {
-        this.toastr.success('Create user thanh cong', 'Success');
-        this.router.navigate(['/home']);
+
       }).catch(err => {
         this.toastr.warning(err.message, 'Warning');
         console.log(err);

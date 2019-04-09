@@ -1,6 +1,7 @@
 <div class="login-branch">
-    <button mat-stroked-button color="warn"><i class="fab fa-google"></i> Google</button>
-    <button mat-stroked-button color="primary"><i class="fab fa-facebook"></i> Facebook</button>
+    <button mat-stroked-button color="warn" (click)='onClickGoogleLogin()'><i class="fab fa-google"></i> Google</button>
+    <button mat-stroked-button color="primary" (click)='onClickFacebookLogin()'><i class="fab fa-facebook"></i>
+        Facebook</button>
     <button mat-stroked-button color="primary"><i class="fab fa-twitter"></i> Twitter</button>
 </div>
 <div class="divide">
@@ -8,16 +9,18 @@
     <span>or</span>
     <div class="line2"></div>
 </div>
-<div class="form-login">
-    <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput placeholder="Enter Your Email">
-        <mat-icon matSuffix>email</mat-icon>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'">
-        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </mat-form-field>
-    <button mat-raised-button color="primary">Login</button>
-</div>
+<form (submit)='onSubmitLogin()'>
+    <div class="form-login">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter Your Email" type="email" name="email" [(ngModel)]="email">
+            <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Login</button>
+    </div>
+</form>
