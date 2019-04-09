@@ -35,6 +35,11 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
 import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './services/auth.service';
 
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -68,7 +73,12 @@ import { AuthService } from './services/auth.service';
     MatDatepickerModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    HttpClientModule,
+    HttpModule,
+    MatProgressBarModule,
+    DragDropModule,
+    MatSliderModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]

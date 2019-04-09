@@ -68,11 +68,13 @@ export class AuthService {
     return userRef.set(data, { merge: true });
   }
 
+  // close Modal
   closeModal() {
     const modal = document.getElementById('loginModal');
     const modalback = document.querySelector('.modal-backdrop');
     modal.style.display = 'none';
-    modalback.setAttribute('style', 'display: none');
+    // modalback.setAttribute('style', 'display: none');
+    modalback.remove();
   }
 
   loginEmail(email: string, pass: string) {
