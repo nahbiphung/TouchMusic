@@ -1,4 +1,8 @@
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-sign-up',
@@ -7,11 +11,27 @@ import { Component, OnInit, AfterContentChecked } from '@angular/core';
 })
 export class SignUpComponent implements OnInit, AfterContentChecked {
 
+
+  private hide: boolean;
+
+  // set datetime for picker register
   private datetime: boolean;
 
-  constructor() {
+  private email: string;
+  private password: string;
+  private firstName: string;
+  private lastName: string;
+  private birthday: Date;
+  private phone: string;
+
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    public toastr: ToastrService
+  ) {
     this.datetime = false;
-   }
+    this.hide = true;
+  }
 
   ngOnInit() {
   }
@@ -26,4 +46,14 @@ export class SignUpComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  onSubmitAddUser() {
+    this.authService.registerUser(this.email, this.password, this.firstName, this.lastName, this.birthday, this.phone)
+      .then(res => {
+        this.toastr.success('Create user thanh cong', 'Success');
+        this.router.navigate(['/home']);
+      }).catch(err => {
+        this.toastr.warning(err.message, 'Warning');
+        console.log(err);
+      });
+  }
 }

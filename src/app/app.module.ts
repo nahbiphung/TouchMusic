@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,16 +20,21 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
+// FireBase Module
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 // Components
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-
-
-
 import { NavPlayerComponent } from './components/nav-player/nav-player.component';
+import { HomeComponent } from './components/home/home.component';
+import { AuthService } from './services/auth.service';
+
 
 @NgModule({
   declarations: [
@@ -38,13 +44,19 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
     SignUpComponent,
     WelcomeComponent,
     PageNotFoundComponent,
-    NavPlayerComponent
+    NavPlayerComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-left',
+      maxOpened: 5,
+      preventDuplicates: true
+    }),
     BrowserAnimationsModule,
     SlideshowModule,
     MatFormFieldModule,
@@ -53,9 +65,12 @@ import { NavPlayerComponent } from './components/nav-player/nav-player.component
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
-  providers: [],
+  providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
