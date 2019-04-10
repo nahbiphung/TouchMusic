@@ -27,7 +27,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSliderModule} from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
-
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +54,8 @@ import { SongComponent } from './components/song/song.component';
     HttpModule,
     MatProgressBarModule,
     DragDropModule,
-    MatSliderModule
+    MatSliderModule,
+    MDBBootstrapModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

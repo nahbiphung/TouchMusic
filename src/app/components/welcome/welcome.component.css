@@ -68,9 +68,9 @@
 }
 
 .charts {
-  width: 800px;
-  height: 375px;
-  margin: 50vh auto;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
   border-radius: 10px;
 }
 
