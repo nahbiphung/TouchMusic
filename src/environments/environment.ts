@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyBat-HpSp7148YdAAfNWGTJv4_MmcD-BEQ',
+    authDomain: 'touchmusic-2707e.firebaseapp.com',
+    databaseURL: 'https://touchmusic-2707e.firebaseio.com',
+    projectId: 'touchmusic-2707e',
+    storageBucket: 'touchmusic-2707e.appspot.com',
+    messagingSenderId: '349463369038'
+  }
 };
 
 /*

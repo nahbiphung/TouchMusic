@@ -5,13 +5,15 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { SongComponent } from './components/song/song.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/welcome', pathMatch: 'full' },
+  { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'welcome', component: WelcomeComponent },
   { path: 'song', component: SongComponent },
+  { path: 'home', component: HomeComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

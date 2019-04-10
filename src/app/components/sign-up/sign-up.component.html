@@ -1,3 +1,51 @@
-<p>
-  sign-up works!
-</p>
+<form (submit)="onSubmitAddUser()" >
+<div class="form-sign-up">
+  
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Enter Your Email" type="email" name="email" [(ngModel)]="email" required>
+    <mat-icon matSuffix>email</mat-icon>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password" required>
+    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </mat-form-field>
+  
+  <table cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="Enter your First Name" type="text" [(ngModel)]="firstName" name="firstName" required>
+          <mat-icon matSuffix>perm_identity</mat-icon>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Enter your Last Name" type="text" [(ngModel)]="lastName" name="lastName" required>
+          <mat-icon matSuffix>perm_identity</mat-icon>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  
+  <mat-form-field>
+    <mat-label>Date of Birth</mat-label>
+    <input matInput [matDatepicker]="testpicker" placeholder="Choose a date" [(ngModel)]="birthday" name="birthday" required>
+    <mat-datepicker-toggle matSuffix [for]="testpicker">
+      <mat-icon matDatepickerToggleIcon (click)="datetime=true">date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #testpicker></mat-datepicker>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Phone</mat-label>
+    <input matInput placeholder="Enter your Phone number" class="example-right-align" type="text" [(ngModel)]="phone" name="phone" required>
+    <mat-icon matSuffix>smartphone</mat-icon>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Register</button>
+</div>
+</form>

@@ -1,0 +1,20 @@
+.form-sign-up{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-sign-up button{
+    width: 40%;
+    margin: auto;
+    height: 50px;
+    font-size: 18px;
+}
+
+td{
+    width: 100%;
+}
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
