@@ -68,3 +68,26 @@
   width: 0px;
   background: transparent;
 }
+
+/** Overrides underline color **/
+.my-form-field.mat-form-field-appearance-legacy .mat-form-field-underline,
+.my-form-field.mat-form-field-appearance-legacy .mat-form-field-ripple,
+.my-form-field.mat-form-field-appearance-legacy.mat-focused
+    .mat-form-field-underline,
+.my-form-field.mat-form-field-appearance-legacy.mat-focused
+    .mat-form-field-ripple {
+    background-color: #a2b1a4;
+}
+
+/** Overrides label color **/
+.my-form-field.mat-form-field-appearance-legacy .mat-form-field-label,
+.my-form-field.mat-form-field-appearance-legacy.mat-focused
+    .mat-form-field-label {
+    color: #a2b1a4;
+}
+
+/** Overrides caret & text color **/
+.my-form-field.mat-form-field-appearance-legacy .mat-input-element {
+    caret-color: #dd8f36;
+  color: #dd8f36;
+}
