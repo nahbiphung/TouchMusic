@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
         console.log(err);
         this.toast.error(err.message, 'Error');
         this.router.navigate(['/welcome']);
+      }).finally(() => {
+        location.reload();
       });
   }
 
