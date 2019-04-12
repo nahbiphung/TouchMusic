@@ -37,9 +37,11 @@
   </div>
   <nav>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Login</a></li>
-      <li><a href="#">Register</a></li>
+      <li><a href="#" routerLink="/welcome" class="active">Home</a></li>
+      <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openLoginModal()" *ngIf="!isLogin">Login</a></li>
+      <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openRegisterModal()" *ngIf="!isLogin">Register</a></li>
+      <li><a href="#" *ngIf="isLogin">{{email}}</a></li>
+      <li><a href="#" *ngIf="isLogin" (click)='onClickLogout()'>Logout</a></li>
     </ul>
   </nav>
   <div class="menu-toggle"><i class="fas fa-bars"></i></div>
