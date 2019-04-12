@@ -35,7 +35,8 @@
               "./node_modules/popper.js/dist/umd/popper.js",
               "./node_modules/bootstrap/dist/js/bootstrap.js",
               "./node_modules/jquery/dist/jquery.min.js",
-              "./src/app/components/nav-bar/nav-bar.js"
+              "./src/app/components/nav-bar/nav-bar.js",
+              "./node_modules/hammerjs/hammer.min.js"
             ],
             "es5BrowserSupport": true
           },
