@@ -110,6 +110,8 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
             if (index === this.playlistSong.length - 1) {
               this.isPlay = false;
               this.duration = 0;
+            } else {
+              this.onSelectPlayForward();
             }
           }
         }
