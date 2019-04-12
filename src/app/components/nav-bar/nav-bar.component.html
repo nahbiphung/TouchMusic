@@ -45,7 +45,7 @@
   </form>
   <nav>
     <ul>
-      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#" routerLink="/welcome" class="active">Home</a></li>
       <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openLoginModal()" *ngIf="!isLogin">Login</a></li>
       <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openRegisterModal()" *ngIf="!isLogin">Register</a></li>
       <li><a href="#" *ngIf="isLogin">{{email}}</a></li>
