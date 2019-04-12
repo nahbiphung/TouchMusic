@@ -45,10 +45,7 @@
               "./node_modules/bootstrap/dist/js/bootstrap.js",
               "./node_modules/jquery/dist/jquery.min.js",
               "./src/app/components/nav-bar/nav-bar.js",
-<<<<<<< HEAD
-=======
               "./node_modules/chart.js/dist/Chart.js",
->>>>>>> 254cae1e96618246cfcd5110a58a39d26b4c472b
               "./node_modules/hammerjs/hammer.min.js"
             ],
             "es5BrowserSupport": true
