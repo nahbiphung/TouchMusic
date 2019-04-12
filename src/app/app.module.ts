@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -40,7 +39,8 @@ import { HttpModule } from '@angular/http';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSliderModule} from '@angular/material/slider';
-
+import { SongComponent } from './components/song/song.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +50,7 @@ import {MatSliderModule} from '@angular/material/slider';
     WelcomeComponent,
     PageNotFoundComponent,
     NavPlayerComponent,
+    SongComponent,
     HomeComponent
   ],
   imports: [
@@ -78,7 +79,8 @@ import {MatSliderModule} from '@angular/material/slider';
     HttpModule,
     MatProgressBarModule,
     DragDropModule,
-    MatSliderModule
+    MatSliderModule,
+    MDBBootstrapModule.forRoot()
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
