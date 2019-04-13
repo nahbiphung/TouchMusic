@@ -53,6 +53,7 @@ export class SignUpComponent implements OnInit, AfterContentChecked {
       }).catch(err => {
         this.toastr.warning(err.message, 'Warning');
         console.log(err);
-      });
+      }).finally(() =>
+      location.reload());
   }
 }
