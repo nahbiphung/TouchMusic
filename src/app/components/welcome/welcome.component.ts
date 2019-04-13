@@ -4,57 +4,27 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
+// firestore
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit, AfterContentChecked {
-  private imageSources: (string | IImage)[] = [
-    {
-      url: 'assets/images/classical-music-1838390_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    },
-    {
-      url: 'assets/images/concert-768722_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    },
-    {
-      url: 'assets/images/streets-1284394_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    }
-  ];
+  collectionData: AngularFirestoreCollection<any>;
+  documentData: AngularFirestoreDocument<any>;
+  public song: Observable<any[]>;
 
-  private playlistSong = [
-    {
-      title: 'Tuy Am',
-      author: 'NhatNguyen Remix, Xesi',
-      url: './../../../assets/music/mp3/Tuy-Am-Masew-x-NhatNguyen-Remix-Xesi.mp3',
-    }, {
-      title: 'Bua Yeu',
-      author: 'Bich Phuong',
-      url: './../../../assets/music/mp3/Bua Yeu - Bich Phuong.mp3',
-    }, {
-      title: 'Thu Cho Anh',
-      author: 'Trang',
-      url: './../../../assets/music/mp3/Thu Cho Anh - Trang.mp3',
-    }, {
-      title: 'Doi la Giac Mo',
-      author: 'My Tam',
-      url: './../../../assets/music/mp3/Doi La Giac Mo - My Tam.mp3',
-    }, {
-      title: 'Muon Ruou To Tinh',
-      author: 'Emily, BigDaddy',
-      url: './../../../assets/music/mp3/MuonRuouToTinh-EmilyBigDaddy-5871420.mp3',
-    }, {
-      title: 'Something Just like this',
-      author: 'TheChainsmokers, Coldplay',
-      url: './../../../assets/music/mp3/SomethingJustLikeThis-TheChainsmokersColdplay-5337136.mp3',
-    }
-  ];
+  private imageSources: (string | IImage)[];
+  private imageTypeMusic: object;
+  private logo: string;
+  private playlistSong = [];
+  private backgroundImage: string;
+  private loadingSpinner: boolean;
+  private imagePlaylist: string;
+
 
   // Variables
   private isPlay: boolean;
@@ -65,15 +35,57 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private isLoop: boolean;
   private currentSong: number;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private db: AngularFirestore) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
     this.currentSong = 0;
     this.isShuffle = false;
+    this.loadingSpinner = true;
   }
 
   ngOnInit() {
+    // get playlist song
+    this.collectionData = this.db.collection('TopPlaylist');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.playlistSong = res;
+      }
+    }, (err) => {
+      console.log('error');
+    });
+
+    // get images
+    this.collectionData = this.db.collection('imagesForView');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.imageSources = [
+          {
+            url: res[0].slideshow1,
+            backgroundPosition: 'center'
+          },
+          {
+            url: res[0].slideshow2,
+            backgroundPosition: 'center'
+          },
+          {
+            url: res[0].slideshow3,
+            backgroundPosition: 'center'
+          }
+        ];
+        this.imageTypeMusic = {
+          type1: res[0].musicType1,
+          type2: res[0].musicType2,
+          type3: res[0].musicType3
+        };
+        this.logo = res[0].logo;
+        this.backgroundImage = res[0].backgroundImage;
+        this.imagePlaylist = res[0].playlist;
+      }
+      this.loadingSpinner = false;
+    }, (error) => {
+      console.log('error');
+    });
   }
 
   ngAfterContentChecked() {
@@ -189,6 +201,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
     while (ctr > 0) {
       index = Math.floor(Math.random() * ctr);
+      console.log(index);
       ctr--;
       temp = data[ctr];
       data[ctr] = data[index];

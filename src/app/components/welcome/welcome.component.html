@@ -1,9 +1,10 @@
-<div class="backgroundImage">
-  <img src="./../../../assets/images/backgournd.JPG" alt="">
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
+<div class="backgroundImage" *ngIf="!loadingSpinner">
+  <img src="{{backgroundImage}}" alt="">
   
 </div>
-<div class="makeImageDarker"></div>
-<section class="position-relative">
+<div class="makeImageDarker" *ngIf="!loadingSpinner"></div>
+<section class="position-relative" *ngIf="!loadingSpinner">
   <div class="position-relative slideshow shadow">
     <div class="position-absolute display-center-center banner display-column">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-center-center display-column">
@@ -19,15 +20,15 @@
   </div>
   <div class="position-relative musictype row">
     <div class="round-button col-lg-4 col-md-6 col-sm-6 col-xs-12">
-      <img src="./../../../assets/images/StockSnap_J6RKMHOQBO.jpg" alt="Type 1" class="type1">
+      <img src="{{imageTypeMusic.type1}}" alt="Type 1" class="type1">
       <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
     </div>
     <div class="round-button col-lg-4 col-md-6 col-sm-6 col-xs-12">
-      <img src="./../../../assets/images/StockSnap_NOLZXJLYKF.jpg" alt="Type 1" class="type1">
+      <img src="{{imageTypeMusic.type2}}" alt="Type 2" class="type1">
       <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
     </div>
     <div class="round-button col-lg-4 col-md-6 col-sm-6 col-xs-12">
-      <img src="./../../../assets/images/StockSnap_X3Z67W9XV4.jpg" alt="Type 1" class="type1">
+      <img src="{{imageTypeMusic.type3}}" alt="Type 3" class="type1">
       <div class="display-center-center playbutton large material-icons">play_circle_outline</div>
     </div>
   </div>
@@ -105,7 +106,7 @@
   <div class="position-relative margin-top-10 topten row">
     <div class="music-player display-center-center display-column margin-left-right-20 shadow margin-top-10">
       <div class="imageTitle">
-        <img src="./../../../assets/images/concert-768722_1920.jpg" class="width-height-100 padding-10"
+        <img src="{{imagePlaylist}}" class="width-height-100 padding-10"
           style="object-fit: cover" alt="Top of playlist">
       </div>
       <div class="playerString width-height-100 padding-left-right-10">

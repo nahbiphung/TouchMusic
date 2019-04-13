@@ -91,3 +91,72 @@
     caret-color: #dd8f36;
   color: #dd8f36;
 }
+
+@media (min-width: 768px) {
+  .media .avatar {
+      width: 64px;
+  }
+}
+
+@media (max-width: 767px) {
+  .media .avatar {
+      width: 160px;
+  }
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-sticky {
+  position: sticky;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.display-flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.display-flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.display-flex-center{
+  display: flex;
+  justify-content: center;
+}
+
+.display-flex-spaceAround{
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-grow-2 {
+  flex-grow: 2;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.width-90 {
+  width: 90%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.width-height-100 {
+  width: 100%;
+  height: 100%;
+}

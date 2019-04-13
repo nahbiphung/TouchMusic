@@ -41,6 +41,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatSliderModule} from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +53,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     PageNotFoundComponent,
     NavPlayerComponent,
     SongComponent,
-    HomeComponent
+    HomeComponent,
+    UiLoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     MatProgressBarModule,
     DragDropModule,
     MatSliderModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    MatProgressSpinnerModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
