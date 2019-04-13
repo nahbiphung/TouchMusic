@@ -3,6 +3,7 @@ import { IImage } from 'ng-simple-slideshow/src/app/modules/slideshow/IImage';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SongService } from 'src/app/services/song.service';
 
 @Component({
   selector: 'app-welcome',
@@ -65,7 +66,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private isLoop: boolean;
   private currentSong: number;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    public songService: SongService) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
@@ -80,33 +83,38 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private onClickSong(data: any) {
-    this.duration = 0;
-    this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
-    this.audio.src = data.url;
-    this.audio.title = data.title;
-    this.audio.setAttribute('id', 'playing');
-    this.audio.load();
-    this.isPlay = true;
-    this.onSelectPlayOrPauseSong();
+    // this.duration = 0;
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
+    // this.audio.src = data.url;
+    // this.audio.title = data.title;
+    // this.audio.setAttribute('id', 'playing');
+    // this.audio.load();
+    // this.isPlay = true;
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.playSong(data);
+    this.songService.audio.src = data.url;
+    this.songService.audio.load();
+    this.songService.PlayOrPause();
   }
 
 
   private onSelectPlayOrPauseSong() {
-    if (this.audio.src) {
-      if (!this.audio.paused) {
-        this.audio.pause();
+    if (this.songService.audio.src) {
+      if (!this.songService.audio.paused) {
+        this.songService.audio.pause();
         this.isPlay = false;
       } else {
-        this.audio.play();
+        this.songService.audio.play();
         this.isPlay = true;
       }
-      this.audio.addEventListener('timeupdate', () => {
-        this.duration = (this.audio.currentTime / this.audio.duration) * 100;
-        if (this.audio.ended) {
+      this.songService.audio.addEventListener('timeupdate', () => {
+        this.duration = (this.songService.audio.currentTime / this.songService.audio.duration) * 100;
+        if (this.songService.audio.ended) {
           if (this.isLoop) {
             this.onSelectPlayForward();
           } else {
-            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+            const index = this.playlistSong.findIndex(x => x.title === this.songService.audio.title);
             if (index === this.playlistSong.length - 1) {
               this.isPlay = false;
               this.duration = 0;

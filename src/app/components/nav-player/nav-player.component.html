@@ -3,7 +3,12 @@
 
     <div class="mt-2 group-btn-player">
       <i class="material-icons">skip_previous</i>
-      <i class="material-icons">play_arrow</i>
+      <div *ngIf="!isPlay">
+        <i class="material-icons" (click)="onSelectPlayOrPauseSong()">play_arrow</i>
+      </div>
+      <div *ngIf="isPlay">
+        <i class="material-icons" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
+      </div>
       <i class="material-icons">skip_next</i>
     </div>
     <div class="playing-song m-auto"></div>
