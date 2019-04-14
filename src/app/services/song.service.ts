@@ -32,9 +32,6 @@ export class SongService {
 
   public playSong(data: any) {
     this.getCurrentDataSong(data);
-    // this.playlistSong.push(data);
-    // console.log(this.playlistSong);
-
     this.addSongDataToArr(data);
     console.log(this.playlistSong);
   }
@@ -46,7 +43,7 @@ export class SongService {
       this.playlistSong.push(data);
     } else {
       for (const x of this.playlistSong) {
-        if (x.title === data.title) {
+        if (x.url === data.url) {
           console.log('Bai hat bi trung');
           flag = true;
           return;
@@ -54,15 +51,6 @@ export class SongService {
       }
       if (flag === false) {
         this.playlistSong.push(data);
-      }
-    }
-  }
-
-  public checkDataPlaylistSong(title) {
-    for ( const i in this.playlistSong) {
-      if (this.playlistSong[i].title === title) {
-        this.songInAray = this.playlistSong[i];
-        return this.songInAray; // lay con bi trung
       }
     }
   }

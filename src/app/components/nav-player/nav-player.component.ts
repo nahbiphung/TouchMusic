@@ -26,4 +26,8 @@ export class NavPlayerComponent implements OnInit {
   private onSelectPlayForward() {
     this.songService.PlayForward();
   }
+
+  private moveCurrentTime(event: any) {
+    this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
+  }
 }
