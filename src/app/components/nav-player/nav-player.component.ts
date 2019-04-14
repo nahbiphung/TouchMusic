@@ -8,29 +8,14 @@ import { SongService } from '../../services/song.service';
 })
 export class NavPlayerComponent implements OnInit {
 
-
-  isPlay: boolean;
-
   constructor(
     public songService: SongService
-  ) {
-    this.songService.audio = new Audio();
-  }
+  ) {}
 
   ngOnInit() {
   }
 
   private onSelectPlayOrPauseSong() {
-    if (this.songService.audio.src) {
-      if (!this.songService.audio.paused) {
-        this.songService.audio.pause();
-        this.isPlay = false;
-        console.log('clicked play');
-      } else {
-        this.songService.audio.play();
-        this.isPlay = true;
-        console.log('clicked pause');
-      }
-    }
+    this.songService.PlayOrPause();
   }
 }

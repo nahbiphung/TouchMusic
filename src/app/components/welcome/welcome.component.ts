@@ -74,6 +74,10 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     this.duration = 0;
     this.currentSong = 0;
     this.isShuffle = false;
+
+    this.songService.duration = 0;
+    this.songService.currentSong = 0;
+    this.songService.playlistSongForWelcome = this.playlistSong;
   }
 
   ngOnInit() {
@@ -94,68 +98,77 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
     this.songService.playSong(data);
     this.songService.audio.src = data.url;
+    this.songService.audio.title = data.title;
     this.songService.audio.load();
+    this.songService.isPlay = true;
     this.songService.PlayOrPause();
   }
 
 
   private onSelectPlayOrPauseSong() {
-    if (this.songService.audio.src) {
-      if (!this.songService.audio.paused) {
-        this.songService.audio.pause();
-        this.isPlay = false;
-      } else {
-        this.songService.audio.play();
-        this.isPlay = true;
-      }
-      this.songService.audio.addEventListener('timeupdate', () => {
-        this.duration = (this.songService.audio.currentTime / this.songService.audio.duration) * 100;
-        if (this.songService.audio.ended) {
-          if (this.isLoop) {
-            this.onSelectPlayForward();
-          } else {
-            const index = this.playlistSong.findIndex(x => x.title === this.songService.audio.title);
-            if (index === this.playlistSong.length - 1) {
-              this.isPlay = false;
-              this.duration = 0;
-            } else {
-              this.onSelectPlayForward();
-            }
-          }
-        }
-      });
-    } else {
-      this.audio.src = this.playlistSong[0].url;
-      this.audio.title = this.playlistSong[0].title;
-      this.audio.setAttribute('id', 'playing');
-      this.audio.load();
-      this.isPlay = true;
-      this.onSelectPlayOrPauseSong();
-    }
+    // if (this.audio.src) {
+    //   if (!this.audio.paused) {
+    //     this.audio.pause();
+    //     this.isPlay = false;
+    //   } else {
+    //     this.audio.play();
+    //     this.isPlay = true;
+    //   }
+    //   this.audio.addEventListener('timeupdate', () => {
+    //     this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+    //     if (this.audio.ended) {
+    //       if (this.isLoop) {
+    //         this.onSelectPlayForward();
+    //       } else {
+    //         const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    //         if (index === this.playlistSong.length - 1) {
+    //           this.isPlay = false;
+    //           this.duration = 0;
+    //         } else {
+    //           this.onSelectPlayForward();
+    //         }
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   this.audio.src = this.playlistSong[0].url;
+    //   this.audio.title = this.playlistSong[0].title;
+    //   this.audio.setAttribute('id', 'playing');
+    //   this.audio.load();
+    //   this.isPlay = true;
+    //   this.onSelectPlayOrPauseSong();
+    // }
+
+
+    this.songService.PlayOrPause();
   }
 
   private onSelectPlayBackward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong--;
-    if (this.currentSong < 0) {
-      this.currentSong = this.playlistSong.length - 1;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong--;
+    // if (this.currentSong < 0) {
+    //   this.currentSong = this.playlistSong.length - 1;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayBackwardForWelcome();
   }
 
   private onSelectPlayForward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong++;
-    if (this.currentSong > this.playlistSong.length - 1) {
-      this.currentSong = 0;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong++;
+    // if (this.currentSong > this.playlistSong.length - 1) {
+    //   this.currentSong = 0;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayForwardForWelcome();
   }
 
   private onSelectLoopSongs() {

@@ -105,7 +105,7 @@
       </div>
       <div class="playerString width-height-100 padding-left-right-10">
         <div class="position-relative">
-          <mat-slider class="width-100" [max]="100" [min]="0" [(ngModel)]="duration" (input)="moveCurrentTime($event)"
+          <mat-slider class="width-100" [max]="100" [min]="0" [(ngModel)]="songService.duration" (input)="moveCurrentTime($event)"
             id="progressBar">
           </mat-slider>
         </div>
@@ -116,10 +116,10 @@
           <div class="display-flex-end flex-grow-1">
             <i class="material-icons color-white" (click)="onSelectPlayBackward()">skip_previous</i>
           </div>
-          <div class="display-flex-center flex-grow-1" *ngIf="!isPlay">
+          <div class="display-flex-center flex-grow-1" *ngIf="!songService.isPlay">
             <i class="material-icons play color-white" (click)="onSelectPlayOrPauseSong()">play_circle_outline</i>
           </div>
-          <div class="display-flex-center flex-grow-1" *ngIf="isPlay">
+          <div class="display-flex-center flex-grow-1" *ngIf="songService.isPlay">
             <i class="material-icons play color-white" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
           </div>
           <div class="display-flex-start flex-grow-1">

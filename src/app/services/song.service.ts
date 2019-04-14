@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { database } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,12 @@ export class SongService {
 
   public audio: any;
   public isPlay: boolean;
+  public duration: number;
+  public currentSong: number;
+  public playlistSong = [];
+  public playlistSongForWelcome = [];
+  public isLoop: boolean;
+  public index: number;
 
   constructor() {
     this.audio = new Audio();
@@ -23,8 +30,10 @@ export class SongService {
 
   public playSong(data: any) {
     this.getCurrentDataSong(data);
+    this.playlistSong.push(data);
+    console.log(this.playlistSong);
   }
-  // TODO: create play or pause function()
+
   public PlayOrPause() {
     if (this.audio.src) {
       if (!this.audio.paused) {
@@ -35,6 +44,83 @@ export class SongService {
         this.audio.play();
         this.isPlay = true;
         console.log('clicked pause');
+      }
+      this.audio.addEventListener('timeupdate', () => {
+        this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+        if (this.audio.ended) {
+          if (this.isLoop) {
+            this.PlayForward();
+          } else {
+            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+            if (index === this.playlistSong.length - 1) {
+              this.isPlay = false;
+              this.duration = 0;
+            } else {
+              this.PlayForward();
+            }
+          }
+        }
+      });
+    }
+  }
+
+  public PlayBackward() {
+    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    this.currentSong--;
+    if (this.currentSong < 0) {
+      this.currentSong = this.playlistSong.length - 1;
+    }
+    this.audio.src = this.playlistSong[this.currentSong].url;
+    this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.load();
+    this.PlayOrPause();
+  }
+
+  public PlayForward() {
+    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    this.currentSong++;
+    if (this.currentSong > this.playlistSong.length - 1) {
+      this.currentSong = 0;
+    }
+    this.audio.src = this.playlistSong[this.currentSong].url;
+    this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.load();
+    this.PlayOrPause();
+  }
+
+  // Use at Welcome Page
+  public PlayBackwardForWelcome() {
+    this.findIndexWelcome();
+    this.currentSong = this.index;
+    this.currentSong--;
+    if (this.currentSong < 0) {
+      this.currentSong = this.playlistSongForWelcome.length - 1;
+    }
+    this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
+    this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.load();
+    this.PlayOrPause();
+  }
+
+  public PlayForwardForWelcome() {
+    this.findIndexWelcome();
+    this.currentSong = this.index;
+    this.currentSong++;
+    if (this.currentSong > this.playlistSongForWelcome.length - 1) {
+      this.currentSong = 0;
+    }
+    this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
+    this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.load();
+    this.PlayOrPause();
+  }
+
+  public findIndexWelcome() {
+    let i = 0;
+    for (i; i < this.playlistSongForWelcome.length; i++) {
+      if (this.playlistSongForWelcome[i].title === this.audio.title) {
+        this.index = i;
+        return this.index;
       }
     }
   }
