@@ -18,4 +18,12 @@ export class NavPlayerComponent implements OnInit {
   private onSelectPlayOrPauseSong() {
     this.songService.PlayOrPause();
   }
+
+  private onSelectPlayBackward() {
+    this.songService.PlayBackward();
+  }
+
+  private onSelectPlayForward() {
+    this.songService.PlayForward();
+  }
 }

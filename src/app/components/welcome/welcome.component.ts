@@ -99,9 +99,10 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     this.songService.playSong(data);
     this.songService.audio.src = data.url;
     this.songService.audio.title = data.title;
+    this.songService.audio.author = data.author;
     this.songService.audio.load();
     this.songService.isPlay = true;
-    this.songService.PlayOrPause();
+    this.songService.PlayOrPauseForWelcome();
   }
 
 
@@ -140,7 +141,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     // }
 
 
-    this.songService.PlayOrPause();
+    this.songService.PlayOrPauseForWelcome();
   }
 
   private onSelectPlayBackward() {
@@ -173,8 +174,8 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   private onSelectLoopSongs() {
     const loop = document.getElementById('loop');
-    this.isLoop = !this.isLoop;
-    if (this.isLoop) {
+    this.songService.isLoop = !this.songService.isLoop;
+    if (this.songService.isLoop) {
       loop.classList.add('color-yellow');
     } else {
       loop.classList.remove('color-yellow');
@@ -183,9 +184,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   private onSelectShuffleSongs(data: any) {
     const shuffle = document.getElementById('shuffle');
-    this.isShuffle = !this.isShuffle;
-    if (this.isShuffle) {
-      this.playlistSong = this.shuffler(data);
+    this.songService.isShuffle = !this.songService.isShuffle;
+    if (this.songService.isShuffle) {
+      this.songService.playlistSongForWelcome = this.shuffler(data);
       shuffle.classList.add('color-yellow');
     } else {
       this.playlistSong.sort((a, b) => {
@@ -223,6 +224,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private moveCurrentTime(event: any) {
-    this.audio.currentTime = (event.value / 100) * this.audio.duration;
+    this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
 }

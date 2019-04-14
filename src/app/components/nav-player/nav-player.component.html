@@ -2,19 +2,21 @@
   <div class="container">
 
     <div class="mt-2 group-btn-player">
-      <i class="material-icons">skip_previous</i>
+      <i class="material-icons" (click)="onSelectPlayBackward()">skip_previous</i>
       <div *ngIf="!songService.isPlay">
         <i class="material-icons" (click)="onSelectPlayOrPauseSong()">play_arrow</i>
       </div>
       <div *ngIf="songService.isPlay">
         <i class="material-icons" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
       </div>
-      <i class="material-icons">skip_next</i>
+      <i class="material-icons" (click)="onSelectPlayForward()">skip_next</i>
     </div>
     <div class="playing-song m-auto"></div>
-    <div class="mt-2 player-display-song ">
-      <h6>Song name</h6>
-      <p>Auther name</p>
+    <div class="mt-2 player-display-song">
+      <div *ngIf="songService.audio">
+        <h6>{{songService.audio.title}}</h6>
+        <p>{{songService.audio.author}}</p>
+      </div>
     </div>
     <div class="mt-2 player-icon">
         <i class="material-icons">volume_up</i>

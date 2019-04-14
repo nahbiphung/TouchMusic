@@ -14,6 +14,8 @@ export class SongService {
   public playlistSongForWelcome = [];
   public isLoop: boolean;
   public index: number;
+  public isShuffle: boolean;
+  public songInAray: any;
 
   constructor() {
     this.audio = new Audio();
@@ -30,8 +32,39 @@ export class SongService {
 
   public playSong(data: any) {
     this.getCurrentDataSong(data);
-    this.playlistSong.push(data);
+    // this.playlistSong.push(data);
+    // console.log(this.playlistSong);
+
+    this.addSongDataToArr(data);
     console.log(this.playlistSong);
+  }
+  // TODO: need to change title to url
+  private addSongDataToArr(data: any) {
+    let flag: boolean;
+    flag = false;
+    if (this.playlistSong.length <= 0) {
+      this.playlistSong.push(data);
+    } else {
+      for (const x of this.playlistSong) {
+        if (x.title === data.title) {
+          console.log('Bai hat bi trung');
+          flag = true;
+          return;
+        }
+      }
+      if (flag === false) {
+        this.playlistSong.push(data);
+      }
+    }
+  }
+
+  public checkDataPlaylistSong(title) {
+    for ( const i in this.playlistSong) {
+      if (this.playlistSong[i].title === title) {
+        this.songInAray = this.playlistSong[i];
+        return this.songInAray; // lay con bi trung
+      }
+    }
   }
 
   public PlayOrPause() {
@@ -72,6 +105,7 @@ export class SongService {
     }
     this.audio.src = this.playlistSong[this.currentSong].url;
     this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
   }
@@ -84,11 +118,43 @@ export class SongService {
     }
     this.audio.src = this.playlistSong[this.currentSong].url;
     this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
   }
 
   // Use at Welcome Page
+  public PlayOrPauseForWelcome() {
+    if (this.audio.src) {
+      if (!this.audio.paused) {
+        this.audio.pause();
+        this.isPlay = false;
+        console.log('clicked play');
+      } else {
+        this.audio.play();
+        this.isPlay = true;
+        console.log('clicked pause');
+      }
+      this.audio.addEventListener('timeupdate', () => {
+        this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+        if (this.audio.ended) {
+          if (this.isLoop) {
+            this.PlayForwardForWelcome();
+          } else {
+            this.findIndexWelcome();
+            const indexW = this.index;
+            if (indexW === this.playlistSongForWelcome.length - 1) {
+              this.isPlay = false;
+              this.duration = 0;
+            } else {
+              this.PlayForwardForWelcome();
+            }
+          }
+        }
+      });
+    }
+  }
+
   public PlayBackwardForWelcome() {
     this.findIndexWelcome();
     this.currentSong = this.index;
@@ -98,6 +164,7 @@ export class SongService {
     }
     this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
     this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
   }
@@ -111,6 +178,7 @@ export class SongService {
     }
     this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
     this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
   }
