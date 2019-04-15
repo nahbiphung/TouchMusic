@@ -3,6 +3,10 @@ import { IImage } from 'ng-simple-slideshow/src/app/modules/slideshow/IImage';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SongService } from 'src/app/services/song.service';
+
+// firestore
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-welcome',
@@ -10,51 +14,18 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit, AfterContentChecked {
-  private imageSources: (string | IImage)[] = [
-    {
-      url: 'assets/images/classical-music-1838390_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    },
-    {
-      url: 'assets/images/concert-768722_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    },
-    {
-      url: 'assets/images/streets-1284394_1920.jpg',
-      href: 'https://www.apple.com/',
-      backgroundPosition: 'center'
-    }
-  ];
+  collectionData: AngularFirestoreCollection<any>;
+  documentData: AngularFirestoreDocument<any>;
+  public song: Observable<any[]>;
 
-  private playlistSong = [
-    {
-      title: 'Tuy Am',
-      author: 'NhatNguyen Remix, Xesi',
-      url: './../../../assets/music/mp3/Tuy-Am-Masew-x-NhatNguyen-Remix-Xesi.mp3',
-    }, {
-      title: 'Bua Yeu',
-      author: 'Bich Phuong',
-      url: './../../../assets/music/mp3/Bua Yeu - Bich Phuong.mp3',
-    }, {
-      title: 'Thu Cho Anh',
-      author: 'Trang',
-      url: './../../../assets/music/mp3/Thu Cho Anh - Trang.mp3',
-    }, {
-      title: 'Doi la Giac Mo',
-      author: 'My Tam',
-      url: './../../../assets/music/mp3/Doi La Giac Mo - My Tam.mp3',
-    }, {
-      title: 'Muon Ruou To Tinh',
-      author: 'Emily, BigDaddy',
-      url: './../../../assets/music/mp3/MuonRuouToTinh-EmilyBigDaddy-5871420.mp3',
-    }, {
-      title: 'Something Just like this',
-      author: 'TheChainsmokers, Coldplay',
-      url: './../../../assets/music/mp3/SomethingJustLikeThis-TheChainsmokersColdplay-5337136.mp3',
-    }
-  ];
+  private imageSources: (string | IImage)[];
+  private imageTypeMusic: object;
+  private logo: string;
+  private playlistSong = [];
+  private backgroundImage: string;
+  private loadingSpinner: boolean;
+  private imagePlaylist: string;
+
 
   // Variables
   private isPlay: boolean;
@@ -65,95 +36,158 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private isLoop: boolean;
   private currentSong: number;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    public songService: SongService,
+    private db: AngularFirestore) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
     this.currentSong = 0;
     this.isShuffle = false;
+    this.loadingSpinner = true;
+    this.songService.duration = 0;
+    this.songService.currentSong = 0;
+    this.songService.playlistSongForWelcome = this.playlistSong;
   }
 
   ngOnInit() {
+    // get playlist song
+    this.collectionData = this.db.collection('TopPlaylist');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.playlistSong = res;
+      }
+    }, (err) => {
+      console.log('error');
+    });
+
+    // get images
+    this.collectionData = this.db.collection('imagesForView');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.imageSources = [
+          {
+            url: res[0].slideshow1,
+            backgroundPosition: 'center'
+          },
+          {
+            url: res[0].slideshow2,
+            backgroundPosition: 'center'
+          },
+          {
+            url: res[0].slideshow3,
+            backgroundPosition: 'center'
+          }
+        ];
+        this.imageTypeMusic = {
+          type1: res[0].musicType1,
+          type2: res[0].musicType2,
+          type3: res[0].musicType3
+        };
+        this.logo = res[0].logo;
+        this.backgroundImage = res[0].backgroundImage;
+        this.imagePlaylist = res[0].playlist;
+      }
+      this.loadingSpinner = false;
+    }, (error) => {
+      console.log('error');
+    });
   }
 
   ngAfterContentChecked() {
   }
 
   private onClickSong(data: any) {
-    this.duration = 0;
-    this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
-    this.audio.src = data.url;
-    this.audio.title = data.title;
-    this.audio.setAttribute('id', 'playing');
-    this.audio.load();
-    this.isPlay = true;
-    this.onSelectPlayOrPauseSong();
+    // this.duration = 0;
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
+    // this.audio.src = data.url;
+    // this.audio.title = data.title;
+    // this.audio.setAttribute('id', 'playing');
+    // this.audio.load();
+    // this.isPlay = true;
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.playSong(data);
+    this.songService.audio.src = data.url;
+    this.songService.audio.title = data.title;
+    this.songService.audio.author = data.author;
+    this.songService.audio.load();
+    this.songService.isPlay = true;
+    this.songService.PlayOrPauseForWelcome();
   }
 
 
   private onSelectPlayOrPauseSong() {
-    if (this.audio.src) {
-      if (!this.audio.paused) {
-        this.audio.pause();
-        this.isPlay = false;
-      } else {
-        this.audio.play();
-        this.isPlay = true;
-      }
-      this.audio.addEventListener('timeupdate', () => {
-        this.duration = (this.audio.currentTime / this.audio.duration) * 100;
-        if (this.audio.ended) {
-          if (this.isLoop) {
-            this.onSelectPlayForward();
-          } else {
-            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
-            if (index === this.playlistSong.length - 1) {
-              this.isPlay = false;
-              this.duration = 0;
-            } else {
-              this.onSelectPlayForward();
-            }
-          }
-        }
-      });
-    } else {
-      this.audio.src = this.playlistSong[0].url;
-      this.audio.title = this.playlistSong[0].title;
-      this.audio.setAttribute('id', 'playing');
-      this.audio.load();
-      this.isPlay = true;
-      this.onSelectPlayOrPauseSong();
-    }
+    // if (this.audio.src) {
+    //   if (!this.audio.paused) {
+    //     this.audio.pause();
+    //     this.isPlay = false;
+    //   } else {
+    //     this.audio.play();
+    //     this.isPlay = true;
+    //   }
+    //   this.audio.addEventListener('timeupdate', () => {
+    //     this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+    //     if (this.audio.ended) {
+    //       if (this.isLoop) {
+    //         this.onSelectPlayForward();
+    //       } else {
+    //         const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    //         if (index === this.playlistSong.length - 1) {
+    //           this.isPlay = false;
+    //           this.duration = 0;
+    //         } else {
+    //           this.onSelectPlayForward();
+    //         }
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   this.audio.src = this.playlistSong[0].url;
+    //   this.audio.title = this.playlistSong[0].title;
+    //   this.audio.setAttribute('id', 'playing');
+    //   this.audio.load();
+    //   this.isPlay = true;
+    //   this.onSelectPlayOrPauseSong();
+    // }
+
+
+    this.songService.PlayOrPauseForWelcome();
   }
 
   private onSelectPlayBackward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong--;
-    if (this.currentSong < 0) {
-      this.currentSong = this.playlistSong.length - 1;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong--;
+    // if (this.currentSong < 0) {
+    //   this.currentSong = this.playlistSong.length - 1;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayBackwardForWelcome();
   }
 
   private onSelectPlayForward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong++;
-    if (this.currentSong > this.playlistSong.length - 1) {
-      this.currentSong = 0;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong++;
+    // if (this.currentSong > this.playlistSong.length - 1) {
+    //   this.currentSong = 0;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayForwardForWelcome();
   }
 
   private onSelectLoopSongs() {
     const loop = document.getElementById('loop');
-    this.isLoop = !this.isLoop;
-    if (this.isLoop) {
+    this.songService.isLoop = !this.songService.isLoop;
+    if (this.songService.isLoop) {
       loop.classList.add('color-yellow');
     } else {
       loop.classList.remove('color-yellow');
@@ -162,9 +196,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   private onSelectShuffleSongs(data: any) {
     const shuffle = document.getElementById('shuffle');
-    this.isShuffle = !this.isShuffle;
-    if (this.isShuffle) {
-      this.playlistSong = this.shuffler(data);
+    this.songService.isShuffle = !this.songService.isShuffle;
+    if (this.songService.isShuffle) {
+      this.songService.playlistSongForWelcome = this.shuffler(data);
       shuffle.classList.add('color-yellow');
     } else {
       this.playlistSong.sort((a, b) => {
@@ -189,6 +223,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
     while (ctr > 0) {
       index = Math.floor(Math.random() * ctr);
+      console.log(index);
       ctr--;
       temp = data[ctr];
       data[ctr] = data[index];
@@ -202,6 +237,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private moveCurrentTime(event: any) {
-    this.audio.currentTime = (event.value / 100) * this.audio.duration;
+    this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
 }

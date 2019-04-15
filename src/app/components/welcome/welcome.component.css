@@ -1,56 +1,3 @@
-.position-relative {
-  position: relative;
-}
-
-.position-absolute {
-  position: absolute;
-}
-
-.display-flex {
-  display: flex;
-}
-
-.display-flex-end {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.display-flex-start {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.display-flex-center{
-  display: flex;
-  justify-content: center;
-}
-
-.display-flex-spaceAround{
-  display: flex;
-  justify-content: space-around;
-}
-
-.flex-grow-2 {
-  flex-grow: 2;
-}
-
-.flex-grow-1 {
-  flex-grow: 1;
-}
-
-.width-90 {
-  width: 90%;
-}
-
-.width-100 {
-  width: 100%;
-}
-
-.width-height-100 {
-  width: 100%;
-  height: 100%;
-}
-
 .slideshow {
   margin: 0 auto;
 }
@@ -296,4 +243,39 @@
 
 .signUpTitle {
   font-weight: 500;
+}
+
+.backgroundImage{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.backgroundImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.makeImageDarker{
+  width: 100vw;
+  height: 100vh;
+  background: rgba(50, 74, 69,0.5);
+  position: fixed;
+}
+
+.loading{
+  position: fixed;
+  z-index: 100;
+}
+
+app-ui-loading{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 100;
+}
+
+.margin-0-5 {
+  margin: 0 5px;
 }

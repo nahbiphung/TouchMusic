@@ -1,12 +1,26 @@
-<section class="background-color-dark-blue padding-top-nav">
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
+<section class="background-color-dark-blue padding-top-nav padding-bottom-nav-player" *ngIf="!loadingSpinner">
   <div class="container">
     <div class="row title background-color-white border-radius-10">
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-        <img src="../../../assets/images/StockSnap_J6RKMHOQBO.jpg" class="imageTitle" alt="">
+        <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
       </div>
       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
         <div class="songName color-organe">What ever you want me to do for you</div>
         <div class="author color-organe">Micheal Jackson</div>
+        <div class="songOption display-flex-spaceAround">
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" mdbWavesEffect>Play</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" mdbWavesEffect>Pause</button>
+            <i class="material-icons">playlist_play</i>
+            <div class="display-flex">
+                <i class="material-icons margin-right-10">favorite_border</i>
+                <div>122.000</div>
+            </div>
+            <div class="display-flex">
+                <i class="material-icons margin-right-10">remove_red_eye</i>
+                <div>122.000</div>
+            </div>
+        </div>
       </div>
     </div>
     <div class="row margin-top-20 margin-left-right-0 justify-content-between">
@@ -63,13 +77,61 @@
       </div>
     </div>
     <div class="row col-lg-8 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white">
-      <h3 class="margin-top-20">Comment</h3>
-      <div>
-        Improve him believe opinion offered met and end cheered forbade. Friendly as stronger speedily by
-        recurred. Son interest wandered sir addition end say. Manners beloved affixed picture men ask. Explain few
-        led parties attacks picture company. On sure fine kept walk am in it. Resolved to in believed desirous
-        unpacked weddings together. Nor off for enjoyed cousins herself. Little our played lively she adieus far
-        sussex. Do theirs others merely at temper it nearer.
+      <h3 class="margin-top-20 d-block width-height-100">Comment</h3>
+      <div class="userComment">
+        <div class="media d-block d-md-flex mt-4">
+            <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
+            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
+                <mat-form-field class="my-form-field">
+                  <textarea matInput placeholder="Say something"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+      <div class="otherComment">
+        <div class="media d-block d-md-flex mt-4">
+          <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
+          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+              <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+      
+              <div class="media d-block d-md-flex mt-3">
+                  <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avarter3}}" alt="Generic placeholder image">
+                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                      <h5 class="mt-0 font-weight-bold">Tommy Smith</h5>
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+                      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+      
+                      <div class="media d-block d-md-flex mt-3">
+                          <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
+                          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                              <h5 class="mt-0 font-weight-bold">Alexandra Moon</h5>
+                              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+                              sequi nesciunt.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="media d-block d-md-flex mt-3">
+                  <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
+                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                      <h5 class="mt-0 font-weight-bold">Sylvester the Cat</h5>
+                          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt
+                          ut labore et dolore magnam aliquam quaerat voluptatem.
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="media d-block d-md-flex mt-3">
+            <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
+            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                <h5 class="mt-0 font-weight-bold">Caroline Horwitz</h5>
+                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias
+                excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+            </div>
+        </div>
       </div>
         
     </div>

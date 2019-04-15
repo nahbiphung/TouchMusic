@@ -27,9 +27,7 @@ export class LoginComponent implements OnInit {
   onSubmitLogin() {
     this.authService.loginEmail(this.email, this.password)
       .then(res => {
-        this.authService.closeModal();
-        this.toast.success('Dang nhap thanh cong', 'Success');
-        this.router.navigate(['/home']);
+
       }).catch(err => {
         console.log(err);
         this.toast.error(err.message, 'Error');
@@ -63,5 +61,9 @@ export class LoginComponent implements OnInit {
         this.toast.error(err.message, 'Error');
         this.router.navigate(['/welcome']);
       });
+  }
+
+  onClickTwitterLogin() {
+    alert('Comming soon');
   }
 }
