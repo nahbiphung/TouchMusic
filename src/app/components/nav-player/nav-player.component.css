@@ -87,7 +87,8 @@
     left: 20px;
     background: rgb(33, 33, 33);
     border-radius: 50px;
-    padding: 5px 0;
+    padding: 15px 0;
+    display: none;
 }
 
 .volume-icon {

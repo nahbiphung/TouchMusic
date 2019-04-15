@@ -50,6 +50,9 @@
   padding-top: 80px;
 }
 
+.padding-bottom-nav-player {
+  padding-bottom: 70px;
+}
 /* nav-bar component css */
 @media screen and (max-width: 991px) {
   body {
@@ -159,4 +162,8 @@
 .width-height-100 {
   width: 100%;
   height: 100%;
+}
+
+.margin-right-10 {
+  margin-right: 10px;
 }
