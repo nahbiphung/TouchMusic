@@ -24,10 +24,10 @@
       <h6>{{songService.audio.title}}</h6>
       <p>{{songService.audio.author}}</p>
     </div>
-    <div class="volume">
-      <mat-slider vertical min="0" max="1" step="0.1" value="1" (input)="moveCurrentVolume($event)"></mat-slider>
-    </div>
     <div class="player-icon volume-icon">
+        <div class="volume">
+          <mat-slider vertical min="0" max="1" step="0.1" value="1" (input)="moveCurrentVolume($event)"></mat-slider>
+        </div>
       <i class="material-icons">volume_up</i>
     </div>
     <div class="nav-slash"></div>
