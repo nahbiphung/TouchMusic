@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SongService } from '../../services/song.service';
 
 @Component({
   selector: 'app-nav-player',
@@ -7,9 +8,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavPlayerComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public songService: SongService
+  ) {}
 
   ngOnInit() {
   }
 
+  private onSelectPlayOrPauseSong() {
+    this.songService.PlayOrPause();
+  }
+
+  private onSelectPlayBackward() {
+    this.songService.PlayBackward();
+  }
+
+  private onSelectPlayForward() {
+    this.songService.PlayForward();
+  }
+
+  private moveCurrentTime(event: any) {
+    this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
+  }
+
+  private moveCurrentVolume(event: any) {
+    this.songService.audio.volume = (event.value);
+    console.log(this.songService.audio.volume);
+  }
 }

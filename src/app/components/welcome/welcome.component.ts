@@ -3,6 +3,7 @@ import { IImage } from 'ng-simple-slideshow/src/app/modules/slideshow/IImage';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SongService } from 'src/app/services/song.service';
 
 // firestore
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
@@ -35,13 +36,19 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private isLoop: boolean;
   private currentSong: number;
 
-  constructor(private http: HttpClient, private db: AngularFirestore) {
+  constructor(
+    private http: HttpClient,
+    public songService: SongService,
+    private db: AngularFirestore) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
     this.currentSong = 0;
     this.isShuffle = false;
     this.loadingSpinner = true;
+    this.songService.duration = 0;
+    this.songService.currentSong = 0;
+    this.songService.playlistSongForWelcome = this.playlistSong;
   }
 
   ngOnInit() {
@@ -92,80 +99,95 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private onClickSong(data: any) {
-    this.duration = 0;
-    this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
-    this.audio.src = data.url;
-    this.audio.title = data.title;
-    this.audio.setAttribute('id', 'playing');
-    this.audio.load();
-    this.isPlay = true;
-    this.onSelectPlayOrPauseSong();
+    // this.duration = 0;
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === data.title);
+    // this.audio.src = data.url;
+    // this.audio.title = data.title;
+    // this.audio.setAttribute('id', 'playing');
+    // this.audio.load();
+    // this.isPlay = true;
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.playSong(data);
+    this.songService.audio.src = data.url;
+    this.songService.audio.title = data.title;
+    this.songService.audio.author = data.author;
+    this.songService.audio.load();
+    this.songService.isPlay = true;
+    this.songService.PlayOrPauseForWelcome();
   }
 
 
   private onSelectPlayOrPauseSong() {
-    if (this.audio.src) {
-      if (!this.audio.paused) {
-        this.audio.pause();
-        this.isPlay = false;
-      } else {
-        this.audio.play();
-        this.isPlay = true;
-      }
-      this.audio.addEventListener('timeupdate', () => {
-        this.duration = (this.audio.currentTime / this.audio.duration) * 100;
-        if (this.audio.ended) {
-          if (this.isLoop) {
-            this.onSelectPlayForward();
-          } else {
-            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
-            if (index === this.playlistSong.length - 1) {
-              this.isPlay = false;
-              this.duration = 0;
-            } else {
-              this.onSelectPlayForward();
-            }
-          }
-        }
-      });
-    } else {
-      this.audio.src = this.playlistSong[0].url;
-      this.audio.title = this.playlistSong[0].title;
-      this.audio.setAttribute('id', 'playing');
-      this.audio.load();
-      this.isPlay = true;
-      this.onSelectPlayOrPauseSong();
-    }
+    // if (this.audio.src) {
+    //   if (!this.audio.paused) {
+    //     this.audio.pause();
+    //     this.isPlay = false;
+    //   } else {
+    //     this.audio.play();
+    //     this.isPlay = true;
+    //   }
+    //   this.audio.addEventListener('timeupdate', () => {
+    //     this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+    //     if (this.audio.ended) {
+    //       if (this.isLoop) {
+    //         this.onSelectPlayForward();
+    //       } else {
+    //         const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    //         if (index === this.playlistSong.length - 1) {
+    //           this.isPlay = false;
+    //           this.duration = 0;
+    //         } else {
+    //           this.onSelectPlayForward();
+    //         }
+    //       }
+    //     }
+    //   });
+    // } else {
+    //   this.audio.src = this.playlistSong[0].url;
+    //   this.audio.title = this.playlistSong[0].title;
+    //   this.audio.setAttribute('id', 'playing');
+    //   this.audio.load();
+    //   this.isPlay = true;
+    //   this.onSelectPlayOrPauseSong();
+    // }
+
+
+    this.songService.PlayOrPauseForWelcome();
   }
 
   private onSelectPlayBackward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong--;
-    if (this.currentSong < 0) {
-      this.currentSong = this.playlistSong.length - 1;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong--;
+    // if (this.currentSong < 0) {
+    //   this.currentSong = this.playlistSong.length - 1;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayBackwardForWelcome();
   }
 
   private onSelectPlayForward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
-    this.currentSong++;
-    if (this.currentSong > this.playlistSong.length - 1) {
-      this.currentSong = 0;
-    }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
-    this.audio.load();
-    this.onSelectPlayOrPauseSong();
+    // this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    // this.currentSong++;
+    // if (this.currentSong > this.playlistSong.length - 1) {
+    //   this.currentSong = 0;
+    // }
+    // this.audio.src = this.playlistSong[this.currentSong].url;
+    // this.audio.title = this.playlistSong[this.currentSong].title;
+    // this.audio.load();
+    // this.onSelectPlayOrPauseSong();
+
+    this.songService.PlayForwardForWelcome();
   }
 
   private onSelectLoopSongs() {
     const loop = document.getElementById('loop');
-    this.isLoop = !this.isLoop;
-    if (this.isLoop) {
+    this.songService.isLoop = !this.songService.isLoop;
+    if (this.songService.isLoop) {
       loop.classList.add('color-yellow');
     } else {
       loop.classList.remove('color-yellow');
@@ -174,9 +196,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   private onSelectShuffleSongs(data: any) {
     const shuffle = document.getElementById('shuffle');
-    this.isShuffle = !this.isShuffle;
-    if (this.isShuffle) {
-      this.playlistSong = this.shuffler(data);
+    this.songService.isShuffle = !this.songService.isShuffle;
+    if (this.songService.isShuffle) {
+      this.songService.playlistSongForWelcome = this.shuffler(data);
       shuffle.classList.add('color-yellow');
     } else {
       this.playlistSong.sort((a, b) => {
@@ -215,6 +237,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   }
 
   private moveCurrentTime(event: any) {
-    this.audio.currentTime = (event.value / 100) * this.audio.duration;
+    this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
 }

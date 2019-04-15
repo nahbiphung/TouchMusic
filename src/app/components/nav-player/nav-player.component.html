@@ -1,21 +1,37 @@
 <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
+  <div class="container displayCenter">
 
-    <div class="mt-2 group-btn-player">
-      <i class="material-icons">skip_previous</i>
-      <i class="material-icons">play_arrow</i>
-      <i class="material-icons">skip_next</i>
+    <div class="group-btn-player group-button">
+      <i class="material-icons" (click)="onSelectPlayBackward()">skip_previous</i>
+      <div *ngIf="!songService.isPlay">
+        <i class="material-icons font-button" (click)="onSelectPlayOrPauseSong()">play_arrow</i>
+      </div>
+      <div *ngIf="songService.isPlay">
+        <i class="material-icons font-button" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
+      </div>
+      <i class="material-icons" (click)="onSelectPlayForward()">skip_next</i>
     </div>
-    <div class="playing-song m-auto"></div>
-    <div class="mt-2 player-display-song ">
-      <h6>Song name</h6>
-      <p>Auther name</p>
+    <p id="curTime-nav" class="color-white margin-0-5">00:00</p>
+    
+    <div class="position-relative displayCenter flex-grow">
+      <mat-slider class="width-30vw" [max]="100" [min]="0" [(ngModel)]="songService.duration"
+        (input)="moveCurrentTime($event)" id="progressBar">
+      </mat-slider>
     </div>
-    <div class="mt-2 player-icon">
-        <i class="material-icons">volume_up</i>
+    
+    <p id="durTime-nav" class="color-white margin-0-5">00:00</p>
+    <div class="player-display-song" *ngIf="songService.audio">
+      <h6>{{songService.audio.title}}</h6>
+      <p>{{songService.audio.author}}</p>
+    </div>
+    <div class="player-icon volume-icon">
+        <div class="volume">
+          <mat-slider vertical min="0" max="1" step="0.1" value="1" (input)="moveCurrentVolume($event)"></mat-slider>
+        </div>
+      <i class="material-icons">volume_up</i>
     </div>
     <div class="nav-slash"></div>
-    <div class="mt-2 mr-auto player-icon">
+    <div class="additionnal-button">
       <i class="material-icons">favorite_border</i>
       <i class="material-icons">playlist_play</i>
     </div>

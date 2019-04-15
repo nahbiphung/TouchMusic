@@ -46,7 +46,8 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./src/app/components/nav-bar/nav-bar.js",
               "./node_modules/chart.js/dist/Chart.js",
-              "./node_modules/hammerjs/hammer.min.js"
+              "./node_modules/hammerjs/hammer.min.js",
+              "./src/app/components/nav-player/nav-player.js"
             ],
             "es5BrowserSupport": true
           },
