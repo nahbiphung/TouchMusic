@@ -72,6 +72,14 @@
 .material-icons {
     margin: 0 5px;
 }
+
+.corlor-white {
+    color: aliceblue;
+}
+
+.margin-0-5 {
+    margin: 0 5px;
+}
 @media screen and (max-width: 991px){
     .playing-song{
         width: 30vh;

@@ -11,11 +11,15 @@
       </div>
       <i class="material-icons" (click)="onSelectPlayForward()">skip_next</i>
     </div>
+    <p id="curTime-nav" class="color-white margin-0-5">00:00</p>
+    
     <div class="position-relative displayCenter flex-grow">
-      <mat-slider class="width-30vw" [max]="100" [min]="0" [(ngModel)]="songService.duration" (input)="moveCurrentTime($event)"
-        id="progressBar">
+      <mat-slider class="width-30vw" [max]="100" [min]="0" [(ngModel)]="songService.duration"
+        (input)="moveCurrentTime($event)" id="progressBar">
       </mat-slider>
     </div>
+    
+    <p id="durTime-nav" class="color-white margin-0-5">00:00</p>
     <div class="player-display-song" *ngIf="songService.audio">
       <h6>{{songService.audio.title}}</h6>
       <p>{{songService.audio.author}}</p>

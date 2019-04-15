@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { database } from 'firebase';
+import { DriverService } from 'selenium-webdriver/remote';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class SongService {
     this.addSongDataToArr(data);
     console.log(this.playlistSong);
   }
-  // TODO: need to change title to url
+
   private addSongDataToArr(data: any) {
     let flag: boolean;
     flag = false;
@@ -68,6 +69,7 @@ export class SongService {
       }
       this.audio.addEventListener('timeupdate', () => {
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+        this.timeUpdateForPlayer();
         if (this.audio.ended) {
           if (this.isLoop) {
             this.PlayForward();
@@ -111,6 +113,27 @@ export class SongService {
     this.PlayOrPause();
   }
 
+  public timeUpdateForPlayer() {
+    const cur = document.getElementById('curTime-nav');
+    const dur = document.getElementById('durTime-nav');
+
+    const getTime = (this.audio.currentTime / this.audio.duration) * 100;
+    const curMin = Math.floor(this.audio.currentTime / 60);
+    const curSec = Math.floor(this.audio.currentTime - curMin * 60);
+    const durMin = Math.floor(this.audio.duration / 60);
+    const durSec = Math.floor(this.audio.duration - durMin * 60);
+
+    // TODO: unlock this to run ok
+
+    // if (curMin < 10) { curMin = '0' + curMin; }
+    // if (curSec < 10) { curSec = '0' + curSec; }
+    // if (durMin < 10) { durMin = '0' + durMin; }
+    // if (durSec < 10) { durSec = '0' + durSec; }
+
+    cur.innerHTML = curMin + ':' + curSec;
+    dur.innerHTML = durMin + ':' + durSec;
+  }
+
   // Use at Welcome Page
   public PlayOrPauseForWelcome() {
     if (this.audio.src) {
@@ -125,6 +148,8 @@ export class SongService {
       }
       this.audio.addEventListener('timeupdate', () => {
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
+        this.timeUpdateForWelcome();
+        this.timeUpdateForPlayer();
         if (this.audio.ended) {
           if (this.isLoop) {
             this.PlayForwardForWelcome();
@@ -141,6 +166,27 @@ export class SongService {
         }
       });
     }
+  }
+
+  public timeUpdateForWelcome() {
+    const cur = document.getElementById('curTime');
+    const dur = document.getElementById('durTime');
+
+    const getTime = (this.audio.currentTime / this.audio.duration) * 100;
+    const curMin = Math.floor(this.audio.currentTime / 60);
+    const curSec = Math.floor(this.audio.currentTime - curMin * 60);
+    const durMin = Math.floor(this.audio.duration / 60);
+    const durSec = Math.floor(this.audio.duration - durMin * 60);
+
+    // TODO: unlock this to run ok
+
+    // if (curMin < 10) { curMin = '0' + curMin; }
+    // if (curSec < 10) { curSec = '0' + curSec; }
+    // if (durMin < 10) { durMin = '0' + durMin; }
+    // if (durSec < 10) { durSec = '0' + durSec; }
+
+    cur.innerHTML = curMin + ':' + curSec;
+    dur.innerHTML = durMin + ':' + durSec;
   }
 
   public PlayBackwardForWelcome() {
