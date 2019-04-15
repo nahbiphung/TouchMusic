@@ -30,4 +30,9 @@ export class NavPlayerComponent implements OnInit {
   private moveCurrentTime(event: any) {
     this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
+
+  private moveCurrentVolume(event: any) {
+    this.songService.audio.volume = (event.value);
+    console.log(this.songService.audio.volume);
+  }
 }

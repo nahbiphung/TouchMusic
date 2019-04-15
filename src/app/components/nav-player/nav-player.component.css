@@ -80,16 +80,10 @@
 .margin-0-5 {
     margin: 0 5px;
 }
-@media screen and (max-width: 991px){
-    .playing-song{
-        width: 30vh;
-    }
-}
 
-@media screen and (max-width: 768px){
-    .playing-song{
-        width: 30vh;
-    }
-
+.volume {
+    position: relative;
+    left: 43px;
+    bottom: 80px;
     
 }
