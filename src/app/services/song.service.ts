@@ -165,6 +165,14 @@ export class SongService {
           }
         }
       });
+    } else {
+      this.audio.src = this.playlistSongForWelcome[0].url;
+      this.audio.title = this.playlistSongForWelcome[0].title;
+      this.audio.author = this.playlistSongForWelcome[0].author;
+      this.audio.setAttribute('id', 'playing');
+      this.audio.load();
+      this.isPlay = true;
+      this.PlayOrPauseForWelcome();
     }
   }
 
