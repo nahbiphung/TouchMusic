@@ -48,7 +48,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     this.loadingSpinner = true;
     this.songService.duration = 0;
     this.songService.currentSong = 0;
-    this.songService.playlistSongForWelcome = this.playlistSong;
   }
 
   ngOnInit() {
@@ -57,6 +56,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     this.collectionData.valueChanges().subscribe((res) => {
       if (res) {
         this.playlistSong = res;
+        this.songService.playlistSongForWelcome = this.playlistSong;
       }
     }, (err) => {
       console.log('error');
