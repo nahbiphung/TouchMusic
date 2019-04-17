@@ -1,0 +1,194 @@
+.container {
+    background-color: white;
+    padding: 0px 30px;
+}
+
+.padding-top-nav {
+    padding-top: 60px;
+}
+
+.t-sidebar-right{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.width-300px{
+    width: 300px;
+    padding-top: 30px;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.t-main {
+    margin: 0px 330px 0px 0px;
+    padding: 30px 30px 0px 0px;
+}
+
+.border-right {
+    border-right: 1px solid #f2f2f2;
+}
+
+.font-23-100{
+    font-size: 23px;
+    font-weight: 100;
+}
+
+.main-module{
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 34px;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
+}
+
+.color-999-100{
+    font-weight: 100;
+    color: #999;
+}
+
+.list-style-none {
+    list-style: none;
+}
+
+.padding-0 {
+    padding: 0;
+}
+
+.main-module-title{
+    margin-bottom: 24px;
+}
+
+.selectionPlaylistBanner{
+    position: relative;
+    height: 220px;
+    margin-bottom: 15px;
+    background-color: antiquewhite;
+}
+
+.selectionPlaylistBanner-gradian{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.heigh-100{
+    height: 100%;
+}
+
+.selectionPlaylistBanner-gradian-fill-color{
+    position: relative;
+    height: 100%;
+    background: linear-gradient(135deg, rgb(99, 62, 65) 0%, rgb(39, 37, 39) 100%);
+}
+
+.selectionPlaylistBanner-artwork{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 180px;
+    width: 180px;
+}
+.selectionPlaylistBanner-img{
+    width: 100%;
+    height: 100%;
+    background-color: #999;
+}
+
+.image-100{
+    width: 100%;
+    height: 100%;
+}
+
+.selectionPlaylistBanner-playButton{
+    position: absolute;
+    left: 34%;
+    top: 34%;
+    right: 34%;
+    bottom: 34%;
+}
+
+.selectionPlaylistBanner-playButton-link{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: rgb(11, 114, 17);
+}
+
+.selectionPlaylistBanner-playButton-icon{
+    position: absolute;
+    left: 34%;
+    top: 31%;
+    right: 34%;
+    bottom: 34%;
+    font-size: 24px;
+    color: aliceblue;
+}
+
+.main-module-context{
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+.font-size-14{
+    font-size: 14px;
+}
+
+.main-module-context-avt{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: #999;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.main-module-context-img img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.margin-auto{
+    margin: auto;
+}
+
+.main-module-context-link{
+    position: absolute;
+    right: 0;
+}
+.border-1px-black{
+    border: 1px solid black;
+}
+
+.padding-2-11-2-10{
+    padding: 2px 11px 2px 10px;
+}
+
+.border-radius-5{
+    border-radius: 5px;
+}
+
+.selectionPlaylistBanner-listArea{
+    position: absolute;
+    left: 213px;
+    top: 20px;
+    right: 13px;
+    bottom: 20px;
+    overflow: hidden;
+}
+
+.selectionPlaylistBanner-listArea-scoll{
+    height: 180px;
+    width: 493px;
+    overflow-y: scroll;
+}
