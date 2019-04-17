@@ -14,11 +14,12 @@ export class SongComponent implements OnInit {
   private loadingSpinner: boolean;
   private avatar: any[];
   private isPlay: boolean;
+  private videoSong: boolean;
   constructor(private db: AngularFirestore) {
     this.loadingSpinner = true;
     this.isPlay = true;
+    this.videoSong = false;
    }
-  
 
   ngOnInit() {
     this.imageColectionData = this.db.collection('imagesForView');
