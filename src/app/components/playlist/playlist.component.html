@@ -30,7 +30,8 @@
             <div cdkDropList [cdkDropListData]="playlistSong"
               class="listSong display-flex width-height-100 display-column" (cdkDropListDropped)="drop($event)">
               <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>
-                <div class="songTitle width-200px display-flex-start">{{item.title}}</div>
+
+                <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.title ]">{{item.title}}</div>
                 <div class="songAuthor width-200px display-flex-center">{{item.author}}</div>
                 <div class="songDuration width-200px display-flex-end">00:00</div>
               </div>
