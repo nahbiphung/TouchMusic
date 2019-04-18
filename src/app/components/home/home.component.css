@@ -192,3 +192,53 @@
     width: 493px;
     overflow-y: scroll;
 }
+
+.listArea-place{
+    position: relative;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: row;
+    font-size: 14px;
+    border-bottom: solid 1px rgba(255,255,255,.1);
+}
+
+.max-width-422{
+    max-width: 422px;
+}
+.handal-content{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.display-flex{
+    display: flex;
+    align-items: center;
+}
+
+.padding-0-8{
+    padding: 0 8px;
+}
+
+.padding-0-10{
+    padding: 0 10px;
+}
+
+.font-size-11{
+    font-size: 11px;
+}
+
+.font-size-9{
+    font-size: 9px;
+}
+
+.flex-grow-2{
+    flex-grow: 2;
+}
+
+.listArea-place:hover {
+  background: rgba(255, 255, 255, .1);
+}
