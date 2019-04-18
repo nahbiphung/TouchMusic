@@ -6,7 +6,9 @@
 .padding-top-nav {
     padding-top: 60px;
 }
-
+.padding-bottom-nav-player{
+    padding-bottom: 30px;
+}
 .t-sidebar-right{
     position: absolute;
     right: 0px;
@@ -31,9 +33,8 @@
     border-right: 1px solid #f2f2f2;
 }
 
-.font-23-100{
+.font-23{
     font-size: 23px;
-    font-weight: 100;
 }
 
 .main-module{
@@ -241,4 +242,96 @@
 
 .listArea-place:hover {
   background: rgba(255, 255, 255, .1);
+}
+/* Galery */
+.galery-slider{
+    width: 760px;
+    height: 265px;
+    margin-left: -21px;
+    overflow: hidden;
+    /* border: 1px dashed red; */
+}
+
+.galery-slider .song{
+    display: inline-block;
+    width: 180px;
+    height: 250px;
+    margin: 0 5px;
+}
+
+.btn-pre-slider{
+    position: absolute;
+    top: 85px;
+    z-index: 1;
+    left: -30px;
+    padding: 5px;
+    height: 35px;
+    cursor: pointer;
+    /* border: 1px solid pink; */
+}
+
+.btn-next-slider{
+    position: absolute;
+    top: 85px;
+    right: -31px;
+    z-index: 1;
+    padding: 5px;
+    height: 35px;
+    cursor: pointer;
+    /* border: 1px solid red; */
+}
+/* Song */
+.song-back-img {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    /* background-color: orange; */
+    cursor: pointer;
+}
+
+.song-img{
+    width: 100%;
+    height: 180px;
+}
+.song-context{
+    width: 100%;
+}
+.song-title{
+    margin: 0;
+}
+.song-author{
+    margin: 0;
+    font-weight: 100;
+}
+.color-black{
+    color: black;
+}
+
+.song-playButton{
+    position: absolute;
+    left: 34%;
+    top: 34%;
+    right: 34%;
+    bottom: 34%;
+    display: none;
+    cursor: pointer;
+}
+
+.song-playButton-link{
+    position: relative;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    background-color: rgb(11, 114, 17);
+}
+
+.song-playButton-icon{
+    position: absolute;
+    left: 34%;
+    top: 31%;
+    right: 34%;
+    bottom: 34%;
+    font-size: 24px;
+    color: aliceblue;
 }
