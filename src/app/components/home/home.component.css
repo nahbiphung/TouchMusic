@@ -280,6 +280,7 @@
     cursor: pointer;
     /* border: 1px solid red; */
 }
+
 /* Song */
 .song-back-img {
     position: relative;
@@ -335,3 +336,24 @@
     font-size: 24px;
     color: aliceblue;
 }
+
+.slick-slider{
+    margin-left: -20px;
+    width: 760px;
+}
+
+.height-265px{
+    height: 265px;
+}
+
+.padding-0-5px{
+    padding: 0 5px;
+}
+
+
+
+
+
+
+
+   

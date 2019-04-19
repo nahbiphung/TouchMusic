@@ -131,9 +131,8 @@
             <p class="color-999-100 margin-top-5 font-size-14">Newly songs</p>
           </div>
           <div class="position-relative">
-            <div class="btn-pre-slider prev"><i class="fas fa-chevron-circle-left font-23"></i></div>
-            <div class="galery-slider">
-              <!-- song list -->
+            <div class="btn-pre-slider prevSong"><i class="fas fa-chevron-circle-left font-23"></i></div>
+            <!-- <div class="galery-slider">
               <div class="song">
                 <div class="song-back-img">
                   <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
@@ -148,78 +147,92 @@
                   <div class="song-author handal-content color-black">Bich Phuong</div>
                 </div>
               </div>
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
+            </div> -->
+            <ngx-slick-carousel #slickModal="slick-carousel" [config]="slideSongConfig" (init)="slickInit($event)"
+              (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <!-- list song -->
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
-                </div>
-              </div>
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
-                    </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
                   </div>
                 </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
-                </div>
               </div>
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
-                </div>
-              </div>
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
-                    </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
                   </div>
                 </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
-                </div>
               </div>
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="btn-next-slider next"><i class="fas fa-chevron-circle-right font-23"></i></div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+            </ngx-slick-carousel>
+            <div class="btn-next-slider nextSong"><i class="fas fa-chevron-circle-right font-23"></i></div>
           </div>
         </li>
         <!-- Top 20 -->
@@ -351,26 +364,92 @@
             <p class="color-999-100 margin-top-5 font-size-14">Newly videos</p>
           </div>
           <div class="position-relative">
-            <div class="btn-pre-slider prev"><i class="fas fa-chevron-circle-left font-23"></i></div>
-            <div class="galery-slider">
-              <!-- song -->
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
+            <div class="btn-pre-slider prevVid"><i class="fas fa-chevron-circle-left font-23"></i></div>
+            <ngx-slick-carousel #slickModal="slick-carousel" [config]="slideVideoConfig" (init)="slickInit($event)"
+              (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <!-- list song -->
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
                 </div>
               </div>
-
-            </div>
-            <div class="btn-next-slider next"><i class="fas fa-chevron-circle-right font-23"></i></div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+            </ngx-slick-carousel>
+            <div class="btn-next-slider nextVid"><i class="fas fa-chevron-circle-right font-23"></i></div>
           </div>
         </li>
         <!-- New Album -->
@@ -380,32 +459,97 @@
             <p class="color-999-100 margin-top-5 font-size-14">Newly albums</p>
           </div>
           <div class="position-relative">
-            <div class="btn-pre-slider prev"><i class="fas fa-chevron-circle-left font-23"></i></div>
-            <div class="galery-slider">
-              <!-- song -->
-              <div class="song">
-                <div class="song-back-img">
-                  <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                  <div class="song-playButton">
-                    <div class="song-playButton-link">
-                      <i class="fas fa-play song-playButton-icon"></i>
+            <div class="btn-pre-slider prevAbl"><i class="fas fa-chevron-circle-left font-23"></i></div>
+            <ngx-slick-carousel #slickModal="slick-carousel" [config]="slideAlbumConfig" (init)="slickInit($event)"
+              (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <!-- list song -->
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="song-context">
-                  <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                  <div class="song-author handal-content color-black">Bich Phuong</div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
                 </div>
               </div>
-
-            </div>
-            <div class="btn-next-slider next"><i class="fas fa-chevron-circle-right font-23"></i></div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+              <div ngxSlickItem class="height-265px">
+                <div class="padding-0-5px">
+                  <div class="song-back-img">
+                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton">
+                      <div class="song-playButton-link">
+                        <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="song-context">
+                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
+                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                  </div>
+                </div>
+              </div>
+            </ngx-slick-carousel>
+            <div class="btn-next-slider nextAbl"><i class="fas fa-chevron-circle-right font-23"></i></div>
           </div>
         </li>
       </ul>
     </div>
-
-    <!-- right-bar -->
+  
     <div class="t-sidebar-right width-300px">
       asdasdasd
     </div>

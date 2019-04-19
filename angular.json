@@ -37,6 +37,7 @@
               "./node_modules/@fortawesome/fontawesome-free/scss/brands.scss",
               "./node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
               "./node_modules/angular-bootstrap-md/scss/mdb-free.scss",
+              "./node_modules/slick-carousel/slick/slick.scss",
               "./node_modules/slick-carousel/slick/slick-theme.css",
               "src/styles.scss"
             ],
