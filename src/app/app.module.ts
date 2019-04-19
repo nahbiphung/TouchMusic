@@ -43,6 +43,7 @@ import { SongComponent } from './components/song/song.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +55,8 @@ import { UiLoadingComponent } from './ui-loading/ui-loading.component';
     NavPlayerComponent,
     SongComponent,
     HomeComponent,
-    UiLoadingComponent
+    UiLoadingComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,

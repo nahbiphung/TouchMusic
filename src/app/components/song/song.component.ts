@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-song',
@@ -11,14 +12,20 @@ import { Observable } from 'rxjs';
 export class SongComponent implements OnInit {
   imageColectionData: AngularFirestoreCollection<any>;
   imageDocumentData: AngularFirestoreDocument<any>;
+
+  colectionData: AngularFirestoreCollection<any>;
+  documentData: AngularFirestoreDocument<any>;
+  data: any;
   private loadingSpinner: boolean;
   private avatar: any[];
   private isPlay: boolean;
-  constructor(private db: AngularFirestore) {
+  private videoSong: boolean;
+  private song: any;
+  constructor(private db: AngularFirestore, private route: ActivatedRoute) {
     this.loadingSpinner = true;
     this.isPlay = true;
+    this.videoSong = false;
    }
-  
 
   ngOnInit() {
     this.imageColectionData = this.db.collection('imagesForView');
@@ -31,6 +38,25 @@ export class SongComponent implements OnInit {
       console.log('error');
       this.loadingSpinner = false;
     });
+
+    const param =  this.route.snapshot.paramMap.get('title');
+    console.log(param);
+
+    this.colectionData = this.db.collection('TopPlaylist', ref => ref.where('title', '==', param));
+    this.colectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.data = res[0];
+      }
+      this.loadingSpinner = false;
+    });
+
+    // this.data = this.route.paramMap.pipe(
+    //   switchMap(p => {
+    //     const title = p.get('title');
+    //     return this.db.collection('TopPlayList').doc('1LBd5A0E8hd7qrxLTRUz').valueChanges();
+    //   })
+    // );
+    // console.log(this.data);
   }
 
 }

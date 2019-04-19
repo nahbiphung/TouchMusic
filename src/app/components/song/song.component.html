@@ -5,9 +5,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
         <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
       </div>
-      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
-        <div class="songName color-organe">What ever you want me to do for you</div>
-        <div class="author color-organe">Micheal Jackson</div>
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword" *ngIf="data">
+        <div class="songName color-organe">{{data.title}}</div>
+        <div class="author color-organe">{{data.author}}</div>
         <div class="songOption display-flex-spaceAround">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" mdbWavesEffect>Play</button>
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" mdbWavesEffect>Pause</button>
@@ -25,8 +25,12 @@
     </div>
     <div class="row margin-top-20 margin-left-right-0 justify-content-between">
       <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
+        <div class="video" *ngIf="videoSong">
+          <h3 class="margin-top-20 font-weight-bold color-organe">Lyris</h3>
+          <div>Video</div>
+        </div>
         <div class="lyris">
-          <h3 class="margin-top-20">Lyris</h3>
+          <h3 class="margin-top-20 font-weight-bold color-organe">Lyris</h3>
           <div>
               Made last it seen went no just when of by. Occasional entreaties comparison me difficulty so themselves.
               At brother inquiry of offices without do my service. As particular to companions at sentiments. Weather
@@ -66,7 +70,7 @@
         </div>
       </div>
       <div class="relatedSong border-radius-10 background-color-white">
-        <h3>Related Song</h3>
+        <h3 class="margin-top-20 font-weight-bold color-organe">Related Song</h3>
         <div>
           Improve him believe opinion offered met and end cheered forbade. Friendly as stronger speedily by
           recurred. Son interest wandered sir addition end say. Manners beloved affixed picture men ask. Explain few
@@ -77,13 +81,13 @@
       </div>
     </div>
     <div class="row col-lg-8 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white">
-      <h3 class="margin-top-20 d-block width-height-100">Comment</h3>
-      <div class="userComment">
+      <h3 class="margin-top-20 d-block width-height-100 font-weight-bold color-organe">Comment</h3>
+      <div class="userComment width-100">
         <div class="media d-block d-md-flex mt-4">
             <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
-                <mat-form-field class="my-form-field">
+                <mat-form-field class="my-form-field width-100">
                   <textarea matInput placeholder="Say something"></textarea>
                 </mat-form-field>
             </div>
@@ -94,22 +98,25 @@
           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
           <div class="media-body text-center text-md-left ml-md-3 ml-0">
               <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+              <span class="d-flex justify-content-end">date time</span>
       
               <div class="media d-block d-md-flex mt-3">
                   <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avarter3}}" alt="Generic placeholder image">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                       <h5 class="mt-0 font-weight-bold">Tommy Smith</h5>
-                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-                      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                      <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+                        inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</span>
+                      <span class="d-flex justify-content-end">date time</span>
       
                       <div class="media d-block d-md-flex mt-3">
                           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
                           <div class="media-body text-center text-md-left ml-md-3 ml-0">
                               <h5 class="mt-0 font-weight-bold">Alexandra Moon</h5>
-                              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-                              sequi nesciunt.
+                              <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+                                sequi nesciunt.</span>
+                              <span class="d-flex justify-content-end">date time</span>
                           </div>
                       </div>
                   </div>
@@ -118,8 +125,9 @@
                   <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                       <h5 class="mt-0 font-weight-bold">Sylvester the Cat</h5>
-                          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt
-                          ut labore et dolore magnam aliquam quaerat voluptatem.
+                      <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+                        sequi nesciunt.</span>
+                      <span class="d-flex justify-content-end">date time</span>
                   </div>
               </div>
           </div>
@@ -128,8 +136,9 @@
             <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <h5 class="mt-0 font-weight-bold">Caroline Horwitz</h5>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias
-                excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+                  sequi nesciunt.</span>
+                <span class="d-flex justify-content-end">date time</span>
             </div>
         </div>
       </div>
