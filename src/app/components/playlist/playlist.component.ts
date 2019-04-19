@@ -72,4 +72,10 @@ export class PlaylistComponent implements OnInit {
     moveItemInArray(this.playlistSong, event.previousIndex, event.currentIndex);
   }
 
+  private selectedAction() {
+    this.songService.playlistSong = this.playlistSong;
+    this.isPlay = !this.isPlay;
+    this.songService.PlayOrPause();
+  }
+
 }

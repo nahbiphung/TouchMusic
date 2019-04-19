@@ -9,8 +9,8 @@
         <div class="songName color-organe">What ever you want me to do for you</div>
         <div class="author color-organe">Micheal Jackson</div>
         <div class="songOption display-flex-spaceAround">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" mdbWavesEffect>Play</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" mdbWavesEffect>Pause</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="selectedAction()" mdbWavesEffect>Play</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="selectedAction()" mdbWavesEffect>Pause</button>
             <i class="material-icons">playlist_play</i>
             <div class="display-flex">
                 <i class="material-icons margin-right-10">favorite_border</i>
@@ -27,10 +27,8 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
         <div class="playlist">
           <h3 class="margin-top-20 color-organe font-weight-bold">Playlist</h3>
-            <div cdkDropList [cdkDropListData]="playlistSong"
-              class="listSong display-flex width-height-100 display-column" (cdkDropListDropped)="drop($event)">
-              <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>
-
+            <div class="listSong display-flex width-height-100 display-column">
+              <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)">
                 <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.title ]">{{item.title}}</div>
                 <div class="songAuthor width-200px display-flex-center">{{item.author}}</div>
                 <div class="songDuration width-200px display-flex-end">00:00</div>
@@ -57,22 +55,25 @@
           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
           <div class="media-body text-center text-md-left ml-md-3 ml-0">
               <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+              <span class="d-flex justify-content-end">date time</span>
       
               <div class="media d-block d-md-flex mt-3">
                   <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avarter3}}" alt="Generic placeholder image">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                       <h5 class="mt-0 font-weight-bold">Tommy Smith</h5>
-                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-                      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                      <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                      <span class="d-flex justify-content-end">date time</span>
       
                       <div class="media d-block d-md-flex mt-3">
                           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
                           <div class="media-body text-center text-md-left ml-md-3 ml-0">
                               <h5 class="mt-0 font-weight-bold">Alexandra Moon</h5>
-                              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-                              sequi nesciunt.
+                              <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                                sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                              <span class="d-flex justify-content-end">date time</span>
                           </div>
                       </div>
                   </div>
@@ -81,8 +82,9 @@
                   <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
                   <div class="media-body text-center text-md-left ml-md-3 ml-0">
                       <h5 class="mt-0 font-weight-bold">Sylvester the Cat</h5>
-                          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt
-                          ut labore et dolore magnam aliquam quaerat voluptatem.
+                      <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                      <span class="d-flex justify-content-end">date time</span>
                   </div>
               </div>
           </div>
@@ -91,8 +93,9 @@
             <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <h5 class="mt-0 font-weight-bold">Caroline Horwitz</h5>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias
-                excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                  sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                <span class="d-flex justify-content-end">date time</span>
             </div>
         </div>
       </div>

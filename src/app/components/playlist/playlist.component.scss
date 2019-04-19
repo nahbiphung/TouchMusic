@@ -66,45 +66,24 @@
 .song {
   width: 100%;
   padding: 20px 10px;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #324a45;
   color: black;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
+  cursor: pointer;
   background: transparent;
   font-size: 14px;
 }
 
-
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-  opacity: 0;
-}
-
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.song:last-child {
-  border: none;
-}
-
-.listSong.cdk-drop-list-dragging .song:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
 .songTitle {
+  font-weight: 500;
+}
 
+.songTitle:hover{
+  text-decoration: underline;
 }
 
 .songAuthor {

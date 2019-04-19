@@ -20,7 +20,7 @@ export class SongService {
 
   constructor() {
     this.audio = new Audio();
-   }
+  }
 
   public getCurrentDataSong(data: any) {
     if (data) {
@@ -63,13 +63,16 @@ export class SongService {
         this.isPlay = false;
         console.log('clicked play');
       } else {
+        this.audio.load();
         this.audio.play();
         this.isPlay = true;
         console.log('clicked pause');
       }
       this.audio.addEventListener('timeupdate', () => {
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
-        this.timeUpdateForPlayer();
+        if (this.audio.currentTime && this.audio.duration) {
+          this.timeUpdateForPlayer();
+        }
         if (this.audio.ended) {
           if (this.isLoop) {
             this.PlayForward();
@@ -84,6 +87,14 @@ export class SongService {
           }
         }
       });
+    } else {
+      this.audio.src = this.playlistSong[0].url;
+      this.audio.title = this.playlistSong[0].title;
+      this.audio.author = this.playlistSong[0].author;
+      this.audio.setAttribute('id', 'playing');
+      this.audio.load();
+      this.isPlay = true;
+      this.PlayOrPause();
     }
   }
 
@@ -118,18 +129,23 @@ export class SongService {
     const dur = document.getElementById('durTime-nav');
 
     const getTime = (this.audio.currentTime / this.audio.duration) * 100;
-    const curMin = Math.floor(this.audio.currentTime / 60);
-    const curSec = Math.floor(this.audio.currentTime - curMin * 60);
-    const durMin = Math.floor(this.audio.duration / 60);
-    const durSec = Math.floor(this.audio.duration - durMin * 60);
+    let curMin = Math.floor(this.audio.currentTime / 60).toString();
+    let curSec = Math.floor(this.audio.currentTime - parseInt(curMin) * 60).toString();
+    let durMin = Math.floor(this.audio.duration / 60).toString();
+    let durSec = Math.floor(this.audio.duration - parseInt(durMin) * 60).toString();
 
-    // TODO: unlock this to run ok
-
-    // if (curMin < 10) { curMin = '0' + curMin; }
-    // if (curSec < 10) { curSec = '0' + curSec; }
-    // if (durMin < 10) { durMin = '0' + durMin; }
-    // if (durSec < 10) { durSec = '0' + durSec; }
-
+    if (parseInt(curMin) < 10) {
+      curMin = '0' + curMin;
+    }
+    if (parseInt(curSec) < 10) {
+      curSec = '0' + curSec;
+    }
+    if (parseInt(durMin) < 10) {
+      durMin = '0' + durMin;
+    }
+    if (parseInt(durSec) < 10) {
+      durSec = '0' + durSec;
+    }
     cur.innerHTML = curMin + ':' + curSec;
     dur.innerHTML = durMin + ':' + durSec;
   }
