@@ -13,9 +13,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'welcome', component: WelcomeComponent },
-  { path: 'song', component: SongComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'playlist', component: PlaylistComponent },
+  { path: 'song/:title', component: SongComponent},
+  { path: 'playlist', component: PlaylistComponent,
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
