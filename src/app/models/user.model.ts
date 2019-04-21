@@ -14,3 +14,12 @@ interface Roles {
     admin?: boolean;
 }
 
+interface FavoriteList {
+    id: string;
+    name: string;
+    user: string;
+    details: {
+        song: string;
+    }
+}
+
