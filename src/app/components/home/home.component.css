@@ -387,3 +387,103 @@
 .sidebarHeader-option:hover {
     color: black;
 }
+
+.sidebarContent{
+    padding-top: 5px;
+}
+
+.list-nostyle{
+    list-style: none;
+    margin: 0;
+}
+
+.padding-5-0{
+    padding: 5px 0;
+}
+
+.user-avt{
+    margin-right: 10px;
+}
+
+.height-100{
+    height: 100%;
+}
+
+.width-heigh-50{
+    width: 50px;
+    height: 50px;
+}
+
+.min-height-50{
+    min-height: 50px;
+}
+
+.position-absolute{
+    position: absolute;
+}
+
+.border-radius-50{
+    border-radius: 50%;
+    border: 1px solid #dee2e6;
+}
+
+.flex-direction-column{
+    flex-direction: column;
+}
+
+.baged-title{
+    white-space: nowrap;
+    margin: 6px 0 0 0;
+}
+
+.margin-top-0{
+    margin-top: 0;
+}
+
+.baged-title a:hover{
+    color: black;
+}
+
+.flex-grow-1{
+    flex-grow: 1;
+}
+
+.stats {
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.display-flex-100{
+    display: flex;
+    width: 100%;;
+}
+
+.stats li:hover{
+    color: black;
+}
+
+.margin-5-5-5-0{
+    margin: 5px 5px 5px 0;
+}
+
+.margin-5-0-5-5{
+    margin: 5px 0 5px 5px;
+}
+
+.btn-follow{
+    font-size: 11px;
+    padding: 2px 9px 2px 8px;
+    height: 22px;
+    line-height: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #333;
+}
+
+.btn-follow:hover{
+    border: 1px solid black;
+}
