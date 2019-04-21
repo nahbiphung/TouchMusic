@@ -33,7 +33,16 @@
     <div class="nav-slash"></div>
     <div class="additionnal-button">
       <i class="material-icons pointer">favorite_border</i>
-      <i class="material-icons pointer">playlist_play</i>
+      <i class="material-icons pointer" (click)="openPlaylist()">playlist_play</i>
+    </div>
+  </div>
+  <div class="playlist top-100" id="showPLaylist" *ngIf="playlist">
+    <div class="contentSong">
+      <div cdkDropList [cdkDropListData]="playlist" class="listSong display-flex width-height-100 display-column"
+        (cdkDropListDropped)="drop($event)">
+        <div class="song" *ngFor="let item of playlist" (click)="onClickSong(item)" cdkDrag>{{item.title}} -
+          {{item.author}}</div>
+      </div>
     </div>
   </div>
 </nav>
