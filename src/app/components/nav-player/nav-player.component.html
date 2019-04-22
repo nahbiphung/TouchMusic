@@ -21,7 +21,7 @@
     
     <p id="durTime-nav" class="color-white margin-0-5 context-menu">00:00</p>
     <div class="player-display-song" *ngIf="songService.audio">
-      <h6>{{songService.audio.title}}</h6>
+      <h6>{{songService.audio.name}}</h6>
       <p>{{songService.audio.author}}</p>
     </div>
     <div class="player-icon volume-icon">
@@ -44,7 +44,7 @@
       </div>
       <div cdkDropList [cdkDropListData]="playlist" class="listSong display-flex width-height-100 display-column"
         (cdkDropListDropped)="drop($event)">
-        <div class="song" *ngFor="let item of playlist" (click)="onClickSong(item)" cdkDrag>{{item.title}} -
+        <div class="song" *ngFor="let item of playlist" (click)="onClickSong(item)" cdkDrag>{{item.name}} -
           {{item.author}}</div>
       </div>
     </div>

@@ -66,8 +66,8 @@ export class NavPlayerComponent implements OnInit {
 
   private onClickSong(data: any) {
     this.songService.playSong(data);
-    this.songService.audio.src = data.url;
-    this.songService.audio.title = data.title;
+    this.songService.audio.src = data.mp3Url;
+    this.songService.audio.title = data.name;
     this.songService.audio.author = data.author;
     this.songService.audio.load();
     this.songService.isPlay = true;
