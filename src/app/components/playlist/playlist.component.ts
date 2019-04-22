@@ -38,7 +38,7 @@ export class PlaylistComponent implements OnInit {
     });
 
     // get playlist
-    this.collectionData = this.db.collection('TopPlaylist');
+    this.collectionData = this.db.collection('Song');
     this.collectionData.valueChanges().subscribe((res) => {
       if (res) {
         this.playlistSong = res;
@@ -47,6 +47,41 @@ export class PlaylistComponent implements OnInit {
     }, (err) => {
       console.log('error');
     });
+
+    // post data in to Song Collection
+    const currentDate = new Date();
+    // this.db.collection('Song').add({
+    //   id: '',
+    //   like: 0,
+    //   // tslint:disable-next-line: max-line-length
+    //   mp3Url: 'https://firebasestorage.googleapis.com/v0/b/touchmusic-2707e.appspot.com/o/music%2FSomethingJustLikeThis-TheChainsmokersColdplay-5337136.mp3?alt=media&token=7396eeba-9c84-46dd-9e0b-ecd6a8f39adf',
+    //   name: 'Something Just like this',
+    //   author: 'TheChainsmokers, Coldplay',
+    //   video: '',
+    //   view: 0,
+    //   albumId: this.db.doc('Album/' + 'euhbPdWw3WUXWVdJZkjp').ref,
+    //   comment: [
+    //     {
+    //       content: 'Have been we a book of old',
+    //       like: 0,
+    //       postDate: currentDate,
+    //       userId: this.db.doc('users/3cYwzOHvCHZp82JAzeG9RTkKCWh2').ref,
+    //     }
+    //   ],
+    //   countryId: this.db.doc('Country/juKnFfsaewZiPXAeCTni').ref,
+    //   performerId: this.db.doc('Performer/444aMwurKPLwFUvxPFOy').ref,
+    //   songTypeId: this.db.doc('SongType/MgrFP9KSLSzDmSDlSKGN').ref,
+    //   userId: this.db.doc('users/3cYwzOHvCHZp82JAzeG9RTkKCWh2').ref,
+    // }).then(res => {
+    //   console.log('success');
+    //   this.db.collection('Song').doc(res.id).update({
+    //     id: res.id
+    //   });
+    // }).catch(error => {
+    //   console.log('error');
+    // }).finally(() => {
+    //   console.log('Thêm Thành Công');
+    // });
   }
 
   private onClickSong(data: any) {
@@ -60,12 +95,12 @@ export class PlaylistComponent implements OnInit {
     // this.onSelectPlayOrPauseSong();
 
     this.songService.playSong(data);
-    this.songService.audio.src = data.url;
+    this.songService.audio.src = data.mp3Url;
     this.songService.audio.title = data.title;
     this.songService.audio.author = data.author;
     this.songService.audio.load();
     this.songService.isPlay = true;
-    this.songService.PlayOrPauseForWelcome();
+    this.songService.PlayOrPause();
   }
 
   private drop(event: CdkDragDrop<string[]>) {
@@ -77,5 +112,6 @@ export class PlaylistComponent implements OnInit {
     this.isPlay = !this.isPlay;
     this.songService.PlayOrPause();
   }
+
 
 }

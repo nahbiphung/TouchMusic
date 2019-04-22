@@ -29,7 +29,7 @@
           <h3 class="margin-top-20 color-organe font-weight-bold">Playlist</h3>
             <div class="listSong display-flex width-height-100 display-column">
               <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)">
-                <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.title ]">{{item.title}}</div>
+                <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.name ]">{{item.name}}</div>
                 <div class="songAuthor width-200px display-flex-center">{{item.author}}</div>
                 <div class="songDuration width-200px display-flex-end">00:00</div>
               </div>

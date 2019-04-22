@@ -44,7 +44,7 @@ export class SongService {
       this.playlistSong.push(data);
     } else {
       for (const x of this.playlistSong) {
-        if (x.url === data.url) {
+        if (x.mp3Url === data.mp3Url) {
           console.log('Bai hat bi trung');
           flag = true;
           return;
@@ -63,7 +63,6 @@ export class SongService {
         this.isPlay = false;
         console.log('clicked play');
       } else {
-        this.audio.load();
         this.audio.play();
         this.isPlay = true;
         console.log('clicked pause');
@@ -77,7 +76,7 @@ export class SongService {
           if (this.isLoop) {
             this.PlayForward();
           } else {
-            const index = this.playlistSong.findIndex(x => x.title === this.audio.title);
+            const index = this.playlistSong.findIndex(x => x.name === this.audio.name);
             if (index === this.playlistSong.length - 1) {
               this.isPlay = false;
               this.duration = 0;
@@ -88,8 +87,8 @@ export class SongService {
         }
       });
     } else {
-      this.audio.src = this.playlistSong[0].url;
-      this.audio.title = this.playlistSong[0].title;
+      this.audio.src = this.playlistSong[0].mp3Url;
+      this.audio.name = this.playlistSong[0].name;
       this.audio.author = this.playlistSong[0].author;
       this.audio.setAttribute('id', 'playing');
       this.audio.load();
@@ -99,26 +98,26 @@ export class SongService {
   }
 
   public PlayBackward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    this.currentSong = this.playlistSong.findIndex(x => x.name === this.audio.name);
     this.currentSong--;
     if (this.currentSong < 0) {
       this.currentSong = this.playlistSong.length - 1;
     }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.src = this.playlistSong[this.currentSong].mp3Url;
+    this.audio.title = this.playlistSong[this.currentSong].name;
     this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
   }
 
   public PlayForward() {
-    this.currentSong = this.playlistSong.findIndex(x => x.title === this.audio.title);
+    this.currentSong = this.playlistSong.findIndex(x => x.name === this.audio.name);
     this.currentSong++;
     if (this.currentSong > this.playlistSong.length - 1) {
       this.currentSong = 0;
     }
-    this.audio.src = this.playlistSong[this.currentSong].url;
-    this.audio.title = this.playlistSong[this.currentSong].title;
+    this.audio.src = this.playlistSong[this.currentSong].mp3Url;
+    this.audio.title = this.playlistSong[this.currentSong].name;
     this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
@@ -182,8 +181,8 @@ export class SongService {
         }
       });
     } else {
-      this.audio.src = this.playlistSongForWelcome[0].url;
-      this.audio.title = this.playlistSongForWelcome[0].title;
+      this.audio.src = this.playlistSongForWelcome[0].mp3Url;
+      this.audio.title = this.playlistSongForWelcome[0].name;
       this.audio.author = this.playlistSongForWelcome[0].author;
       this.audio.setAttribute('id', 'playing');
       this.audio.load();
@@ -220,8 +219,8 @@ export class SongService {
     if (this.currentSong < 0) {
       this.currentSong = this.playlistSongForWelcome.length - 1;
     }
-    this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
-    this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.src = this.playlistSongForWelcome[this.currentSong].mp3Url;
+    this.audio.title = this.playlistSongForWelcome[this.currentSong].name;
     this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
@@ -234,8 +233,8 @@ export class SongService {
     if (this.currentSong > this.playlistSongForWelcome.length - 1) {
       this.currentSong = 0;
     }
-    this.audio.src = this.playlistSongForWelcome[this.currentSong].url;
-    this.audio.title = this.playlistSongForWelcome[this.currentSong].title;
+    this.audio.src = this.playlistSongForWelcome[this.currentSong].mp3Url;
+    this.audio.title = this.playlistSongForWelcome[this.currentSong].name;
     this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
@@ -244,7 +243,7 @@ export class SongService {
   public findIndexWelcome() {
     let i = 0;
     for (i; i < this.playlistSongForWelcome.length; i++) {
-      if (this.playlistSongForWelcome[i].title === this.audio.title) {
+      if (this.playlistSongForWelcome[i].name === this.audio.name) {
         this.index = i;
         return this.index;
       }

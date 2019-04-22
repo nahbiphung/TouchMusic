@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { SongService } from 'src/app/services/song.service';
 
 @Component({
   selector: 'app-song',
@@ -21,7 +22,7 @@ export class SongComponent implements OnInit {
   private isPlay: boolean;
   private videoSong: boolean;
   private song: any;
-  constructor(private db: AngularFirestore, private route: ActivatedRoute) {
+  constructor(private db: AngularFirestore, private route: ActivatedRoute, private songService: SongService) {
     this.loadingSpinner = true;
     this.isPlay = true;
     this.videoSong = false;
@@ -57,6 +58,16 @@ export class SongComponent implements OnInit {
     //   })
     // );
     // console.log(this.data);
+  }
+
+  private playSong() {
+    this.isPlay = !this.isPlay;
+    this.songService.playlistSong = [];
+    this.songService.playlistSong.push(this.data);
+    this.songService.audio.src = this.data.url;
+    this.songService.audio.title = this.data.title;
+    this.songService.audio.author = this.data.author;
+    this.songService.PlayOrPause();
   }
 
 }

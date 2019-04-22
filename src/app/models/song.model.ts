@@ -37,8 +37,6 @@ interface Video {
 
 interface Comment {
     id: string;
-    song: string;
-    video: string;
     user: string;
     postDate: string;
     content: string;
