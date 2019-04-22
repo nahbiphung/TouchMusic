@@ -62,8 +62,11 @@ export class SongComponent implements OnInit {
 
   private playSong() {
     this.isPlay = !this.isPlay;
-    this.songService.playlistSong = this.data;
-    this.songService.audio.pause();
+    this.songService.playlistSong = [];
+    this.songService.playlistSong.push(this.data);
+    this.songService.audio.src = this.data.url;
+    this.songService.audio.title = this.data.title;
+    this.songService.audio.author = this.data.author;
     this.songService.PlayOrPause();
   }
 

@@ -65,7 +65,7 @@ export class PlaylistComponent implements OnInit {
     this.songService.audio.author = data.author;
     this.songService.audio.load();
     this.songService.isPlay = true;
-    this.songService.PlayOrPauseForWelcome();
+    this.songService.PlayOrPause();
   }
 
   private drop(event: CdkDragDrop<string[]>) {

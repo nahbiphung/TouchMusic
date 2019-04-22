@@ -22,7 +22,7 @@ export class NavPlayerComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     if (this.songService.playlistSong) {
-      this.playlist = this.songService.playlistSong;
+      this.playlist = this.songService.playlistSong.concat(this.songService.playlistSong);
     }
   }
 
