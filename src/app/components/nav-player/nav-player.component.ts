@@ -50,7 +50,6 @@ export class NavPlayerComponent implements OnInit {
   private openPlaylist() {
     if (this.playlist) {
       this.isPlaylistOpen = !this.isPlaylistOpen;
-      this.playlist = this.songService.playlistSong;
       const element = document.getElementById('showPLaylist');
       if (this.isPlaylistOpen) {
         element.classList.remove('top-100');
@@ -63,5 +62,15 @@ export class NavPlayerComponent implements OnInit {
   private drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.songService.playlistSong, event.previousIndex, event.currentIndex);
     this.playlist = this.songService.playlistSong;
+  }
+
+  private onClickSong(data: any) {
+    this.songService.playSong(data);
+    this.songService.audio.src = data.url;
+    this.songService.audio.title = data.title;
+    this.songService.audio.author = data.author;
+    this.songService.audio.load();
+    this.songService.isPlay = true;
+    this.songService.PlayOrPause();
   }
 }

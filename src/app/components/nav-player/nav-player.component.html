@@ -38,6 +38,10 @@
   </div>
   <div class="playlist top-100" id="showPLaylist" *ngIf="playlist">
     <div class="contentSong">
+      <div class="titlePlaylist">
+          <h3>Playlist</h3>
+          <i class="material-icons pointer" (click)="openPlaylist()">close</i>
+      </div>
       <div cdkDropList [cdkDropListData]="playlist" class="listSong display-flex width-height-100 display-column"
         (cdkDropListDropped)="drop($event)">
         <div class="song" *ngFor="let item of playlist" (click)="onClickSong(item)" cdkDrag>{{item.title}} -

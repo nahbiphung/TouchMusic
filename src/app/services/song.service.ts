@@ -63,7 +63,6 @@ export class SongService {
         this.isPlay = false;
         console.log('clicked play');
       } else {
-        this.audio.load();
         this.audio.play();
         this.isPlay = true;
         console.log('clicked pause');

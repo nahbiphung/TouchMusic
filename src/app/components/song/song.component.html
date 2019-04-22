@@ -9,8 +9,8 @@
         <div class="songName color-organe">{{data.title}}</div>
         <div class="author color-organe">{{data.author}}</div>
         <div class="songOption display-flex-spaceAround">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" mdbWavesEffect>Play</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" mdbWavesEffect>Pause</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()" mdbWavesEffect>Play</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="playSong()" mdbWavesEffect>Pause</button>
             <i class="material-icons">playlist_play</i>
             <div class="display-flex">
                 <i class="material-icons margin-right-10">favorite_border</i>

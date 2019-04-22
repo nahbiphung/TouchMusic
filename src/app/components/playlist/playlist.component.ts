@@ -78,4 +78,5 @@ export class PlaylistComponent implements OnInit {
     this.songService.PlayOrPause();
   }
 
+
 }
