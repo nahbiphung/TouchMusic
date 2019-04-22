@@ -37,6 +37,8 @@
               "./node_modules/@fortawesome/fontawesome-free/scss/brands.scss",
               "./node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
               "./node_modules/angular-bootstrap-md/scss/mdb-free.scss",
+              "./node_modules/slick-carousel/slick/slick.scss",
+              "./node_modules/slick-carousel/slick/slick-theme.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -47,7 +49,9 @@
               "./src/app/components/nav-bar/nav-bar.js",
               "./node_modules/chart.js/dist/Chart.js",
               "./node_modules/hammerjs/hammer.min.js",
-              "./src/app/components/nav-player/nav-player.js"
+              "./src/app/components/nav-player/nav-player.js",
+              "./node_modules/slick-carousel/slick/slick.min.js",
+              "./src/app/components/home/home.js"
             ],
             "es5BrowserSupport": true
           },
