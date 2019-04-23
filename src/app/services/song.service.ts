@@ -104,7 +104,7 @@ export class SongService {
       this.currentSong = this.playlistSong.length - 1;
     }
     this.audio.src = this.playlistSong[this.currentSong].mp3Url;
-    this.audio.title = this.playlistSong[this.currentSong].name;
+    this.audio.name = this.playlistSong[this.currentSong].name;
     this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
@@ -117,7 +117,7 @@ export class SongService {
       this.currentSong = 0;
     }
     this.audio.src = this.playlistSong[this.currentSong].mp3Url;
-    this.audio.title = this.playlistSong[this.currentSong].name;
+    this.audio.name = this.playlistSong[this.currentSong].name;
     this.audio.author = this.playlistSong[this.currentSong].author;
     this.audio.load();
     this.PlayOrPause();
@@ -129,19 +129,24 @@ export class SongService {
 
     const getTime = (this.audio.currentTime / this.audio.duration) * 100;
     let curMin = Math.floor(this.audio.currentTime / 60).toString();
+    // tslint:disable-next-line:radix
     let curSec = Math.floor(this.audio.currentTime - parseInt(curMin) * 60).toString();
     let durMin = Math.floor(this.audio.duration / 60).toString();
+    // tslint:disable-next-line:radix
     let durSec = Math.floor(this.audio.duration - parseInt(durMin) * 60).toString();
-
+    // tslint:disable-next-line:radix
     if (parseInt(curMin) < 10) {
       curMin = '0' + curMin;
     }
+    // tslint:disable-next-line:radix
     if (parseInt(curSec) < 10) {
       curSec = '0' + curSec;
     }
+    // tslint:disable-next-line:radix
     if (parseInt(durMin) < 10) {
       durMin = '0' + durMin;
     }
+    // tslint:disable-next-line:radix
     if (parseInt(durSec) < 10) {
       durSec = '0' + durSec;
     }
@@ -163,8 +168,10 @@ export class SongService {
       }
       this.audio.addEventListener('timeupdate', () => {
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
-        this.timeUpdateForWelcome();
-        this.timeUpdateForPlayer();
+        if (this.audio.currentTime && this.audio.duration) {
+          this.timeUpdateForWelcome();
+          this.timeUpdateForPlayer();
+        }
         if (this.audio.ended) {
           if (this.isLoop) {
             this.PlayForwardForWelcome();
@@ -182,8 +189,9 @@ export class SongService {
       });
     } else {
       this.audio.src = this.playlistSongForWelcome[0].mp3Url;
-      this.audio.title = this.playlistSongForWelcome[0].name;
+      this.audio.name = this.playlistSongForWelcome[0].name;
       this.audio.author = this.playlistSongForWelcome[0].author;
+      this.addSongDataToArr(this.playlistSongForWelcome[0]);
       this.audio.setAttribute('id', 'playing');
       this.audio.load();
       this.isPlay = true;
@@ -196,18 +204,29 @@ export class SongService {
     const dur = document.getElementById('durTime');
 
     const getTime = (this.audio.currentTime / this.audio.duration) * 100;
-    const curMin = Math.floor(this.audio.currentTime / 60);
-    const curSec = Math.floor(this.audio.currentTime - curMin * 60);
-    const durMin = Math.floor(this.audio.duration / 60);
-    const durSec = Math.floor(this.audio.duration - durMin * 60);
+    let curMin = Math.floor(this.audio.currentTime / 60).toString();
+    // tslint:disable-next-line:radix
+    let curSec = Math.floor(this.audio.currentTime - parseInt(curMin) * 60).toString();
+    let durMin = Math.floor(this.audio.duration / 60).toString();
+    // tslint:disable-next-line:radix
+    let durSec = Math.floor(this.audio.duration - parseInt(durMin) * 60).toString();
 
-    // TODO: unlock this to run ok
-
-    // if (curMin < 10) { curMin = '0' + curMin; }
-    // if (curSec < 10) { curSec = '0' + curSec; }
-    // if (durMin < 10) { durMin = '0' + durMin; }
-    // if (durSec < 10) { durSec = '0' + durSec; }
-
+    // tslint:disable-next-line:radix
+    if (parseInt(curMin) < 10) {
+      curMin = '0' + curMin;
+    }
+    // tslint:disable-next-line:radix
+    if (parseInt(curSec) < 10) {
+      curSec = '0' + curSec;
+    }
+    // tslint:disable-next-line:radix
+    if (parseInt(durMin) < 10) {
+      durMin = '0' + durMin;
+    }
+    // tslint:disable-next-line:radix
+    if (parseInt(durSec) < 10) {
+      durSec = '0' + durSec;
+    }
     cur.innerHTML = curMin + ':' + curSec;
     dur.innerHTML = durMin + ':' + durSec;
   }
@@ -220,8 +239,9 @@ export class SongService {
       this.currentSong = this.playlistSongForWelcome.length - 1;
     }
     this.audio.src = this.playlistSongForWelcome[this.currentSong].mp3Url;
-    this.audio.title = this.playlistSongForWelcome[this.currentSong].name;
+    this.audio.name = this.playlistSongForWelcome[this.currentSong].name;
     this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
+    this.addSongDataToArr(this.playlistSongForWelcome[this.currentSong]);
     this.audio.load();
     this.PlayOrPause();
   }
@@ -234,8 +254,9 @@ export class SongService {
       this.currentSong = 0;
     }
     this.audio.src = this.playlistSongForWelcome[this.currentSong].mp3Url;
-    this.audio.title = this.playlistSongForWelcome[this.currentSong].name;
+    this.audio.name = this.playlistSongForWelcome[this.currentSong].name;
     this.audio.author = this.playlistSongForWelcome[this.currentSong].author;
+    this.addSongDataToArr(this.playlistSongForWelcome[this.currentSong]);
     this.audio.load();
     this.PlayOrPause();
   }
