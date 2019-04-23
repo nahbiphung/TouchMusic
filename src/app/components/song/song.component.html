@@ -6,7 +6,7 @@
         <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
       </div>
       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword" *ngIf="data">
-        <div class="songName color-organe">{{data.title}}</div>
+        <div class="songName color-organe">{{data.name}}</div>
         <div class="author color-organe">{{data.author}}</div>
         <div class="songOption display-flex-spaceAround">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()" mdbWavesEffect>Play</button>
