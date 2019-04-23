@@ -109,8 +109,8 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     // this.onSelectPlayOrPauseSong();
 
     this.songService.playSong(data);
-    this.songService.audio.src = data.url;
-    this.songService.audio.title = data.title;
+    this.songService.audio.src = data.mp3Url;
+    this.songService.audio.name = data.name;
     this.songService.audio.author = data.author;
     this.songService.audio.load();
     this.songService.isPlay = true;
@@ -202,8 +202,8 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
       shuffle.classList.add('color-yellow');
     } else {
       this.playlistSong.sort((a, b) => {
-        const nameA = a.title.toUpperCase();
-        const nameB = b.title.toUpperCase();
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
         if (nameA < nameB) {
           return -1;
         }
@@ -223,7 +223,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
     while (ctr > 0) {
       index = Math.floor(Math.random() * ctr);
-      console.log(index);
       ctr--;
       temp = data[ctr];
       data[ctr] = data[index];

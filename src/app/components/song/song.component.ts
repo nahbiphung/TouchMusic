@@ -40,10 +40,10 @@ export class SongComponent implements OnInit {
       this.loadingSpinner = false;
     });
 
-    const param =  this.route.snapshot.paramMap.get('title');
+    const param =  this.route.snapshot.paramMap.get('name');
     console.log(param);
 
-    this.colectionData = this.db.collection('TopPlaylist', ref => ref.where('title', '==', param));
+    this.colectionData = this.db.collection('TopPlaylist', ref => ref.where('name', '==', param));
     this.colectionData.valueChanges().subscribe((res) => {
       if (res) {
         this.data = res[0];
@@ -64,8 +64,8 @@ export class SongComponent implements OnInit {
     this.isPlay = !this.isPlay;
     this.songService.playlistSong = [];
     this.songService.playlistSong.push(this.data);
-    this.songService.audio.src = this.data.url;
-    this.songService.audio.title = this.data.title;
+    this.songService.audio.src = this.data.mp3Url;
+    this.songService.audio.name = this.data.name;
     this.songService.audio.author = this.data.author;
     this.songService.PlayOrPause();
   }

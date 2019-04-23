@@ -142,7 +142,7 @@
     <div class="playlist margin-left-right-20 shadow margin-top-10">
       <div cdkDropList [cdkDropListData]="playlistSong" class="listSong display-flex width-height-100 display-column"
         (cdkDropListDropped)="drop($event)">
-        <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>{{item.title}} -
+        <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>{{item.name}} -
           {{item.author}}</div>
       </div>
     </div>
