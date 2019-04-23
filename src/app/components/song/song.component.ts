@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { SongService } from 'src/app/services/song.service';
-
 @Component({
   selector: 'app-song',
   templateUrl: './song.component.html',
@@ -16,17 +15,18 @@ export class SongComponent implements OnInit {
 
   colectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
-  data: any;
+  data: Song;
   private loadingSpinner: boolean;
   private avatar: any[];
   private isPlay: boolean;
   private videoSong: boolean;
+  private cmtContent: string;
   private song: any;
   constructor(private db: AngularFirestore, private route: ActivatedRoute, private songService: SongService) {
     this.loadingSpinner = true;
     this.isPlay = true;
     this.videoSong = false;
-   }
+  }
 
   ngOnInit() {
     this.imageColectionData = this.db.collection('imagesForView');
@@ -40,11 +40,11 @@ export class SongComponent implements OnInit {
       this.loadingSpinner = false;
     });
 
-    const param =  this.route.snapshot.paramMap.get('name');
-    this.colectionData = this.db.collection('Song', ref => ref.where('name', '==', param));
-    this.colectionData.valueChanges().subscribe((res) => {
+    const param = this.route.snapshot.paramMap.get('id');
+    this.documentData = this.db.collection('Song').doc(param);
+    this.documentData.valueChanges().subscribe((res) => {
       if (res) {
-        this.data = res[0];
+        this.data = res;
       }
       this.loadingSpinner = false;
     });
@@ -68,4 +68,19 @@ export class SongComponent implements OnInit {
     this.songService.PlayOrPause();
   }
 
+  private submit() {
+    const date = new Date();
+    this.data.comment.unshift({
+      content: this.cmtContent,
+      like: 0,
+      postDate: date,
+      subComment: null,
+      userId: 'Phu Nguyen,'
+    })
+    this.db.collection('Song').doc(this.data.id).update(this.data);
+  }
+
+  private changeToDate(data: Date): string {
+    return data.toJSON();
+  }
 }

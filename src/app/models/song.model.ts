@@ -1,5 +1,6 @@
 interface Song {
     id: string;
+    author: string;
     name: string;
     performer: string;
     mp3Url: string;
@@ -10,6 +11,22 @@ interface Song {
     country: string;
     view: number;
     like: number;
+    comment: [
+        {
+            content: string,
+            like: number,
+            postDate: Date,
+            userId: string,
+            subComment: [
+                {
+                    content: string,
+                    like: number,
+                    postDate: Date,
+                    userId: string,
+                }
+            ]
+        }
+    ]
 }
 
 interface Album {

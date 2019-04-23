@@ -1,11 +1,11 @@
 <app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <section class="background-color-dark-blue padding-top-nav padding-bottom-nav-player" *ngIf="!loadingSpinner">
-  <div class="container">
+  <div class="container" *ngIf="data">
     <div class="row title background-color-white border-radius-10">
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
         <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
       </div>
-      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword" *ngIf="data">
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
         <div class="songName color-organe">{{data.name}}</div>
         <div class="author color-organe">{{data.author}}</div>
         <div class="songOption display-flex-spaceAround">
@@ -26,7 +26,7 @@
     <div class="row margin-top-20 margin-left-right-0 justify-content-between">
       <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
         <div class="video" *ngIf="videoSong">
-          <h3 class="margin-top-20 font-weight-bold color-organe">Lyris</h3>
+          <h3 class="margin-top-20 font-weight-bold color-organe">Video</h3>
           <div>Video</div>
         </div>
         <div class="lyris">
@@ -86,63 +86,36 @@
         <div class="media d-block d-md-flex mt-4">
             <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
+                <h5 class="mt-0 font-weight-bold">Phu Nguyen</h5>
                 <mat-form-field class="my-form-field width-100">
-                  <textarea matInput placeholder="Say something"></textarea>
+                  <textarea matInput [(ngModel)]="cmtContent" placeholder="Say something"></textarea>
                 </mat-form-field>
+                <div class="d-flex justify-content-end">
+                  <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="submit()" mdbWavesEffect>Post</button>
+                  <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()" mdbWavesEffect>Cancel</button>
+                </div>
             </div>
         </div>
       </div>
-      <div class="otherComment">
-        <div class="media d-block d-md-flex mt-4">
+      <div class="otherComment width-100" *ngIf="data.comment">
+        <div class="media d-block d-md-flex mt-4 width-100" *ngFor="let item of data.comment">
           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
           <div class="media-body text-center text-md-left ml-md-3 ml-0">
-              <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
-              <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
-              <span class="d-flex justify-content-end">date time</span>
-      
-              <div class="media d-block d-md-flex mt-3">
-                  <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avarter3}}" alt="Generic placeholder image">
-                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                      <h5 class="mt-0 font-weight-bold">Tommy Smith</h5>
-                      <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-                        inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</span>
-                      <span class="d-flex justify-content-end">date time</span>
-      
-                      <div class="media d-block d-md-flex mt-3">
-                          <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
-                          <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                              <h5 class="mt-0 font-weight-bold">Alexandra Moon</h5>
-                              <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-                                sequi nesciunt.</span>
-                              <span class="d-flex justify-content-end">date time</span>
-                          </div>
-                      </div>
-                  </div>
+            <h5 class="mt-0 font-weight-bold">{{item.userId}}</h5>
+            <span>{{item.content}}</span>
+            <span class="d-flex justify-content-end" *ngIf="item.postDate">{{item.postDate}}</span>
+            <!-- subcomment -->
+            <div class="media d-block d-md-flex mt-3 width-100" *ngFor="let subcmt of item.subComment">
+              <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
+              <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                <h5 class="mt-0 font-weight-bold">{{subcmt.userId}}</h5>
+                <span>{{subcmt.content}}</span>
+                <span class="d-flex justify-content-end" *ngIf="subcmt.postDate">{{subcmt.postDate.toDate()}}</span>
               </div>
-              <div class="media d-block d-md-flex mt-3">
-                  <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
-                  <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                      <h5 class="mt-0 font-weight-bold">Sylvester the Cat</h5>
-                      <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-                        sequi nesciunt.</span>
-                      <span class="d-flex justify-content-end">date time</span>
-                  </div>
-              </div>
+            </div>
           </div>
         </div>
-        <div class="media d-block d-md-flex mt-3">
-            <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avatar2}}" alt="Generic placeholder image">
-            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">Caroline Horwitz</h5>
-                <span>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-                  sequi nesciunt.</span>
-                <span class="d-flex justify-content-end">date time</span>
-            </div>
-        </div>
       </div>
-        
     </div>
   </div>
 </section>
