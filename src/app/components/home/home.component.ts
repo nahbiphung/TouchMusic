@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { SongService } from '../../services/song.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -6,17 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  slides = [
-    {img: 'https://picsum.photos/200/300?image=981'},
-    {img: 'https://picsum.photos/200/300?image=982'},
-    {img: 'https://picsum.photos/200/300?image=983'},
-    {img: 'https://picsum.photos/200/300?image=984'},
-    {img: 'https://picsum.photos/200/300?image=985'},
-    {img: 'https://picsum.photos/200/300?image=986'},
-    {img: 'https://picsum.photos/200/300?image=987'},
-    {img: 'https://picsum.photos/200/300?image=988'}
-  ];
-
+  constructor(
+    private db: AngularFirestore,
+    public songService: SongService
+  ) { }
   slideSongConfig = {
     slidesToShow: 4,
     slidesToScroll: 4,
@@ -41,14 +37,19 @@ export class HomeComponent implements OnInit {
     prevArrow: '.prevAbl'
   };
 
-  addSlide() {
-    this.slides.push({img: 'https://picsum.photos/200/300?image=989'});
-  }
-
-  removeSlide() {
-    this.slides.length = this.slides.length - 1;
-  }
-
+  colectionAlbums: AngularFirestoreCollection<any>;
+  colectionSongs: AngularFirestoreCollection<any>;
+  colectionUsers: AngularFirestoreCollection<any>;
+  colectionPlaylist: AngularFirestoreCollection<any>;
+  documentAlbum: AngularFirestoreDocument<any>;
+  private topPlaylist = [];
+  private albums = [];
+  private songs = [];
+  private users = [];
+  private likeSongs = [];
+  private historySongs = [];
+  private album: any;
+  private lastItem: any;
   slickInit(e) {
     console.log('slick initialized');
   }
@@ -65,8 +66,74 @@ export class HomeComponent implements OnInit {
     console.log('beforeChange');
   }
 
-  constructor() { }
-
   ngOnInit() {
+    this.colectionPlaylist = this.db.collection('TopPlaylist');
+    this.colectionPlaylist.valueChanges().subscribe((res) => {
+      if (res) {
+        this.topPlaylist = res;
+      }
+    }, (error) => {
+      console.log(error);
+    });
+    // colectionAlbums
+    this.colectionAlbums = this.db.collection('Album');
+    this.colectionAlbums.valueChanges().subscribe((res) => {
+      if (res) {
+        this.albums = res;
+      }
+    }, (error) => {
+      console.log(error);
+    });
+    // colectionSongs
+    this.colectionSongs = this.db.collection('Song');
+    this.colectionSongs.valueChanges().subscribe((res) => {
+      if (res) {
+        this.songs = res;
+      }
+    }, (error) => {
+        console.log(error);
+    });
+    // colectionUser
+    this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(3));
+    this.colectionUsers.valueChanges().subscribe((res) => {
+      if (res) {
+        this.users = res;
+        console.log(res);
+        this.lastItem = res[res.length - 1];
+        console.log(this.lastItem);
+      }
+    }, (error) => {
+        console.log(error);
+    });
+    // Song like
+    this.colectionSongs = this.db.collection('Song', ref => ref.orderBy('name').limit(3));
+    this.colectionSongs.valueChanges().subscribe((res) => {
+      if (res) {
+        this.likeSongs = res;
+      }
+    }, (error) => {
+        console.log(error);
+    });
+    // History song
+    this.colectionSongs = this.db.collection('Song', ref => ref.limit(3));
+    this.colectionSongs.valueChanges().subscribe((res) => {
+      if (res) {
+        this.historySongs = res;
+      }
+    }, (error) => {
+        console.log(error);
+    });
+  }
+
+  clickNext3User() {
+    this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(5));
+    this.colectionUsers.valueChanges().subscribe((res) => {
+      if (res) {
+        this.users = res;
+        console.log(res);
+      }
+    }, (error) => {
+      console.log(error);
+    });
   }
 }

@@ -317,7 +317,7 @@
     top: 34%;
     right: 34%;
     bottom: 34%;
-    display: none;
+    /* display: none; */
     cursor: pointer;
 }
 
