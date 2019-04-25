@@ -164,3 +164,7 @@ header.scroll-effect .inline-search form{
   justify-content: center;
   align-items: center;
 }
+
+.width-45px{
+  width: 45px;
+}
