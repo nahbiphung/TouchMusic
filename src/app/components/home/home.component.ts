@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
   private historySongs = [];
   private album: any;
   private lastItem: any;
+
   slickInit(e) {
     console.log('slick initialized');
   }
@@ -135,5 +136,37 @@ export class HomeComponent implements OnInit {
     }, (error) => {
       console.log(error);
     });
+  }
+
+
+  // top Play list
+  clickPlayclickPlayPlaylistForUser() {
+    this.songService.playlistSong = this.topPlaylist;
+    this.songService.isPlay = true;
+    this.songService.PlayOrPause();
+  }
+
+  clickPlayPlaylistDetailForUser(data: any) {
+    this.songService.playSong(data);
+    this.songService.audio.src = data.mp3Url;
+    this.songService.audio.name = data.name;
+    this.songService.audio.author = data.author;
+    this.songService.audio.load();
+    this.songService.isPlay = true;
+    this.songService.PlayOrPause();
+  }
+
+  // song
+  clickPlayASong(data: any) {
+    this.songService.playSong(data);
+    this.songService.audio.src = data.mp3Url;
+    this.songService.audio.name = data.name;
+    this.songService.audio.author = data.author;
+    this.songService.audio.load();
+    this.songService.isPlay = true;
+    this.songService.PlayOrPause();
+  }
+  // TODO: create function for Album
+  clickPlayAlbum() {
   }
 }
