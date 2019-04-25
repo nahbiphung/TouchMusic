@@ -19,6 +19,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
@@ -88,7 +89,8 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     MatSliderModule,
     MDBBootstrapModule.forRoot(),
     MatProgressSpinnerModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    MatPaginatorModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]

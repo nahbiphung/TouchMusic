@@ -13,12 +13,14 @@ interface Song {
     like: number;
     comment: [
         {
+            commentId: number,
             content: string,
             like: number,
             postDate: Date,
             userId: string,
             subComment: [
                 {
+                    subCommentId: number;
                     content: string,
                     like: number,
                     postDate: Date,
@@ -26,7 +28,7 @@ interface Song {
                 }
             ]
         }
-    ]
+    ];
 }
 
 interface Album {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -9,23 +9,34 @@ import { SongService } from 'src/app/services/song.service';
   templateUrl: './song.component.html',
   styleUrls: ['./song.component.css']
 })
-export class SongComponent implements OnInit {
+export class SongComponent implements OnInit, AfterContentChecked {
   imageColectionData: AngularFirestoreCollection<any>;
   imageDocumentData: AngularFirestoreDocument<any>;
 
   colectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
-  data: Song;
+  data: any;
   private loadingSpinner: boolean;
   private avatar: any[];
   private isPlay: boolean;
   private videoSong: boolean;
   private cmtContent: string;
-  private song: any;
+  private song: Song;
+  private postComment: boolean;
+  private pageIndex: number;
+  private pageSize: number;
+  private lowValue: number;
+  private highValue: number; 
+
   constructor(private db: AngularFirestore, private route: ActivatedRoute, private songService: SongService) {
     this.loadingSpinner = true;
     this.isPlay = true;
     this.videoSong = false;
+    this.postComment = false;
+    this.pageIndex = 0;
+    this.pageSize = 5;
+    this.lowValue = 0;
+    this.highValue = 5;
   }
 
   ngOnInit() {
@@ -45,6 +56,9 @@ export class SongComponent implements OnInit {
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
         this.data = res;
+        this.data.comment.forEach(e => {
+          e.stringPostDate = e.postDate.toDate().toLocaleString();
+        });
       }
       this.loadingSpinner = false;
     });
@@ -56,6 +70,22 @@ export class SongComponent implements OnInit {
     //   })
     // );
     // console.log(this.data);
+  }
+
+  ngAfterContentChecked(): void {
+
+  }
+
+  private getPaginatorData(event: any) {
+    console.log(event);
+    if (event.pageIndex === this.pageIndex + 1) {
+      this.lowValue = this.lowValue + this.pageSize;
+      this.highValue = this.highValue + this.pageSize;
+    } else if (event.pageIndex === this.pageIndex - 1) {
+      this.lowValue = this.lowValue - this.pageSize;
+      this.highValue = this.highValue - this.pageSize;
+    }
+    this.pageIndex = event.pageIndex;
   }
 
   private playSong() {
@@ -76,11 +106,13 @@ export class SongComponent implements OnInit {
       postDate: date,
       subComment: null,
       userId: 'Phu Nguyen,'
-    })
-    this.db.collection('Song').doc(this.data.id).update(this.data);
+    });
+    this.db.collection('Song').doc(this.data.id).update(this.data).then(res => {
+      this.cmtContent = '';
+    });
   }
 
-  private changeToDate(data: Date): string {
-    return data.toJSON();
+  private cancel() {
+    this.cmtContent = '';
   }
 }

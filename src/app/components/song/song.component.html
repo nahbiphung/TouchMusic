@@ -98,24 +98,48 @@
         </div>
       </div>
       <div class="otherComment width-100" *ngIf="data.comment">
-        <div class="media d-block d-md-flex mt-4 width-100" *ngFor="let item of data.comment">
+        <div class="media d-block d-md-flex mt-4 width-100" *ngFor="let item of data.comment | 
+            slice: lowValue : highValue">
           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
-          <div class="media-body text-center text-md-left ml-md-3 ml-0">
-            <h5 class="mt-0 font-weight-bold">{{item.userId}}</h5>
+          <div class="position-relative media-body text-center text-md-left ml-md-3 ml-0">
+            <div class="d-flex justify-content-between">
+                <h5 class="mt-0 font-weight-bold">{{item.userId}}</h5>
+                <span class="font-size-13">{{item.stringPostDate}}</span>
+            </div>
             <span>{{item.content}}</span>
-            <span class="d-flex justify-content-end" *ngIf="item.postDate">{{item.postDate}}</span>
+            <div class="d-flex justify-content-center align-items-center">
+              <i class="material-icons margin-right-10">thumb_up</i>
+              <mat-form-field class="my-form-field width-100">
+                <input matInput [(ngModel)]="subCmtContent" placeholder="Say something">
+              </mat-form-field>
+              <button mdbBtn type="button" color="amber" size="sm" class="waves-light" mdbWavesEffect>Post</button>
+            </div>
             <!-- subcomment -->
             <div class="media d-block d-md-flex mt-3 width-100" *ngFor="let subcmt of item.subComment">
               <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
               <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">{{subcmt.userId}}</h5>
+                <div class="d-flex justify-content-between">
+                    <h5 class="mt-0 font-weight-bold">{{subcmt.userId}}</h5>
+                    <span class="font-size-13">{{subcmt.stringPostDate}}</span>
+                </div>
                 <span>{{subcmt.content}}</span>
-                <span class="d-flex justify-content-end" *ngIf="subcmt.postDate">{{subcmt.postDate.toDate()}}</span>
+                <div class="d-flex justify-content-between">
+                    <div class="decorLink color-organe">
+                        <i class="material-icons margin-right-10">thumb_up</i>
+                    </div>
+                    <span class="font-size-13">{{subcmt.stringPostDate}}</span>
+                  </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <mat-paginator [length]="data.comment.length"
+                  [pageSize]="5"
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  (page)="pageEvent = getPaginatorData($event)"
+                  class="my-form-field paginator">
+        </mat-paginator>
     </div>
   </div>
 </section>
