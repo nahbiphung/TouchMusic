@@ -17,7 +17,7 @@ export class SongService {
   public index: number;
   public isShuffle: boolean;
   public songInAray: any;
-
+  public curTime: number;
   constructor() {
     this.audio = new Audio();
   }
@@ -68,6 +68,7 @@ export class SongService {
         console.log('clicked pause');
       }
       this.audio.addEventListener('timeupdate', () => {
+        this.curTime = this.audio.currentTime;
         this.duration = (this.audio.currentTime / this.audio.duration) * 100;
         if (this.audio.currentTime && this.audio.duration) {
           this.timeUpdateForPlayer();

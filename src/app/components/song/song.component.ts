@@ -40,10 +40,10 @@ export class SongComponent implements OnInit {
       this.loadingSpinner = false;
     });
 
-    const param =  this.route.snapshot.paramMap.get('name');
+    const param =  this.route.snapshot.paramMap.get('id');
     console.log(param);
 
-    this.colectionData = this.db.collection('TopPlaylist', ref => ref.where('name', '==', param));
+    this.colectionData = this.db.collection('Song', ref => ref.where('id', '==', param));
     this.colectionData.valueChanges().subscribe((res) => {
       if (res) {
         this.data = res[0];

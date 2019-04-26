@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { SongService } from '../../services/song.service';
 
@@ -7,7 +7,7 @@ import { SongService } from '../../services/song.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(
     private db: AngularFirestore,
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
   colectionUsers: AngularFirestoreCollection<any>;
   colectionPlaylist: AngularFirestoreCollection<any>;
   documentAlbum: AngularFirestoreDocument<any>;
+
   private topPlaylist = [];
   private albums = [];
   private songs = [];
@@ -50,7 +51,14 @@ export class HomeComponent implements OnInit {
   private historySongs = [];
   private album: any;
   private lastItem: any;
+  private audio = new Audio();
+  private dataSong: Song;
+  private playlistForUser = [];
 
+  private isPlay = false;
+  private curTime: number;
+  private click = 0;
+  private curSrc: any;
   slickInit(e) {
     console.log('slick initialized');
   }
@@ -68,7 +76,19 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.colectionPlaylist = this.db.collection('TopPlaylist');
+    // get song in Albums
+    this.colectionPlaylist = this.db.collection('Song', ref =>
+      ref.where('albumId', '==', this.db.collection('Album').doc('fA8q7u7sfN7Lf6aLAxrq').ref));
+    this.colectionPlaylist.valueChanges().subscribe((res) => {
+      if (res) {
+        this.playlistForUser = res;
+      }
+    }, (error) => {
+      console.log(error);
+    });
+
+    this.colectionPlaylist = this.db.collection('Song', ref =>
+      ref.where('albumId', '==', this.db.collection('Album').doc('euhbPdWw3WUXWVdJZkjp').ref));
     this.colectionPlaylist.valueChanges().subscribe((res) => {
       if (res) {
         this.topPlaylist = res;
@@ -92,7 +112,7 @@ export class HomeComponent implements OnInit {
         this.songs = res;
       }
     }, (error) => {
-        console.log(error);
+      console.log(error);
     });
     // colectionUser
     this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(3));
@@ -104,7 +124,7 @@ export class HomeComponent implements OnInit {
         console.log(this.lastItem);
       }
     }, (error) => {
-        console.log(error);
+      console.log(error);
     });
     // Song like
     this.colectionSongs = this.db.collection('Song', ref => ref.orderBy('name').limit(3));
@@ -113,7 +133,7 @@ export class HomeComponent implements OnInit {
         this.likeSongs = res;
       }
     }, (error) => {
-        console.log(error);
+      console.log(error);
     });
     // History song
     this.colectionSongs = this.db.collection('Song', ref => ref.limit(3));
@@ -122,9 +142,28 @@ export class HomeComponent implements OnInit {
         this.historySongs = res;
       }
     }, (error) => {
-        console.log(error);
+      console.log(error);
     });
+
+
   }
+
+  ngAfterViewInit() {
+    // add event listener
+    // setTimeout(() => {
+    //   const songImg = document.querySelectorAll('.song-img');
+    //   songImg.forEach(item => {
+    //     console.log(item);
+    //     item.addEventListener('mouseover', (event) => {
+    //       const songId = event.srcElement.id;
+    //       console.log(songId);
+    //       const buttonPlay = document.querySelector('song-playButton');
+    //       buttonPlay.classList.add('display-block');
+    //     });
+    //   });
+    // }, 1500);
+  }
+
 
   clickNext3User() {
     this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(5));
@@ -137,36 +176,114 @@ export class HomeComponent implements OnInit {
       console.log(error);
     });
   }
-
-
-  // top Play list
-  clickPlayclickPlayPlaylistForUser() {
+  // playlistForUser
+  clickPlayPlaylistForUser() {
+    this.songService.playlistSong = this.playlistForUser;
+    this.songService.isPlay = true;
+    this.songService.PlayOrPause();
+  }
+  // topPlayList
+  clickPlayTopPlaylist() {
     this.songService.playlistSong = this.topPlaylist;
     this.songService.isPlay = true;
     this.songService.PlayOrPause();
   }
 
   clickPlayPlaylistDetailForUser(data: any) {
-    this.songService.playSong(data);
-    this.songService.audio.src = data.mp3Url;
-    this.songService.audio.name = data.name;
-    this.songService.audio.author = data.author;
-    this.songService.audio.load();
-    this.songService.isPlay = true;
-    this.songService.PlayOrPause();
+    // if.1: no src - if.2: this = curSrc - if.3: another src
+    if (this.songService.audio.src === '') {
+      this.curSrc = data.mp3Url;
+      this.songService.playSong(data);
+      this.songService.audio.src = data.mp3Url;
+      this.songService.audio.name = data.name;
+      this.songService.audio.author = data.author;
+      this.songService.audio.load();
+      this.songService.isPlay = true;
+      this.songService.PlayOrPause();
+      this.clickPlayorPause(this.songService.audio.src);
+    } else if (this.curSrc === data.mp3Url) {
+      this.clickPlayorPause(this.songService.audio.src);
+    } else {
+      this.click = 0;
+      this.curTime = 0;
+      this.curSrc = data.mp3Url;
+      this.songService.playSong(data);
+      this.songService.audio.src = data.mp3Url;
+      this.songService.audio.name = data.name;
+      this.songService.audio.author = data.author;
+      this.songService.audio.load();
+      this.songService.isPlay = true;
+      this.isPlay = false;
+      this.songService.PlayOrPause();
+      this.clickPlayorPause(this.songService.audio.src);
+    }
   }
+  // if.src >>>> if.1 pass >>> if1.1: 1st time play curSong - if.1.2: 2nd play curSong start at curTime
+  // if.1 false: curSong pause and get the curTime
+  clickPlayorPause(src: any) {
+    if (src) {
+      if ((this.songService.isPlay === true || this.songService.isPlay === false) && this.isPlay === false) {
+        if (this.click === 0) {
+          this.songService.audio.play();
+          // console.log('da play');
+          this.songService.isPlay = true;
+          this.isPlay = true;
+          this.click += 1;
+          return;
+        } else {
+          this.songService.audio.currentTime = this.curTime;
+          this.songService.audio.play();
+          // console.log('da play');
+          this.songService.isPlay = true;
+          this.isPlay = true;
+          return;
+        }
+      } else {
+        this.songService.audio.pause();
+        this.curTime = this.songService.curTime;
+        this.songService.audio.currentTime = this.curTime;
+        console.log(this.songService.curTime);
+        // console.log('da pause');
+        this.songService.isPlay = false;
+        this.isPlay = false;
+      }
+    } else {
 
-  // song
-  clickPlayASong(data: any) {
-    this.songService.playSong(data);
-    this.songService.audio.src = data.mp3Url;
-    this.songService.audio.name = data.name;
-    this.songService.audio.author = data.author;
-    this.songService.audio.load();
-    this.songService.isPlay = true;
-    this.songService.PlayOrPause();
+    }
   }
-  // TODO: create function for Album
-  clickPlayAlbum() {
+  // song
+  // clickPlayASong(data: any) {
+  //   this.songService.playlistSong = [];
+  //   this.songService.playlistSong.push(data);
+  //   this.songService.playSong(data);
+  //   this.songService.audio.src = data.mp3Url;
+  //   this.songService.audio.name = data.name;
+  //   this.songService.audio.author = data.author;
+  //   this.songService.audio.load();
+  //   this.songService.isPlay = true;
+  //   this.songService.PlayOrPause();
+  // }
+  clickPlayAlbum(data: Album) {
+    const a = this.db.collection('Song', ref => ref.where('albumId', '==', this.db.collection('Album').doc(data.id).ref));
+    a.valueChanges().subscribe((res) => {
+      if (res) {
+        this.songService.playlistSong = res;
+        this.songService.isPlay = true;
+        this.songService.PlayOrPause();
+      }
+    });
+
+    // this.db.collection('Album').add({
+    //   id: '',
+    //   name: 'Album2',
+    //   performerId: this.db.collection('Performer').doc('444aMwurKPLwFUvxPFOy').ref,
+    //   userId: this.db.collection('users').doc('3cYwzOHvCHZp82JAzeG9RTkKCWh2').ref
+    // }).then(res => {
+    //   if (res) {
+    //     this.db.collection('Album').doc(res.id).update({
+    //       id: res.id,
+    //     });
+    //   }
+    // });
   }
 }
