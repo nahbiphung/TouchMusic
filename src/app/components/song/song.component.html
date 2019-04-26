@@ -107,12 +107,15 @@
                 <span class="font-size-13">{{item.stringPostDate}}</span>
             </div>
             <span>{{item.content}}</span>
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-start align-items-center">
               <i class="material-icons margin-right-10">thumb_up</i>
-              <mat-form-field class="my-form-field width-100">
-                <input matInput [(ngModel)]="subCmtContent" placeholder="Say something">
-              </mat-form-field>
-              <button mdbBtn type="button" color="amber" size="sm" class="waves-light" mdbWavesEffect>Post</button>
+              <i class="material-icons margin-right-10" (click)="openComment(item.commentId)">add_comment</i>
+              <div id="{{item.commentId}}" class="display-none justify-content-center align-items-center width-100">
+                <mat-form-field class="my-form-field width-100">
+                  <input matInput [(ngModel)]="subCmtContent" placeholder="Say something">
+                </mat-form-field>
+                <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="postSubComment(item)" mdbWavesEffect>Post</button>  
+              </div>
             </div>
             <!-- subcomment -->
             <div class="media d-block d-md-flex mt-3 width-100" *ngFor="let subcmt of item.subComment">

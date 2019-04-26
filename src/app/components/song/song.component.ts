@@ -26,7 +26,8 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private pageIndex: number;
   private pageSize: number;
   private lowValue: number;
-  private highValue: number; 
+  private highValue: number;
+  private subCmtContent: string;
 
   constructor(private db: AngularFirestore, private route: ActivatedRoute, private songService: SongService) {
     this.loadingSpinner = true;
@@ -100,11 +101,13 @@ export class SongComponent implements OnInit, AfterContentChecked {
 
   private submit() {
     const date = new Date();
+    const getId = this.getIdOfComment(true);
     this.data.comment.unshift({
+      commentId: getId,
       content: this.cmtContent,
       like: 0,
       postDate: date,
-      subComment: null,
+      subComment: [],
       userId: 'Phu Nguyen,'
     });
     this.db.collection('Song').doc(this.data.id).update(this.data).then(res => {
@@ -114,5 +117,61 @@ export class SongComponent implements OnInit, AfterContentChecked {
 
   private cancel() {
     this.cmtContent = '';
+  }
+
+  private getIdOfComment(isComment: boolean, cmtId?: number): number {
+    let getId;
+    if (isComment) {
+      const sortCommentId = this.data.comment.sort((a, b) => {
+        if (a.commentId < b.commentId) {
+          return -1;
+        }
+        if (a.commentId > b.commentId) {
+          return 1;
+        }
+        return 0;
+      });
+      getId = sortCommentId[sortCommentId.length - 1].commentId + 1;
+      return getId;
+    } else {
+      let sortSubCommentId = this.data.comment.filter(e => e.commentId === cmtId);
+      if(sortSubCommentId[0].subComment.length !== 0){
+        sortSubCommentId = sortSubCommentId[0].subComment.sort();
+        getId = sortSubCommentId[sortSubCommentId.length - 1].subCommentId + 1;
+        return getId;
+      }
+      return 1;
+    }
+  }
+
+  private postSubComment(cmt: any) {
+    const date = new Date();
+    const getId = this.getIdOfComment(false, cmt.commentId);
+    this.data.comment.forEach(element => {
+      if (element === cmt) {
+        element.subComment.unshift({
+          subCommentId: getId,
+          content: this.subCmtContent,
+          like: 0,
+          postDate: date,
+          userId: 'Phu Nguyen,'
+        })
+      }
+    });
+    this.db.collection('Song').doc(this.data.id).update(this.data).then(() => {
+      this.openComment(getId);
+    });
+  }
+
+  private openComment(cmtId: any) {
+    const e = document.getElementById(cmtId);
+    if (e.classList.contains('display-none')) {
+      e.classList.remove('display-none');
+      e.classList.add('d-flex');
+    } else {
+      e.classList.add('display-none');
+      e.classList.remove('d-flex');
+    }
+
   }
 }
