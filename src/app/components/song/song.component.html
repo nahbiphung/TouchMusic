@@ -11,14 +11,14 @@
         <div class="songOption display-flex-spaceAround">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()" mdbWavesEffect>Play</button>
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="playSong()" mdbWavesEffect>Pause</button>
-            <i class="material-icons">playlist_play</i>
+            <i class="material-icons pointer" (click)="addToPlaylist(data)">playlist_play</i>
             <div class="display-flex">
-                <i class="material-icons margin-right-10">favorite_border</i>
-                <div>122.000</div>
+                <i class="material-icons margin-right-10 pointer" (click)="favoriteSong(data)">favorite_border</i>
+                <div>{{data.like}}</div>
             </div>
             <div class="display-flex">
-                <i class="material-icons margin-right-10">remove_red_eye</i>
-                <div>122.000</div>
+                <i class="material-icons margin-right-10 pointer">remove_red_eye</i>
+                <div>{{data.view}}</div>
             </div>
         </div>
       </div>
@@ -86,7 +86,7 @@
         <div class="media d-block d-md-flex mt-4">
             <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">Phu Nguyen</h5>
+                <h5 class="mt-0 font-weight-bold">{{currentUser.email}}</h5>
                 <mat-form-field class="my-form-field width-100">
                   <textarea matInput [(ngModel)]="cmtContent" placeholder="Say something"></textarea>
                 </mat-form-field>
@@ -103,13 +103,13 @@
           <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
           <div class="position-relative media-body text-center text-md-left ml-md-3 ml-0">
             <div class="d-flex justify-content-between">
-                <h5 class="mt-0 font-weight-bold">{{item.userId}}</h5>
+                <h5 class="mt-0 font-weight-bold">{{currentUser.email}}</h5>
                 <span class="font-size-13">{{item.stringPostDate}}</span>
             </div>
             <span>{{item.content}}</span>
             <div class="d-flex justify-content-start align-items-center">
-              <i class="material-icons margin-right-10">thumb_up</i>
-              <i class="material-icons margin-right-10" (click)="openComment(item.commentId)">add_comment</i>
+              <i class="material-icons margin-right-10 pointer">thumb_up</i>
+              <i class="material-icons margin-right-10 pointer" (click)="openComment(item.commentId)">add_comment</i>
               <div id="{{item.commentId}}" class="display-none justify-content-center align-items-center width-100">
                 <mat-form-field class="my-form-field width-100">
                   <input matInput [(ngModel)]="subCmtContent" placeholder="Say something">
@@ -122,15 +122,15 @@
               <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
               <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <div class="d-flex justify-content-between">
-                    <h5 class="mt-0 font-weight-bold">{{subcmt.userId}}</h5>
+                    <h5 class="mt-0 font-weight-bold">{{currentUser.email}}</h5>
                     <span class="font-size-13">{{subcmt.stringPostDate}}</span>
                 </div>
                 <span>{{subcmt.content}}</span>
                 <div class="d-flex justify-content-between">
-                    <div class="decorLink color-organe">
-                        <i class="material-icons margin-right-10">thumb_up</i>
+                    <div class="d-flex">
+                        <i class="material-icons margin-right-10 pointer" (click)="like(data, item ,subcmt)">thumb_up</i>
+                        <span>{{subcmt.like}}</span>
                     </div>
-                    <span class="font-size-13">{{subcmt.stringPostDate}}</span>
                   </div>
               </div>
             </div>
