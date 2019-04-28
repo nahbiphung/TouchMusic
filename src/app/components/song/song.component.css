@@ -62,3 +62,21 @@
   height: 45px;
   align-items: center;
 }
+
+.decorLink {
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.decorLink a {
+  margin: 0 5px;
+}
+
+.font-size-13 {
+  font-size: 13px;
+}
+
+.paginator {
+  background: transparent;
+  width: 100%;
+}

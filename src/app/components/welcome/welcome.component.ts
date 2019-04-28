@@ -52,7 +52,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     // get playlist song
-    this.collectionData = this.db.collection('TopPlaylist');
+    this.collectionData = this.db.collection('Song');
     this.collectionData.valueChanges().subscribe((res) => {
       if (res) {
         this.playlistSong = res;

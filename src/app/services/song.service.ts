@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { database } from 'firebase';
 import { DriverService } from 'selenium-webdriver/remote';
+import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class SongService {
   public isShuffle: boolean;
   public songInAray: any;
 
-  constructor() {
+  constructor(private db: AngularFirestore) {
     this.audio = new Audio();
   }
 
@@ -149,6 +151,17 @@ export class SongService {
     // tslint:disable-next-line:radix
     if (parseInt(durSec) < 10) {
       durSec = '0' + durSec;
+    }
+    // for view count
+    if (curMin === '00' && curSec === '10') {
+      this.playlistSong.forEach(e => {
+        if (e.mp3Url === this.audio.src) {
+          e.view++;
+          this.db.collection('Song').doc(e.id).update({
+            view: firebase.firestore.FieldValue.increment(1)
+          });
+        }
+      });
     }
     cur.innerHTML = curMin + ':' + curSec;
     dur.innerHTML = durMin + ':' + durSec;
