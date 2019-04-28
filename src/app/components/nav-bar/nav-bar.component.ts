@@ -13,7 +13,7 @@ export class NavBarComponent implements OnInit {
   public email: string;
   public firstName: string;
   public lastName: string;
-  public photoLink: string;
+  public photoURL: string;
 
   constructor(
     private authService: AuthService,
@@ -27,7 +27,13 @@ export class NavBarComponent implements OnInit {
         this.email = auth.email;
         this.firstName = auth.firstName;
         this.lastName = auth.lastName;
-        this.photoLink = auth.photoURL;
+        // this.photoURL = auth.photoURL;
+        if (auth.photoURL === null) {
+          // const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+          this.photoURL = 'https://ui-avatars.com/api/?name=' + this.email + '&size=45';
+        } else {
+          this.photoURL = auth.photoURL;
+        }
       } else {
         this.isLogin = false;
       }
