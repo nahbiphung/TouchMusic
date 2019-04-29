@@ -304,8 +304,11 @@
                   <div class="song-back-img">
                     <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
                     <div class="song-playButton" (click)="clickPlayAlbum(item)">
-                      <div class="song-playButton-link">
+                      <div class="song-playButton-link" *ngIf="!this.songService.isPlay">
                         <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                      <div class="song-playButton-link" *ngIf="this.songService.isPlay">
+                        <i class="fas fa-pause song-playButton-icon"></i>
                       </div>
                     </div>
                   </div>

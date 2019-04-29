@@ -183,15 +183,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   // playlistForUser
   clickPlayPlaylistForUser() {
-    this.songService.playlistSong = this.playlistForUser;
-    this.songService.isPlay = true;
+    if (this.songService.playlistSong.length !== 0) {
+      if (this.songService.playlistSong[0].albumId.id !== this.playlistForUser[0].albumId.id) {
+        this.songService.audio.pause();
+        this.songService.playlistSong = this.playlistForUser;
+        this.songService.audio.src = this.songService.playlistSong[0].mp3Url;
+        this.songService.audio.name = this.songService.playlistSong[0].name;
+        this.songService.audio.author = this.songService.playlistSong[0].author;
+        this.songService.isPlay = false;
+      }
+    } else {
+      this.songService.playlistSong = this.playlistForUser;
+    }
     this.songService.PlayOrPause();
   }
   // topPlayList
   clickPlayTopPlaylist() {
-    this.songService.playlistSong = this.topPlaylist;
-    this.songService.isPlay = true;
+    if (this.songService.playlistSong.length !== 0) {
+      if (this.songService.playlistSong[0].albumId.id !== this.topPlaylist[0].albumId.id) {
+        this.songService.audio.pause();
+        this.songService.playlistSong = this.topPlaylist;
+        this.songService.audio.src = this.songService.playlistSong[0].mp3Url;
+        this.songService.audio.name = this.songService.playlistSong[0].name;
+        this.songService.audio.author = this.songService.playlistSong[0].author;
+        this.songService.isPlay = false;
+      }
+    } else {
+      this.songService.playlistSong = this.topPlaylist;
+    }
     this.songService.PlayOrPause();
+
   }
 
   clickPlayPlaylistDetailForUser(data: any) {
@@ -256,18 +277,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     }
   }
-  // song
-  // clickPlayASong(data: any) {
-  //   this.songService.playlistSong = [];
-  //   this.songService.playlistSong.push(data);
-  //   this.songService.playSong(data);
-  //   this.songService.audio.src = data.mp3Url;
-  //   this.songService.audio.name = data.name;
-  //   this.songService.audio.author = data.author;
-  //   this.songService.audio.load();
-  //   this.songService.isPlay = true;
-  //   this.songService.PlayOrPause();
-  // }
+
   clickPlayAlbum(data: Album) {
     const a = this.db.collection('Song', ref => ref.where('albumId', '==', this.db.collection('Album').doc(data.id).ref));
     a.valueChanges().subscribe((res) => {
