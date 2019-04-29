@@ -46,6 +46,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { ProfileComponent } from './profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,8 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     SongComponent,
     HomeComponent,
     UiLoadingComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
