@@ -166,11 +166,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
   clickNext3User() {
-    this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(5));
+    this.colectionUsers = this.db.collection('users');
     this.colectionUsers.valueChanges().subscribe((res) => {
       if (res) {
-        this.users = res;
-        console.log(res);
+        this.users = [];
+        let i = 0;
+        while (i < 3) {
+          this.users.push(res[Math.floor(Math.random() * res.length)]);
+          i++;
+          // TODO: còn bug bị trùng index khi generate hàm random()
+        }
       }
     }, (error) => {
       console.log(error);
@@ -267,8 +272,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const a = this.db.collection('Song', ref => ref.where('albumId', '==', this.db.collection('Album').doc(data.id).ref));
     a.valueChanges().subscribe((res) => {
       if (res) {
-        this.songService.playlistSong = res;
-        this.songService.isPlay = true;
+        if (this.songService.playlistSong.length !== 0) {
+          if (this.songService.playlistSong[0].albumId.id !== data.id) {
+            this.songService.audio.pause();
+            this.songService.playlistSong = res;
+            this.songService.audio.src = this.songService.playlistSong[0].mp3Url;
+            this.songService.audio.name = this.songService.playlistSong[0].name;
+            this.songService.audio.author = this.songService.playlistSong[0].author;
+            this.songService.isPlay = false;
+          }
+        } else {
+          this.songService.playlistSong = res;
+        }
         this.songService.PlayOrPause();
       }
     });
