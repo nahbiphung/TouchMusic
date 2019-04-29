@@ -191,6 +191,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.songService.audio.name = this.songService.playlistSong[0].name;
         this.songService.audio.author = this.songService.playlistSong[0].author;
         this.songService.isPlay = false;
+      } else {
+        this.songService.PlayOrPause();
+        return;
       }
     } else {
       this.songService.playlistSong = this.playlistForUser;
@@ -207,6 +210,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.songService.audio.name = this.songService.playlistSong[0].name;
         this.songService.audio.author = this.songService.playlistSong[0].author;
         this.songService.isPlay = false;
+      } else {
+        this.songService.PlayOrPause();
+        return;
       }
     } else {
       this.songService.playlistSong = this.topPlaylist;
@@ -243,6 +249,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.songService.PlayOrPause();
       this.clickPlayorPause(this.songService.audio.src);
     }
+
+    // if (this.songService.audio.src === '') {
+    //   this.songService.playSong(data);
+    //   this.songService.audio.src = data.mp3Url;
+    //   this.songService.audio.name = data.name;
+    //   this.songService.audio.author = data.author;
+    //   this.songService.audio.load();
+    //   this.songService.isPlay = true;
+    //   this.songService.PlayOrPause();
+    //   return;
+    // }
+    // if (this.songService.audio.src === data.mp3Url) {
+    //   this.songService.PlayOrPause();
+    // } else {
+    //   this.songService.playlistSong = [];
+    //   this.songService.playlistSong.push(data);
+    //   this.songService.audio.src = data.mp3Url;
+    //   this.songService.audio.name = data.name;
+    //   this.songService.audio.author = data.author;
+    //   this.songService.audio.load();
+    //   this.songService.isPlay = true;
+    //   this.songService.PlayOrPause();
+    // }
   }
   // if.src >>>> if.1 pass >>> if1.1: 1st time play curSong - if.1.2: 2nd play curSong start at curTime
   // if.1 false: curSong pause and get the curTime
