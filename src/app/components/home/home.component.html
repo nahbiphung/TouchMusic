@@ -19,10 +19,16 @@
                         <img class="image-100" src="https://picsum.photos/200/300/?random=1" alt="PlaylistBanner-img">
                       </div>
                     </a>
-                    <div class="selectionPlaylistBanner-playButton">
+                    <div class="selectionPlaylistBanner-playButton" *ngIf="!this.songService.isPlay">
                       <!-- click to play this playlist -->
-                      <a class="selectionPlaylistBanner-playButton-link">
+                      <a class="selectionPlaylistBanner-playButton-link" (click)="clickPlayPlaylistForUser()">
                         <i class="fas fa-play selectionPlaylistBanner-playButton-icon"></i>
+                      </a>
+                    </div>
+                    <div class="selectionPlaylistBanner-playButton" *ngIf="this.songService.isPlay">
+                      <!-- click to play this playlist -->
+                      <a class="selectionPlaylistBanner-playButton-link" (click)="clickPlayPlaylistForUser()">
+                        <i class="fas fa-pause selectionPlaylistBanner-playButton-icon"></i>
                       </a>
                     </div>
                   </div>
@@ -32,74 +38,15 @@
             <div class="selectionPlaylistBanner-listArea">
               <div class="selectionPlaylistBanner-listArea-scoll">
                 <ul class="list-style-none padding-0">
-                  <li>
+                  <li (click)="clickPlayPlaylistDetailForUser(item)" *ngFor="let item of playlistForUser">
                     <div class="listArea-place">
                       <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
+                        <span class="listArea-author color-999-100">{{item.author}} -</span>
+                        <span class="listArea-songTitle color-white" [routerLink]="[ '/song', item.name, item.id.trim() ]"> {{item.name}}</span>
                       </div>
                       <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
+                        <div id={{item.id}} *ngIf="!this.songService.isPlay"><i class="fas fa-play padding-0-10 font-size-11"></i></div>
+                        <div id={{item.id}} *ngIf="this.songService.isPlay"><i class="fas fa-pause padding-0-10 font-size-11"></i></div>
                         <span class="font-size-11">7,000</span>
                       </div>
                     </div>
@@ -152,83 +99,22 @@
               (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)"
               (beforeChange)="beforeChange($event)">
               <!-- list song -->
-              <div ngxSlickItem class="height-265px">
+              <div ngxSlickItem class="height-265px" *ngFor="let item of songs">
                 <div class="padding-0-5px">
                   <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
+                    <img class="song-img" id="{{item.id}}" [routerLink]="[ '/song', item.name, item.id.trim() ]" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <div class="song-playButton" (click)="clickPlayPlaylistDetailForUser(item)">
+                      <div class="song-playButton-link" *ngIf="!this.songService.isPlay">
                         <i class="fas fa-play song-playButton-icon"></i>
                       </div>
+                      <div class="song-playButton-link" *ngIf="this.songService.isPlay">
+                          <i class="fas fa-pause song-playButton-icon"></i>
+                        </div>
                     </div>
                   </div>
                   <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                    <div class="song-title handal-content color-black" [routerLink]="[ '/song', item.name, item.id.trim() ]" >{{item.name}}</div>
+                    <div class="song-author handal-content color-black">{{item.author}}</div>
                   </div>
                 </div>
               </div>
@@ -253,10 +139,16 @@
                         <img class="image-100" src="https://picsum.photos/200/300/?random=1" alt="PlaylistBanner-img">
                       </div>
                     </a>
-                    <div class="selectionPlaylistBanner-playButton">
+                    <div class="selectionPlaylistBanner-playButton" *ngIf="!this.songService.isPlay">
                       <!-- click to play this playlist -->
-                      <a class="selectionPlaylistBanner-playButton-link">
+                      <a class="selectionPlaylistBanner-playButton-link" (click)="clickPlayTopPlaylist()">
                         <i class="fas fa-play selectionPlaylistBanner-playButton-icon"></i>
+                      </a>
+                    </div>
+                    <div class="selectionPlaylistBanner-playButton" *ngIf="this.songService.isPlay">
+                      <!-- click to play this playlist -->
+                      <a class="selectionPlaylistBanner-playButton-link" (click)="clickPlayTopPlaylist()">
+                        <i class="fas fa-pause selectionPlaylistBanner-playButton-icon"></i>
                       </a>
                     </div>
                   </div>
@@ -266,74 +158,15 @@
             <div class="selectionPlaylistBanner-listArea">
               <div class="selectionPlaylistBanner-listArea-scoll">
                 <ul class="list-style-none padding-0">
-                  <li>
+                  <li (click)="clickPlayPlaylistDetailForUser(item)" *ngFor="let item of topPlaylist">
                     <div class="listArea-place">
                       <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
+                        <span class="listArea-author color-999-100">{{item.author}} -</span>
+                        <span class="listArea-songTitle color-white" [routerLink]="[ '/song', item.name, item.id.trim() ]"> {{item.name}}</span>
                       </div>
                       <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
-                        <span class="font-size-11">7,000</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="listArea-place">
-                      <div class="padding-0-8 handal-content flex-grow-2 max-width-422">
-                        <span class="listArea-author color-999-100">Bich Phuong -</span>
-                        <span class="listArea-songTitle color-white">Bua yeu</span>
-                      </div>
-                      <div class="display-flex color-white padding-0-8">
-                        <i class="fas fa-play padding-0-10 font-size-11"></i>
+                        <div *ngIf="!this.songService.isPlay"><i class="fas fa-play padding-0-10 font-size-11"></i></div>
+                        <div *ngIf="this.songService.isPlay"><i class="fas fa-pause padding-0-10 font-size-11"></i></div>
                         <span class="font-size-11">7,000</span>
                       </div>
                     </div>
@@ -466,83 +299,22 @@
               (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)"
               (beforeChange)="beforeChange($event)">
               <!-- list song -->
-              <div ngxSlickItem class="height-265px">
+              <div ngxSlickItem class="height-265px" *ngFor="let item of albums">
                 <div class="padding-0-5px">
                   <div class="song-back-img">
                     <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
+                    <div class="song-playButton" (click)="clickPlayAlbum(item)">
+                      <div class="song-playButton-link" *ngIf="!this.songService.isPlay">
                         <i class="fas fa-play song-playButton-icon"></i>
+                      </div>
+                      <div class="song-playButton-link" *ngIf="this.songService.isPlay">
+                        <i class="fas fa-pause song-playButton-icon"></i>
                       </div>
                     </div>
                   </div>
                   <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                    <div class="song-title handal-content color-black">{{item.name}}</div>
+                    <div class="song-author handal-content color-black">{{item.author}}</div>
                   </div>
                 </div>
               </div>
@@ -561,77 +333,13 @@
             <span class="margin-right-5px"><i class="fas fa-user-friends"></i></span>
             <span>Who to follow</span>
           </h3>
-          <span class="font-size-14 color-999-100 flex-direc-row sidebarHeader-option"><i
+          <span class="font-size-14 color-999-100 flex-direc-row sidebarHeader-option" (click)="clickNext3User()"><i
               class="fas fa-redo-alt margin-right-5px"></i>Refresh</span>
         </a>
         <div class="sidebarContent">
-          <ul class="list-nostyle padding-0">
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- user-avt -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50 border-radius-50"
-                        src="https://picsum.photos/200/300?random=3" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- user-content -->
-                <div class="display-flex-100 flex-direction-column">
-                  <div class="baged-title">
-                    <a href="#" class="color-999 font-size-14 margin-top-0">User-Name</a>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <div class="flex-grow-1">
-                        <ul class="stats padding-0 color-999 font-size-11">
-                          <li class="margin-5-5-5-0"><i class="fas fa-user-friends"></i><a> 12.5k</a></li>
-                          <li class="margin-5-0-5-5"><i class="fab fa-buffer"></i><a> 3</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="baged-actions">
-                      <button class="btn-follow">Follow</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- user-avt -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50 border-radius-50"
-                        src="https://picsum.photos/200/300?random=4" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- user-content -->
-                <div class="display-flex-100 flex-direction-column">
-                  <div class="baged-title">
-                    <a href="#" class="color-999 font-size-14 margin-top-0">User-Name</a>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <div class="flex-grow-1">
-                        <ul class="stats padding-0 color-999 font-size-11">
-                          <li class="margin-5-5-5-0"><i class="fas fa-user-friends"></i><a> 12.5k</a></li>
-                          <li class="margin-5-0-5-5"><i class="fab fa-buffer"></i><a> 3</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="baged-actions">
-                      <button class="btn-follow">Follow</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
+          <ul class="list-nostyle padding-0" *ngFor="let item of users">
+            <li class="padding-5-0 min-height-50 sidebar-song">
+              <div class="display-flex position-relative padding-l-10">
                 <!-- user-avt -->
                 <div class="margin-right-10px">
                   <div class="height-100 width-heigh-50 position-relative">
@@ -644,7 +352,7 @@
                 <!-- user-content -->
                 <div class="display-flex-100 flex-direction-column">
                   <div class="baged-title">
-                    <a href="#" class="color-999 font-size-14 margin-top-0">User-Name</a>
+                    <a href="#" class="color-999 font-size-14 margin-top-0">{{item.firstName}} {{item.lastName}}</a>
                   </div>
                   <div class="baged-meta display-flex">
                     <div class="baged-stats flex-grow-2">
@@ -675,9 +383,9 @@
           <span class="font-size-14 color-999-100 flex-direc-row sidebarHeader-option">View All</span>
         </a>
         <div class="sidebarContent">
-          <ul class="list-nostyle padding-0">
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
+          <ul class="list-nostyle padding-0" *ngFor="let item of likeSongs">
+            <li class="padding-5-0 min-height-50 sidebar-song" (click)="clickPlayPlaylistDetailForUser(item)">
+              <div class="display-flex position-relative padding-l-10">
                 <!-- song img -->
                 <div class="margin-right-10px">
                   <div class="height-100 width-heigh-50 position-relative">
@@ -689,69 +397,9 @@
                 <!-- song detail -->
                 <div class="display-flex-250px flex-direction-column">
                   <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
+                    <div class="font-size-14"><a class="color-999-100" href="#">{{item.author}}</a></div>
                     <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
-                    </div>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <ul class="stats padding-0 color-999 font-size-11">
-                        <li class="margin-5-5-5-0"><i class="fas fa-play"></i><a> 222k</a></li>
-                        <li class="margin-5-5-5-0"><i class="far fa-thumbs-up"></i><a> 100k</a></li>
-                        <li class="margin-5-0-5-5"><i class="fas fa-comment"></i><a> 100</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- song img -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- song detail -->
-                <div class="display-flex-250px flex-direction-column">
-                  <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
-                    <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
-                    </div>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <ul class="stats padding-0 color-999 font-size-11">
-                        <li class="margin-5-5-5-0"><i class="fas fa-play"></i><a> 222k</a></li>
-                        <li class="margin-5-5-5-0"><i class="far fa-thumbs-up"></i><a> 100k</a></li>
-                        <li class="margin-5-0-5-5"><i class="fas fa-comment"></i><a> 100</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- song img -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- song detail -->
-                <div class="display-flex-250px flex-direction-column">
-                  <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
-                    <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
+                      <a href="#" class="font-size-14 color-black margin-top-0">{{item.name}}</a>
                     </div>
                   </div>
                   <div class="baged-meta display-flex">
@@ -779,9 +427,9 @@
           <span class="font-size-14 color-999-100 flex-direc-row sidebarHeader-option">View All</span>
         </a>
         <div class="sidebarContent">
-          <ul class="list-nostyle padding-0">
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
+          <ul class="list-nostyle padding-0" *ngFor="let item of historySongs">
+            <li class="padding-5-0 min-height-50 sidebar-song" (click)="clickPlayPlaylistDetailForUser(item)">
+              <div class="display-flex position-relative padding-l-10">
                 <!-- song img -->
                 <div class="margin-right-10px">
                   <div class="height-100 width-heigh-50 position-relative">
@@ -793,69 +441,9 @@
                 <!-- song detail -->
                 <div class="display-flex-250px flex-direction-column">
                   <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
+                    <div class="font-size-14"><a class="color-999-100" href="#">{{item.author}}</a></div>
                     <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
-                    </div>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <ul class="stats padding-0 color-999 font-size-11">
-                        <li class="margin-5-5-5-0"><i class="fas fa-play"></i><a> 222k</a></li>
-                        <li class="margin-5-5-5-0"><i class="far fa-thumbs-up"></i><a> 100k</a></li>
-                        <li class="margin-5-0-5-5"><i class="fas fa-comment"></i><a> 100</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- song img -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- song detail -->
-                <div class="display-flex-250px flex-direction-column">
-                  <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
-                    <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
-                    </div>
-                  </div>
-                  <div class="baged-meta display-flex">
-                    <div class="baged-stats flex-grow-2">
-                      <ul class="stats padding-0 color-999 font-size-11">
-                        <li class="margin-5-5-5-0"><i class="fas fa-play"></i><a> 222k</a></li>
-                        <li class="margin-5-5-5-0"><i class="far fa-thumbs-up"></i><a> 100k</a></li>
-                        <li class="margin-5-0-5-5"><i class="fas fa-comment"></i><a> 100</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="padding-5-0 min-height-50">
-              <div class="display-flex position-relative">
-                <!-- song img -->
-                <div class="margin-right-10px">
-                  <div class="height-100 width-heigh-50 position-relative">
-                    <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
-                    </a>
-                  </div>
-                </div>
-                <!-- song detail -->
-                <div class="display-flex-250px flex-direction-column">
-                  <div class="baged-title line-height-nor">
-                    <div class="font-size-14"><a class="color-999-100" href="#">Author</a></div>
-                    <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">Song-Name</a>
+                      <a href="#" class="font-size-14 color-black margin-top-0">{{item.name}}</a>
                     </div>
                   </div>
                   <div class="baged-meta display-flex">
