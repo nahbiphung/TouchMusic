@@ -44,9 +44,11 @@ import {MatSliderModule} from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
-import { ProfileComponent } from './profile/profile.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { ProfileComponent } from './components/profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,8 +62,10 @@ import { ProfileComponent } from './profile/profile.component';
     HomeComponent,
     UiLoadingComponent,
     PlaylistComponent,
-    ProfileComponent
+    ProfileComponent,
+    DialogComponent
   ],
+  entryComponents: [DialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -92,9 +96,10 @@ import { ProfileComponent } from './profile/profile.component';
     MDBBootstrapModule.forRoot(),
     MatProgressSpinnerModule,
     SlickCarouselModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

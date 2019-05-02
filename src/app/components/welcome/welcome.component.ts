@@ -25,6 +25,7 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private backgroundImage: string;
   private loadingSpinner: boolean;
   private imagePlaylist: string;
+  private listCountryMusic = [];
 
 
   // Variables
@@ -57,6 +58,16 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
       if (res) {
         this.playlistSong = res;
         this.songService.playlistSongForWelcome = this.playlistSong;
+      }
+    }, (err) => {
+      console.log('error');
+    });
+
+    // get song types
+    this.collectionData = this.db.collection('Country');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.listCountryMusic = res;
       }
     }, (err) => {
       console.log('error');

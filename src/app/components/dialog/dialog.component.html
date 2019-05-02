@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Add new Favorite Playlist</h1>
+<div mat-dialog-content>
+  <p>Playlist Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+</div>
+<div mat-dialog-content>
+    <p>Image</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.image">
+    </mat-form-field>
+  </div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button cdkFocusInitial>Ok</button>
+</div>

@@ -9,19 +9,24 @@
         </div>
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 color-organe contentProfile">
-        <h1>Nguyễn Hồ Ngọc Phú</h1>
+        <h1>{{userData.lastName}} {{userData.firstName}}</h1>
       </div>
     </div>
   </div>
   <div class="favoritePlaylist width-height-100 background-color-white border-radius-10">
     <div class="row padding-20">
+      <h1 class="font-weight color-organe padding-left-1-5em">Favorite Playlist</h1>
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
         <div *ngFor="let item of faPlaylist" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 
           d-flex flex-column justify-content-center align-items-center margin-top-10">
-          <img src="{{item.image}}" alt="image" class="img-playlist">
+          <img src="{{item.image}}" alt="image" class="img-playlist" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
           <div class="title-playlist">
             <h3>{{item.name}}</h3>
           </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 
+          d-flex justify-content-center align-items-start margin-top-10">
+          <img src="{{imageData}}" alt="image" class="create-playlist pointer" (click)="createNewFaPlaylist()">
         </div>
       </div>
     </div>

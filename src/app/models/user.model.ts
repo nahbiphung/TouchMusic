@@ -18,6 +18,7 @@ interface FavoriteList {
     id: string;
     image: string;
     name: string;
+    userId: string;
     details: [{
         song: string;
     }];
