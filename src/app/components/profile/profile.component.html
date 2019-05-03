@@ -13,22 +13,61 @@
       </div>
     </div>
   </div>
-  <div class="favoritePlaylist width-height-100 background-color-white border-radius-10">
-    <div class="row padding-20">
-      <h1 class="font-weight color-organe padding-left-1-5em">Favorite Playlist</h1>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
-        <div *ngFor="let item of faPlaylist" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 
-          d-flex flex-column justify-content-center align-items-center margin-top-10">
-          <img src="{{item.image}}" alt="image" class="img-playlist" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
-          <div class="title-playlist">
-            <h3>{{item.name}}</h3>
+  <div class="content row d-flex flex-wrap justify-content-center align-items-start">
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 profileDetails">
+      <div class="width-height-100 background-color-white border-radius-10 padding-20">
+        <h2 class="font-weight color-organe title-details text-align-center">Main Info</h2>
+        <div class="content-details width-height-100">
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Fisrt name" [(ngModel)]="userData.firstName" [disabled]="isBlock">
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Last name" [(ngModel)]="userData.lastName" [disabled]="isBlock">
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Email" [(ngModel)]="userData.email" [formControl]="emailFormControl"
+            [errorStateMatcher]="matcher" [disabled]="isBlock">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Phone" [(ngModel)]="userData.phone" [disabled]="isBlock">
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Birthday" [matDatepicker]="picker" [formControl]="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <div class="d-flex justify-content-center align-items-center">
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock" (click)="allowEdit()" mdbWavesEffect>Edit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="updateProfile()" mdbWavesEffect>Submit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()" mdbWavesEffect>Cancel</button>
           </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 
-          d-flex justify-content-center align-items-start margin-top-10">
-          <img src="{{imageData}}" alt="image" class="create-playlist pointer" (click)="createNewFaPlaylist()">
+      </div>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 favoritePlaylist width-height-100 background-color-white border-radius-10">
+      <div class="row padding-20">
+        <h1 class="font-weight color-organe text-align-center">Favorite Playlist</h1>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
+          <div *ngFor="let item of faPlaylist" class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+            d-flex flex-column justify-content-center align-items-center margin-top-10">
+            <img src="{{item.image}}" alt="image" class="img-playlist" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+            <div class="title-playlist">
+              <h3>{{item.name}}</h3>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+            d-flex justify-content-center align-items-start margin-top-10">
+            <img src="{{imageData}}" alt="image" class="create-playlist pointer" (click)="createNewFaPlaylist()">
+          </div>
         </div>
       </div>
     </div>
   </div>
+  
 </section>

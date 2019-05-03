@@ -2,14 +2,26 @@
   width: 80vw;
   height: auto;
   margin: 0 auto;
-} 
+}
 
-.favoritePlaylist {
+.content {
   width: 80vw;
   height: auto;
   margin: 10px auto;
 }
 
+.favoritePlaylist {
+  position: relative;
+}
+
+.profileDetails {
+  position: relative;
+  padding-left: 0;
+}
+
+.title-details {
+  padding: 0 15px;
+}
 .border-radius-10 {
   border-radius: 10px;
 }
@@ -53,4 +65,16 @@
 
 .padding-20 {
   padding: 20px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .profileDetails {
+    position: relative;
+    padding: 0;
+    margin-bottom: 10px;
+  }
 }
