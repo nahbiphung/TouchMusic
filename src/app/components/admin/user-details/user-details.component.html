@@ -1,0 +1,53 @@
+<form [formGroup]='userService.form' (submit)='onSubmit()'>
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <div class="control-container">
+        <input type="hidden" formControlName="$key">
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Email*">
+          <mat-error>Invalid Email address</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="firstName" matInput placeholder="First Name*">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="phone" matInput placeholder="Phone*">
+          <mat-error *ngIf="this.userService.form.controls['phone'].errors?.required">This field is required</mat-error>
+          <mat-error *ngIf="this.userService.form.controls['phone'].errors?.minlength">Minimum 8 charactors needed.
+          </mat-error>
+        </mat-form-field>
+        <span>
+          <input formControlName="photoURL" type='file' (change)='onSelectFile($event)'> 
+          <img *ngIf="this.fileSrc" src="{{this.fileSrc}}" alt="user avt">
+          <div *ngIf="!this.fileSrc" class="display-inline-block witdh-height-80"><i class="far fa-image"></i></div>
+        </span>
+        <button (click)="uploadFile()"></button>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="control-container padding-top-0">
+        <mat-form-field>
+          <input formControlName="birthday" matInput [matDatepicker]="picker" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="lastName" matInput placeholder="Last Name*">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div>
+          <div>Role</div>
+          <div>
+            <mat-checkbox formControlName="admin">Admin</mat-checkbox>
+            <mat-checkbox formControlName="subscriber" class="padding-0-10px">subscriber</mat-checkbox>
+          </div>
+        </div>
+        <div class="button-row">
+          <button mat-raised-button color="primary" [disabled]="userService.form.invalid">Submit</button>
+          <button mat-raised-button color="warn" (click)="onclickClearForm()">Clear</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

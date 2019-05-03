@@ -20,6 +20,6 @@ interface FavoriteList {
     user: string;
     details: {
         song: string;
-    }
+    };
 }
 

@@ -7,6 +7,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { SongComponent } from './components/song/song.component';
 import { HomeComponent } from './components/home/home.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { AdminComponent } from './components/admin/admin/admin.component';
+import { UserComponent } from './components/admin/user/user.component';
+import { AdminSongComponent } from './components/admin/admin-song/admin-song.component';
+import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -15,8 +19,12 @@ const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'song/:name/:id', component: SongComponent},
-  { path: 'playlist', component: PlaylistComponent,
-  },
+  { path: 'playlist', component: PlaylistComponent},
+  { path: 'admin', component: AdminComponent, children: [
+    { path: 'user', component: UserComponent, children: [] },
+    { path: 'song', component: AdminSongComponent }
+  ]},
+  { path : 'user-details', component: UserDetailsComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
