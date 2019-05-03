@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserService } from '../../../services/user.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-details',
@@ -16,6 +17,8 @@ export class UserDetailsComponent implements OnInit {
   private fileSrc: any;
   downLoadURL: any;
   imageUrl: any;
+  uploadPercent: Observable<number>;
+
   constructor(private userService: UserService,
               private storage: AngularFireStorage,
     // private dialogRef: MatDialogRef<UserDetailsComponent>
@@ -45,6 +48,8 @@ export class UserDetailsComponent implements OnInit {
     const filePath = 'images/avartar/' + this.fileName;
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, this.thisFile);
+    // observe percentage changes
+    this.uploadPercent = task.percentageChanges();
     task.snapshotChanges().pipe(
       finalize(() => {
         this.downLoadURL = fileRef.getDownloadURL();
@@ -58,9 +63,6 @@ export class UserDetailsComponent implements OnInit {
       })
     )
     .subscribe();
-  }
-
-  uploadFile() {
   }
 
   onSubmit() {

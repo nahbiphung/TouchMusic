@@ -18,11 +18,18 @@
           </mat-error>
         </mat-form-field>
         <span>
-          <input formControlName="photoURL" type='file' (change)='onSelectFile($event)'> 
+          <input formControlName="photoURL" type='file' (change)='onSelectFile($event)'>
           <img *ngIf="this.fileSrc" src="{{this.fileSrc}}" alt="user avt">
           <div *ngIf="!this.fileSrc" class="display-inline-block witdh-height-80"><i class="far fa-image"></i></div>
+          <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
+            <div class="flex-bar">
+              <progress class="progress is-info" [value]="pct" max="100"></progress>
+              <div>
+                  {{ pct | number }}%
+              </div>
+            </div>
+          </div>
         </span>
-        <button (click)="uploadFile()"></button>
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
