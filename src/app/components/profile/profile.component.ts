@@ -30,11 +30,28 @@ export class ProfileComponent implements OnInit {
   private faPlaylistData: DialogData;
   private isBlock: boolean;
   private currentUserRef: any;
-  private date: FormControl = new FormControl();
+  private lengthDate: LengthOfDate;
+  private dateFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^(0[1-9]|[12][0-9]|3[01])/-(0[1-9]|1[012])/-\d{4}$')
+  ]);
   private emailFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.email,
+    Validators.email
   ]);
+  private fnameFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private lnameFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private phoneFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^[0-9]*$'),
+  ]);
+
   private matcher = new MyErrorStateMatcher();
 
 
@@ -44,6 +61,10 @@ export class ProfileComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.imageData = 'https://firebasestorage.googleapis.com/v0/b/touchmusic-2707e.appspot.com/o/images%2Flogo%2Fadd-square-button.png?alt=media&token=23e555d6-6ec7-499b-8d51-1f7104204a8c';
     // this.faPlaylist = new Array<FavoriteList>();
+    this.lengthDate = {
+      min: new Date(1790, 0, 1),
+      max: new Date(),
+    };
    }
 
   ngOnInit() {
@@ -54,14 +75,13 @@ export class ProfileComponent implements OnInit {
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
         this.userData = res;
-        this.date = new FormControl(res.birthday.toDate());
+        this.dateFormControl = new FormControl(res.birthday.toDate());
         console.log(this.matcher);
         if (this.isBlock) {
-          this.date.disable();
+          this.disableFormControl();
         } else {
-          this.date.enable();
+          this.enableFormControl();
         }
-        // this.date = res.birthday.toDate().toLocaleDateString();
         this.loadingSpinner = false;
       }
     }, (error) => {
@@ -92,27 +112,57 @@ export class ProfileComponent implements OnInit {
 
   private updateProfile() {
     this.db.collection('users').doc(this.userData.uid).update({
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      birthday: this.date,
-      email: this.userData.email,
-      phone: this.userData.phone
+      firstName: this.fnameFormControl.value,
+      lastName: this.lnameFormControl.value,
+      birthday: this.dateFormControl.value,
+      email: this.emailFormControl.value,
+      phone: this.phoneFormControl.value
+    }).then(() => {
+      this.disableFormControl();
+      this.isBlock = true;
     });
-
   }
 
   private allowEdit() {
     this.isBlock = false;
-    this.date.enable();
+    this.enableFormControl();
+  }
+
+  private disableFormControl() {
+    this.emailFormControl.disable();
+    this.dateFormControl.disable();
+    this.lnameFormControl.disable();
+    this.fnameFormControl.disable();
+    this.phoneFormControl.disable();
+  }
+
+  private enableFormControl() {
+    this.emailFormControl.enable();
+    this.dateFormControl.enable();
+    this.fnameFormControl.enable();
+    this.lnameFormControl.enable();
+    this.phoneFormControl.enable();
   }
 
   private cancel() {
     this.isBlock = true;
-    this.date.disable();
+    this.disableFormControl();
+    this.emailFormControl.reset();
+    this.dateFormControl.reset();
+    this.fnameFormControl.reset();
+    this.lnameFormControl.reset();
+    this.phoneFormControl.reset();
   }
+
+  private 
 
 }
 
 export interface DialogData {
   currentUser: any;
+}
+
+export interface LengthOfDate {
+  min: Date;
+  max: Date;
 }
