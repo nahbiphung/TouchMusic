@@ -27,3 +27,13 @@
 .cursor-pointer{
     cursor: pointer;
 }
+
+.handle-content{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.width-180px{
+    width: 180px;
+}

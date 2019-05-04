@@ -13,7 +13,7 @@ export class AdminComponent implements OnInit {
   private email: string;
   private name: string;
   private avt: string;
-  private haveName: boolean;
+  private displayName: string;
 
   constructor(private authService: AuthService,
               private toast: ToastrService) {
@@ -31,12 +31,7 @@ export class AdminComponent implements OnInit {
       if (user) {
         this.isLogin = true;
         this.email = user.email;
-        if (user.firstName === null && user.lastName === null) {
-          this.haveName = false;
-        } else {
-          this.haveName = true;
-          this.name = user.firstName + ' ' + user.lastName;
-        }
+        this.displayName = user.displayName;
         if (user.photoURL === null) {
           this.avt = 'https://ui-avatars.com/api/?name=' + this.email;
         } else {

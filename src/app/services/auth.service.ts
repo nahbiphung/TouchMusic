@@ -56,6 +56,7 @@ export class AuthService {
       email: user.email,
       firstName: firstName || null,
       lastName: lastName || null,
+      displayName: firstName + ' ' + lastName || null,
       birthday: birthday || null,
       phone: phone || null,
       photoURL: photoURL || null,
@@ -109,6 +110,7 @@ export class AuthService {
       firstName: user.firstName || null,
       lastName: user.lastName || null,
       birthday: user.birthday || null,
+      displayName: user.displayName || null,
       phone: user.phone || null,
       photoURL: user.photoURL,
       role: {

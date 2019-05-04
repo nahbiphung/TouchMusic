@@ -13,7 +13,8 @@ export class UserComponent implements OnInit {
 
   getUserCol: AngularFirestoreCollection<any>;
   private listUser: MatTableDataSource<any>;
-  displayedColumns: string[] = ['email', 'firstName', 'lastName', 'photoURL', 'phone', 'birthday', 'role', 'option'];
+  // tslint:disable-next-line:max-line-length
+  displayedColumns: string[] = ['email', 'firstName', 'lastName', 'displayName', 'photoURL', 'phone', 'birthday', 'roleAdmin', 'roleSubscriber', 'option'];
 
   constructor(private afs: AngularFirestore,
               private dialog: MatDialog) { }

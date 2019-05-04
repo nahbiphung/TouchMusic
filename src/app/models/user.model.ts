@@ -3,6 +3,7 @@ interface User {
     email: string;
     firstName?: string;
     lastName?: string;
+    displayName?: string;
     birthday?: Date;
     phone?: string;
     photoURL?: string;
