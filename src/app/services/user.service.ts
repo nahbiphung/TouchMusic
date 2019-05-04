@@ -1,21 +1,40 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-
+import { Observable, of } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { ToastrService, Toast } from 'ngx-toastr';
+import { switchMap } from 'rxjs/operators';
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  user: Observable<User>;
   public userList: AngularFirestoreCollection<any>;
   photoURL: Observable<string>;
-  constructor(private afs: AngularFirestore) { }
+
+  constructor(private afs: AngularFirestore,
+              private afAuth: AngularFireAuth,
+              private toastr: ToastrService) {
+    //// Get auth data, then get firestore user document || null
+    this.user = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
 
   form: FormGroup = new FormGroup({
     $key: new FormControl(null),
     email: new FormControl('', [Validators.email, Validators.required]),
+    password: new FormControl('', Validators.minLength(8)),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     birthday: new FormControl(''),
@@ -29,6 +48,7 @@ export class UserService {
     this.form.setValue({
       $key: null,
       email: '',
+      password: '',
       firstName: '',
       lastName: '',
       birthday: '',
@@ -46,6 +66,7 @@ export class UserService {
     return this.userList.snapshotChanges();
   }
 
+  // add but no password
   addUser(data: any) {
     this.userList.add({
       uid: '',

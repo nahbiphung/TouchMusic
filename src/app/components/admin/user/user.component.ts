@@ -26,6 +26,7 @@ export class UserComponent implements OnInit {
           if (data.birthday === null) {
             data.birthday = Date.now();
           } else {
+            data.birthday = data.birthday.toDate();
           }
         }
         this.listUser = new MatTableDataSource(res);
