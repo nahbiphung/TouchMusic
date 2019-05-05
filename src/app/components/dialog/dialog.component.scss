@@ -2,3 +2,19 @@
     width: 100%;
     overflow: hidden;
 }
+
+.containerPreview {
+    width: 100%;
+    height: 100%;
+}
+
+.imagePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.labelPreviewImage {
+    width: 100%;
+    overflow: scroll;
+}

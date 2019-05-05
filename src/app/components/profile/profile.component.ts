@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   private isBlock: boolean;
   private currentUserRef: any;
   private lengthDate: LengthOfDate;
+  private loadImage: any;
   private dateFormControl: FormControl = new FormControl('', [
     Validators.required,
     Validators.pattern('^(0[1-9]|[12][0-9]|3[01])/-(0[1-9]|1[012])/-\d{4}$')
@@ -101,7 +102,7 @@ export class ProfileComponent implements OnInit {
     // chỉ cần name và image
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '30vw',
-      data: {currentUser: this.currentUserRef}
+      data: {currentUser: this.currentUserRef, isAvatar: false}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -154,12 +155,24 @@ export class ProfileComponent implements OnInit {
     this.phoneFormControl.reset();
   }
 
-  private 
+  private onFileSelected(event: any) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: {currentUser: this.currentUserRef, data: event, isAvatar: true}
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
+  }
 }
 
 export interface DialogData {
   currentUser: any;
+  data: any;
+  isAvatar: boolean;
 }
 
 export interface LengthOfDate {

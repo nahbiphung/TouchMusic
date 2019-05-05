@@ -16,6 +16,7 @@ export class DialogComponent implements OnInit {
   private loadImage: any;
   private haveImage: boolean;
   private name: string;
+  private imagePreview: string;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -30,12 +31,22 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.data.isAvatar) {
+      this.onFileSelected(this.data.data);
+    }
   }
 
   private onFileSelected(event: any) {
     this.loadImage = event.target.files[0];
     if (this.loadImage) {
       this.haveImage = true;
+      const copyThis = this;
+      const previewImage = new FileReader();
+      previewImage.onload = function(e: any) {
+        copyThis.imagePreview = e.currentTarget.result;
+      };
+      previewImage.readAsDataURL(this.loadImage);
+
     } else {
       this.haveImage = false;
     }
@@ -79,6 +90,35 @@ export class DialogComponent implements OnInit {
           }).catch((error) => {
             console.log('error when add collection' + error);
           });
+        });
+      }
+    );
+  }
+
+  private uploadNewAvatar() {
+    const storageRef = firebase.storage().ref('images/' + this.loadImage.name);
+    // upload file
+    const task = storageRef.put(this.loadImage);
+    const copyThis = this;
+    // update progress bar
+    task.on('state_changed',
+      function then(snapshot) {
+        const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        copyThis.uploadProgress = percent;
+        console.log(copyThis.uploadProgress)
+      },
+      function wrong(error) {
+        console.log(error);
+      },
+      function complete() {
+        task.snapshot.ref.getDownloadURL().then((res) => {
+          if(res) {
+            copyThis.db.collection('users').doc(copyThis.data.currentUser.id).update({
+              photoURL: res
+            }).then(() => {
+              copyThis.dialogRef.close(copyThis.loadImage);
+            });
+          }
         });
       }
     );
