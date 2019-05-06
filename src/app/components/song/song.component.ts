@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { SongService } from 'src/app/services/song.service';
 import * as firebase from 'firebase';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-song',
@@ -31,8 +33,13 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private highValue: number;
   private subCmtContent: string;
   private currentUser: firebase.User;
+  private currentUserRef: any;
 
-  constructor(private db: AngularFirestore, private route: ActivatedRoute, private songService: SongService) {
+  constructor(
+    private db: AngularFirestore,
+    private route: ActivatedRoute,
+    private songService: SongService,
+    public dialog: MatDialog) {
     this.loadingSpinner = true;
     this.isPlay = true;
     this.videoSong = false;
@@ -82,12 +89,12 @@ export class SongComponent implements OnInit, AfterContentChecked {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUser = user;
+        this.currentUserRef = this.db.collection('users').doc(this.currentUser.uid).ref;
       }
     });
   }
 
   private getPaginatorData(event: any) {
-    console.log(event);
     if (event.pageIndex === this.pageIndex + 1) {
       this.lowValue = this.lowValue + this.pageSize;
       this.highValue = this.highValue + this.pageSize;
@@ -210,7 +217,33 @@ export class SongComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  private addToPlaylist(data: any) {
+  private addToPlaylist(data: any, p: any) {
     this.songService.playlistSong.push(data);
+    p.toggle();
   }
+
+  private toggle(p: any) {
+    console.log(p);
+  }
+
+  private addToFavoritePlaylist(song: Song, p: any) {
+    console.log(song);
+    p.toggle();
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '70vw',
+      data: { currentUser: this.currentUserRef, data: song, selector: 'C' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
+  }
+}
+
+export interface DialogData {
+  currentUser: any;
+  data: any;
+  selector: string;
 }

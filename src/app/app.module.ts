@@ -20,6 +20,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatExpansionModule} from '@angular/material/expansion';
+
+// Angular Bootstrap
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
@@ -49,6 +53,7 @@ import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +68,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     UiLoadingComponent,
     PlaylistComponent,
     ProfileComponent,
-    DialogComponent
+    DialogComponent,
   ],
   entryComponents: [DialogComponent],
   imports: [
@@ -98,7 +103,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatProgressSpinnerModule,
     SlickCarouselModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    NgbPopoverModule,
+    MatExpansionModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

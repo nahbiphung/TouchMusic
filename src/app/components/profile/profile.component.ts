@@ -7,6 +7,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import {FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -56,7 +57,10 @@ export class ProfileComponent implements OnInit {
   private matcher = new MyErrorStateMatcher();
 
 
-  constructor(private db: AngularFirestore, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(
+    private db: AngularFirestore,
+    private route: ActivatedRoute,
+    public dialog: MatDialog) {
     this.loadingSpinner = true;
     this.isBlock = true;
     // tslint:disable-next-line:max-line-length
@@ -90,7 +94,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.collectionData = this.db.collection('FavoritePlaylist',
-      query => query.where('userId', '==', this.currentUserRef));
+      query => query.where('userId', 'array-contains', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
         if (res) {
           this.faPlaylist = res;
@@ -102,7 +106,7 @@ export class ProfileComponent implements OnInit {
     // chỉ cần name và image
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '30vw',
-      data: {currentUser: this.currentUserRef, isAvatar: false}
+      data: {currentUser: this.currentUserRef, selector: 'B'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -159,7 +163,7 @@ export class ProfileComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '50vw',
-      data: {currentUser: this.currentUserRef, data: event, isAvatar: true}
+      data: {currentUser: this.currentUserRef, data: event, selector: 'A'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -172,7 +176,7 @@ export class ProfileComponent implements OnInit {
 export interface DialogData {
   currentUser: any;
   data: any;
-  isAvatar: boolean;
+  selector: string;
 }
 
 export interface LengthOfDate {

@@ -2,8 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
-import { AngularFirestore } from '@angular/fire/firestore';
-
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dialog',
@@ -12,11 +11,18 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class DialogComponent implements OnInit {
 
+  private collectionData: AngularFirestoreCollection<any>;
+  private documentData: AngularFirestoreDocument<any>;
   private uploadProgress: number;
   private loadImage: any;
   private haveImage: boolean;
   private name: string;
   private imagePreview: string;
+  private isAvatar: boolean;
+  private isCreateNewFaList: boolean;
+  private isAddToFaList: boolean;
+  private faPlaylist: FavoriteList[];
+  private panelOpenState: boolean;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -24,6 +30,9 @@ export class DialogComponent implements OnInit {
     this.haveImage = false;
     this.uploadProgress = 0;
     this.name = '';
+    this.isAvatar = false;
+    this.isCreateNewFaList = false;
+    this.panelOpenState = true;
   }
 
   onNoClick(): void {
@@ -31,8 +40,20 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.data.isAvatar) {
+    if (this.data.selector === 'A') {
+      this.isAvatar = true;
       this.onFileSelected(this.data.data);
+    } else if (this.data.selector === 'B') {
+      this.isCreateNewFaList = true;
+    } else if (this.data.selector === 'C') {
+      this.isAddToFaList = true;
+      this.collectionData = this.db.collection('FavoritePlaylist',
+        query => query.where('userId', 'array-contains', this.data.currentUser));
+      this.collectionData.valueChanges().subscribe((res) => {
+        if (res) {
+          this.faPlaylist = res;
+        }
+      });
     }
   }
 
@@ -42,7 +63,7 @@ export class DialogComponent implements OnInit {
       this.haveImage = true;
       const copyThis = this;
       const previewImage = new FileReader();
-      previewImage.onload = function(e: any) {
+      previewImage.onload = function (e: any) {
         copyThis.imagePreview = e.currentTarget.result;
       };
       previewImage.readAsDataURL(this.loadImage);
@@ -86,13 +107,23 @@ export class DialogComponent implements OnInit {
             copyThis.db.collection('FavoritePlaylist').doc(result.id).update({
               id: result.id,
             });
-            copyThis.dialogRef.close(falist);
+            if (copyThis.isCreateNewFaList) {
+              copyThis.dialogRef.close(falist);
+            } else {
+              this.resetForm();
+            }
           }).catch((error) => {
             console.log('error when add collection' + error);
           });
         });
       }
     );
+  }
+
+  private resetForm() {
+    this.loadImage = {};
+    this.imagePreview = '';
+    this.name = '';
   }
 
   private uploadNewAvatar() {
@@ -112,7 +143,7 @@ export class DialogComponent implements OnInit {
       },
       function complete() {
         task.snapshot.ref.getDownloadURL().then((res) => {
-          if(res) {
+          if (res) {
             copyThis.db.collection('users').doc(copyThis.data.currentUser.id).update({
               photoURL: res
             }).then(() => {
@@ -124,14 +155,59 @@ export class DialogComponent implements OnInit {
     );
   }
 
+  private addSongtofaList(data: FavoriteList) {
+    let duplicateSong = false;
+    data.details.forEach(e => {
+      if (e.id === this.data.data.id) {
+        duplicateSong = true;
+      }
+    });
+    if (!duplicateSong) {
+      // nghĩa là ko bị trùng bài hát
+      this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
+      this.documentData.update({
+        details: firebase.firestore.FieldValue.arrayUnion({
+            author: this.data.data.author,
+            id: this.data.data.id,
+            mp3Url: this.data.data.mp3Url,
+            name: this.data.data.name,
+          })
+      });
+    }
+    // this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
+    // this.documentData.valueChanges().subscribe((res: FavoriteList) => {
+    //   if (res) {
+    //     res.details.forEach(element => {
+    //       if (element.id === data.id) {
+    //         duplicateSong = true;
+    //       }
+    //     });
+    //     if (!duplicateSong) {
+    //       this.documentData.update({
+    //         details: firebase.firestore.FieldValue.arrayUnion({
+    //           author: data.author,
+    //           id: data.id,
+    //           mp3Url: data.mp3Url,
+    //           name: data.name,
+    //         })
+    //       });
+    //     }
+    //     this.dialogRef.close();
+    //   }
+    // });
+  }
+
 }
 
-export class FavoriteList{
+export class FavoriteList {
   id: string;
   image: string;
   name: string;
   userId: string;
   details: [{
-    song: string;
+    author: string;
+    id: string;
+    mp3Url: string;
+    name: string;
   }];
 }
