@@ -67,6 +67,12 @@
             [errorStateMatcher]="matcher">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dateFormControl.hasError('required')">
+              Birthday is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="dateFormControl.hasError('pattern')">
+              Please enter a valid date
+            </mat-error>
           </mat-form-field>
           <div class="d-flex justify-content-center align-items-center">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock" (click)="allowEdit()" mdbWavesEffect>Edit</button>

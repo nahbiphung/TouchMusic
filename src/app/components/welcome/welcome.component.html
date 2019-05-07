@@ -40,12 +40,12 @@
       <!--Carousel Wrapper-->
       <mdb-carousel [isControls]="true" class="carousel slide" [animation]="'slide'">
         <!--First slide-->
-        <mdb-carousel-item>
+        <mdb-carousel-item *ngFor="let item of listVideo">
           <!--Mask color-->
-          <div class="view">
+          <div class="view" >
             <!--Video source-->
-            <video class="video-fluid" autoplay loop>
-              <source src="https://mdbootstrap.com/img/video/Lines.mp4" type="video/mp4" />
+            <video class="video-fluid" autoplay loop id="{{item.id}}" class="width-100vw">
+              <source src="{{item.mp4Url}}" type="video/mp4"/>
             </video>
             <div class="mask rgba-indigo-light waves-light" mdbWavesEffect></div>
           </div>
@@ -53,55 +53,12 @@
           <!--Caption-->
           <div class="carousel-caption">
             <div class="animated fadeInDown">
-              <h3 class="h3-responsive">Light mask</h3>
-              <p>First text</p>
+              <h3 class="h3-responsive">{{item.name}}</h3>
+              <p>{{item.author}}</p>
             </div>
           </div>
           <!--Caption-->
         </mdb-carousel-item>
-        <!--/First slide-->
-        <!--Second slide-->
-        <mdb-carousel-item>
-          <!--Mask color-->
-          <div class="view">
-            <!--Video source-->
-            <video class="video-fluid" autoplay loop>
-              <source src="https://mdbootstrap.com/img/video/animation-intro.mp4" type="video/mp4" />
-            </video>
-            <div class="mask rgba-purple-slight waves-light" mdbWavesEffect></div>
-          </div>
-
-          <!--Caption-->
-          <div class="carousel-caption">
-            <div class="animated fadeInDown">
-              <h3 class="h3-responsive">Super light mask</h3>
-              <p>Secondary text</p>
-            </div>
-          </div>
-          <!--Caption-->
-        </mdb-carousel-item>
-        <!--/Second slide-->
-        <!--Third slide-->
-        <mdb-carousel-item>
-          <!--Mask color-->
-          <div class="view">
-            <!--Video source-->
-            <video class="video-fluid" autoplay loop>
-              <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4" />
-            </video>
-            <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
-          </div>
-
-          <!--Caption-->
-          <div class="carousel-caption">
-            <div class="animated fadeInDown">
-              <h3 class="h3-responsive">Strong mask</h3>
-              <p>Third text</p>
-            </div>
-          </div>
-          <!--Caption-->
-        </mdb-carousel-item>
-        <!--/Third slide-->
       </mdb-carousel>
       <!--Carousel Wrapper-->
     </div>
@@ -142,8 +99,8 @@
         </div>
       </div>
     </div>
-    <div class="playlist margin-left-right-20 shadow margin-top-10">
-      <div cdkDropList [cdkDropListData]="playlistSong" class="listSong display-flex width-height-100 display-column"
+    <div class="playlist margin-left-right-20 shadow margin-top-10" >
+      <div cdkDropList [cdkDropListData]="playlistSong" class="listSong display-flex display-column"
         (cdkDropListDropped)="drop($event)">
         <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)" cdkDrag>{{item.name}} -
           {{item.author}}</div>
@@ -154,15 +111,73 @@
     <div class="background-color-white margin-top-10 define-form">
       <h3 class="color-organe display-flex-center signUpTitle">Be join</h3>
       <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Email" value="">
+        <input matInput placeholder="Email" [formControl]="emailFormControl"
+          [errorStateMatcher]="matcher">
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <div class="d-flex justify-content-between width-100">
+        <mat-form-field class="width-45 my-form-field">
+          <input matInput placeholder="Fisrt name" [formControl]="firstnameFormControl"
+          [errorStateMatcher]="matcher">
+          <mat-error *ngIf="firstnameFormControl.hasError('max')">
+            Fisrt name is too long!
+          </mat-error>
+          <mat-error *ngIf="firstnameFormControl.hasError('required')">
+            Fisrt name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="width-45 my-form-field">
+          <input matInput placeholder="Last name" [formControl]="lastnameFormControl"
+          [errorStateMatcher]="matcher">
+          <mat-error *ngIf="lastnameFormControl.hasError('max')">
+            Last name is too long!
+          </mat-error>
+          <mat-error *ngIf="lastnameFormControl.hasError('required')">
+            Last name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      
+
+      <mat-form-field class="width-100 my-form-field">
+        <input matInput placeholder="Password" [formControl]="passwordFormControl"
+        [errorStateMatcher]="matcher" type="password">
+        <mat-error *ngIf="passwordFormControl.hasError('max') || passwordFormControl.hasError('min')">
+          Password is too long!
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Username" value="">
+        <input matInput placeholder="Phone" [formControl]="phoneFormControl"
+        [errorStateMatcher]="matcher">
+        <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+          Please enter a valid phone number
+        </mat-error>
+        <mat-error *ngIf="phoneFormControl.hasError('required')">
+          Phone is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Password" value="">
+        <input matInput placeholder="Birthday" [min]="lengthDate.min" [max]="lengthDate.max" [matDatepicker]="picker" [formControl]="dateFormControl"
+        [errorStateMatcher]="matcher">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="dateFormControl.hasError('required')">
+          Birthday is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="dateFormControl.hasError('pattern')">
+          Please enter a valid date
+        </mat-error>
       </mat-form-field>
 
       <div class="position-relative form button-sign display-flex-spaceAround">

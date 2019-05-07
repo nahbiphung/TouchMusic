@@ -23,6 +23,7 @@ export class DialogComponent implements OnInit {
   private isAddToFaList: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
+  private loadingSpinner: boolean;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -33,6 +34,7 @@ export class DialogComponent implements OnInit {
     this.isAvatar = false;
     this.isCreateNewFaList = false;
     this.panelOpenState = true;
+    this.loadingSpinner = true;
   }
 
   onNoClick(): void {
@@ -43,8 +45,10 @@ export class DialogComponent implements OnInit {
     if (this.data.selector === 'A') {
       this.isAvatar = true;
       this.onFileSelected(this.data.data);
+      this.loadingSpinner = false;
     } else if (this.data.selector === 'B') {
       this.isCreateNewFaList = true;
+      this.loadingSpinner = false;
     } else if (this.data.selector === 'C') {
       this.isAddToFaList = true;
       this.collectionData = this.db.collection('FavoritePlaylist',
@@ -52,6 +56,7 @@ export class DialogComponent implements OnInit {
       this.collectionData.valueChanges().subscribe((res) => {
         if (res) {
           this.faPlaylist = res;
+          this.loadingSpinner = false;
         }
       });
     }
@@ -156,6 +161,7 @@ export class DialogComponent implements OnInit {
   }
 
   private addSongtofaList(data: FavoriteList) {
+    this.loadingSpinner = true;
     let duplicateSong = false;
     data.details.forEach(e => {
       if (e.id === this.data.data.id) {
@@ -172,29 +178,11 @@ export class DialogComponent implements OnInit {
             mp3Url: this.data.data.mp3Url,
             name: this.data.data.name,
           })
+      }).then(() => {
+        this.loadingSpinner = false;
+        this.dialogRef.close();
       });
     }
-    // this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
-    // this.documentData.valueChanges().subscribe((res: FavoriteList) => {
-    //   if (res) {
-    //     res.details.forEach(element => {
-    //       if (element.id === data.id) {
-    //         duplicateSong = true;
-    //       }
-    //     });
-    //     if (!duplicateSong) {
-    //       this.documentData.update({
-    //         details: firebase.firestore.FieldValue.arrayUnion({
-    //           author: data.author,
-    //           id: data.id,
-    //           mp3Url: data.mp3Url,
-    //           name: data.name,
-    //         })
-    //       });
-    //     }
-    //     this.dialogRef.close();
-    //   }
-    // });
   }
 
 }

@@ -34,6 +34,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private subCmtContent: string;
   private currentUser: firebase.User;
   private currentUserRef: any;
+  private relatedSong: Song[];
 
   constructor(
     private db: AngularFirestore,
@@ -67,15 +68,23 @@ export class SongComponent implements OnInit, AfterContentChecked {
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
         this.data = res;
-        this.data.comment.forEach(e => {
-          e.stringPostDate = e.postDate.toDate().toLocaleString();
-          if (e.subComment.length !== 0) {
-            e.subComment.forEach(element => {
-              element.stringPostDate = element.postDate.toDate().toLocaleString();
-            });
-          }
-        });
+        if (this.data.comment.length !== 0) {
+          this.data.comment.forEach(e => {
+            e.stringPostDate = e.postDate.toDate().toLocaleString();
+            if (e.subComment.length !== 0) {
+              e.subComment.forEach(element => {
+                element.stringPostDate = element.postDate.toDate().toLocaleString();
+              });
+            }
+          });
+        }
       }
+      this.colectionData = this.db.collection('Song', query => query.where('countryId', '==', this.data.countryId));
+      this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
+        if (relateRes) {
+          this.relatedSong = relateRes.filter(e => e.name !== this.data.name);
+        }
+      });
       this.loadingSpinner = false;
     });
     this.getCurrentUser();
@@ -92,6 +101,12 @@ export class SongComponent implements OnInit, AfterContentChecked {
         this.currentUserRef = this.db.collection('users').doc(this.currentUser.uid).ref;
       }
     });
+  }
+
+  reLoadPage() {
+    setTimeout(() => {
+      this.ngOnInit();
+    }, );
   }
 
   private getPaginatorData(event: any) {
