@@ -10,6 +10,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { ErrorStateMatcher } from '@angular/material';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -63,7 +64,6 @@ export class WelcomeComponent implements OnInit {
   ]);
   private dateFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern('^(0[1-9]|[12][0-9]|3[01])/-(0[1-9]|1[012])/-\d{4}$')
   ]);
 
 
@@ -80,7 +80,8 @@ export class WelcomeComponent implements OnInit {
     private http: HttpClient,
     public songService: SongService,
     private db: AngularFirestore,
-    public authService: AuthService) {
+    public authService: AuthService,
+    public toastr: ToastrService) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
@@ -319,7 +320,7 @@ export class WelcomeComponent implements OnInit {
       .then(res => {
 
       }).catch(err => {
-        // this.toastr.warning(err.message, 'Warning');
+        this.toastr.warning(err.message, 'Warning');
         console.log(err);
       }).finally(() =>
       location.reload());

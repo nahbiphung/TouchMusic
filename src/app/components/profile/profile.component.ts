@@ -35,7 +35,6 @@ export class ProfileComponent implements OnInit {
   private loadImage: any;
   private dateFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern('^(0[1-9]|[12][0-9]|3[01])/-(0[1-9]|1[012])/-\d{4}$')
   ]);
   private emailFormControl: FormControl = new FormControl('', [
     Validators.required,
@@ -81,7 +80,6 @@ export class ProfileComponent implements OnInit {
       if (res) {
         this.userData = res;
         this.dateFormControl = new FormControl(res.birthday.toDate());
-        console.log(this.matcher);
         if (this.isBlock) {
           this.disableFormControl();
         } else {
@@ -94,7 +92,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.collectionData = this.db.collection('FavoritePlaylist',
-      query => query.where('userId', 'array-contains', this.currentUserRef));
+      query => query.where('userId', '==', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
         if (res) {
           this.faPlaylist = res;

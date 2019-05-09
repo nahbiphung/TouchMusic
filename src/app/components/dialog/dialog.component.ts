@@ -52,7 +52,7 @@ export class DialogComponent implements OnInit {
     } else if (this.data.selector === 'C') {
       this.isAddToFaList = true;
       this.collectionData = this.db.collection('FavoritePlaylist',
-        query => query.where('userId', 'array-contains', this.data.currentUser));
+        query => query.where('userId', '==', this.data.currentUser));
       this.collectionData.valueChanges().subscribe((res) => {
         if (res) {
           this.faPlaylist = res;
@@ -83,46 +83,69 @@ export class DialogComponent implements OnInit {
     const falist: FavoriteList = new FavoriteList();
     falist.userId = this.data.currentUser;
     falist.name = this.name;
-    const storageRef = firebase.storage().ref('images/' + this.loadImage.name);
+    if (this.loadImage) {
+      const storageRef = firebase.storage().ref('images/' + this.loadImage.name);
 
-    // upload file
-    const task = storageRef.put(this.loadImage);
-    const copyThis = this;
-    // update progress bar
-    task.on('state_changed',
-      function then(snapshot) {
-        const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        copyThis.uploadProgress = percent;
-        console.log(copyThis.uploadProgress)
-      },
-      function wrong(error) {
-        console.log(error);
-      },
-      function complete() {
-        task.snapshot.ref.getDownloadURL().then((res) => {
-          falist.image = res;
-          copyThis.db.collection('FavoritePlaylist').add({
-            name: falist.name,
-            userId: falist.userId,
-            details: [],
-            image: res,
-            id: ''
-          }).then((result) => {
-            falist.userId = result.id;
-            copyThis.db.collection('FavoritePlaylist').doc(result.id).update({
-              id: result.id,
+      // upload file
+      const task = storageRef.put(this.loadImage);
+      const copyThis = this;
+      // update progress bar
+      task.on('state_changed',
+        function then(snapshot) {
+          const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          copyThis.uploadProgress = percent;
+        },
+        function wrong(error) {
+          console.log(error);
+        },
+        function complete() {
+          task.snapshot.ref.getDownloadURL().then((res) => {
+            falist.image = res;
+            copyThis.db.collection('FavoritePlaylist').add({
+              name: falist.name,
+              userId: falist.userId,
+              details: [],
+              image: res,
+              id: ''
+            }).then((result) => {
+              falist.userId = result.id;
+              copyThis.db.collection('FavoritePlaylist').doc(result.id).update({
+                id: result.id,
+              });
+              if (copyThis.isCreateNewFaList) {
+                copyThis.dialogRef.close(falist);
+              } else {
+                this.resetForm();
+              }
+            }).catch((error) => {
+              console.log('error when add collection' + error);
             });
-            if (copyThis.isCreateNewFaList) {
-              copyThis.dialogRef.close(falist);
-            } else {
-              this.resetForm();
-            }
-          }).catch((error) => {
-            console.log('error when add collection' + error);
           });
+        }
+      );
+    } else {
+      this.db.collection('FavoritePlaylist').add({
+        name: falist.name,
+        userId: falist.userId,
+        details: [],
+        image: '',
+        id: ''
+      }).then((result) => {
+        falist.userId = result.id;
+        this.db.collection('FavoritePlaylist').doc(result.id).update({
+          id: result.id,
         });
-      }
-    );
+        if (this.isCreateNewFaList) {
+          this.dialogRef.close(falist);
+        } else {
+          this.resetForm();
+        }
+      }).catch((error) => {
+        console.log('error when add collection' + error);
+      });
+
+    }
+    
   }
 
   private resetForm() {

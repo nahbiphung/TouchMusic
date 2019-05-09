@@ -21,6 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -105,7 +106,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatPaginatorModule,
     MatDialogModule,
     NgbPopoverModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

@@ -110,80 +110,85 @@
   <div class="position-relative padding-left-right-10 registration">
     <div class="background-color-white margin-top-10 define-form">
       <h3 class="color-organe display-flex-center signUpTitle">Be join</h3>
-      <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Email" [formControl]="emailFormControl"
-          [errorStateMatcher]="matcher">
-        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-          Please enter a valid email address
-        </mat-error>
-        <mat-error *ngIf="emailFormControl.hasError('required')">
-          Email is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-      <div class="d-flex justify-content-between width-100">
-        <mat-form-field class="width-45 my-form-field">
-          <input matInput placeholder="Fisrt name" [formControl]="firstnameFormControl"
-          [errorStateMatcher]="matcher">
-          <mat-error *ngIf="firstnameFormControl.hasError('max')">
-            Fisrt name is too long!
-          </mat-error>
-          <mat-error *ngIf="firstnameFormControl.hasError('required')">
-            Fisrt name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-  
-        <mat-form-field class="width-45 my-form-field">
-          <input matInput placeholder="Last name" [formControl]="lastnameFormControl"
-          [errorStateMatcher]="matcher">
-          <mat-error *ngIf="lastnameFormControl.hasError('max')">
-            Last name is too long!
-          </mat-error>
-          <mat-error *ngIf="lastnameFormControl.hasError('required')">
-            Last name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <mat-tab-group [color]="'accent'">
+        <mat-tab label="Sign up">
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Email" [formControl]="emailFormControl"
+              [errorStateMatcher]="matcher">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <div class="d-flex justify-content-between width-100">
+            <mat-form-field class="width-45 my-form-field">
+              <input matInput placeholder="Fisrt name" [formControl]="firstnameFormControl"
+              [errorStateMatcher]="matcher">
+              <mat-error *ngIf="firstnameFormControl.hasError('max')">
+                Fisrt name is too long!
+              </mat-error>
+              <mat-error *ngIf="firstnameFormControl.hasError('required')">
+                Fisrt name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
       
-
-      <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Password" [formControl]="passwordFormControl"
-        [errorStateMatcher]="matcher" type="password">
-        <mat-error *ngIf="passwordFormControl.hasError('max') || passwordFormControl.hasError('min')">
-          Password is too long!
-        </mat-error>
-        <mat-error *ngIf="passwordFormControl.hasError('required')">
-          Password is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Phone" [formControl]="phoneFormControl"
-        [errorStateMatcher]="matcher">
-        <mat-error *ngIf="phoneFormControl.hasError('pattern')">
-          Please enter a valid phone number
-        </mat-error>
-        <mat-error *ngIf="phoneFormControl.hasError('required')">
-          Phone is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Birthday" [min]="lengthDate.min" [max]="lengthDate.max" [matDatepicker]="picker" [formControl]="dateFormControl"
-        [errorStateMatcher]="matcher">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="dateFormControl.hasError('required')">
-          Birthday is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="dateFormControl.hasError('pattern')">
-          Please enter a valid date
-        </mat-error>
-      </mat-form-field>
-
-      <div class="position-relative form button-sign display-flex-spaceAround">
-        <button mat-button class="color-gray border-button">Sign up</button>
-        <button mat-button class="color-gray border-button">Sign in</button>
-      </div>
+            <mat-form-field class="width-45 my-form-field">
+              <input matInput placeholder="Last name" [formControl]="lastnameFormControl"
+              [errorStateMatcher]="matcher">
+              <mat-error *ngIf="lastnameFormControl.hasError('max')">
+                Last name is too long!
+              </mat-error>
+              <mat-error *ngIf="lastnameFormControl.hasError('required')">
+                Last name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          
+    
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Password" [formControl]="passwordFormControl"
+            [errorStateMatcher]="matcher" type="password">
+            <mat-error *ngIf="passwordFormControl.hasError('max') || passwordFormControl.hasError('min')">
+              Password is too long!
+            </mat-error>
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Phone" [formControl]="phoneFormControl"
+            [errorStateMatcher]="matcher">
+            <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+              Please enter a valid phone number
+            </mat-error>
+            <mat-error *ngIf="phoneFormControl.hasError('required')">
+              Phone is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+    
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Birthday"
+            [min]="lengthDate.min" [max]="lengthDate.max" [matDatepicker]="picker" [formControl]="dateFormControl"
+            [errorStateMatcher]="matcher">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dateFormControl.hasError('required')">
+              Please enter a valid birthday
+            </mat-error>
+          </mat-form-field>
+    
+          <div class="position-relative form button-sign display-flex-spaceAround justify-content-center margin-top-10">
+            <button mat-button class="color-gray border-button">Sign up</button>
+          </div>
+        </mat-tab>
+        <mat-tab label="Sign in">
+          <app-login></app-login>
+        </mat-tab>
+      </mat-tab-group>
+      
     </div>
   </div>
   <footer>
