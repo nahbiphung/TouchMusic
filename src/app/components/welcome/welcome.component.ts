@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterContentChecked, AfterViewInit, AfterContentInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow/src/app/modules/slideshow/IImage';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -7,13 +7,26 @@ import { SongService } from 'src/app/services/song.service';
 
 // firestore
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { ErrorStateMatcher } from '@angular/material';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
+
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent implements OnInit, AfterContentChecked {
+export class WelcomeComponent implements OnInit {
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
   public song: Observable<any[]>;
@@ -25,6 +38,33 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private backgroundImage: string;
   private loadingSpinner: boolean;
   private imagePlaylist: string;
+  private listCountryMusic = [];
+  private listVideo = [];
+  private lengthDate: LengthOfDate;
+  private emailFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.email
+  ]);
+  private firstnameFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.max(30),
+  ]);
+  private passwordFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.max(30),
+    Validators.min(6),
+  ]);
+  private lastnameFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private phoneFormControl: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern('^(0)[0-9]{9}$'),
+  ]);
+  private dateFormControl: FormControl = new FormControl('', [
+    Validators.required,
+  ]);
 
 
   // Variables
@@ -39,7 +79,9 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   constructor(
     private http: HttpClient,
     public songService: SongService,
-    private db: AngularFirestore) {
+    private db: AngularFirestore,
+    public authService: AuthService,
+    public toastr: ToastrService) {
     this.isPlay = false;
     this.audio = new Audio();
     this.duration = 0;
@@ -61,6 +103,38 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     }, (err) => {
       console.log('error');
     });
+
+    // get song types
+    this.collectionData = this.db.collection('Country');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.listCountryMusic = res;
+      }
+    }, (err) => {
+      console.log('error');
+    });
+
+    //get video
+    this.collectionData = this.db.collection('Video');
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        this.listVideo = res;
+        setTimeout(() => {
+          if (this.listVideo.length !== 0) {
+            this.listVideo.forEach((e: any) => {
+              const video: any = document.getElementById(e.id);
+              video.muted = true;
+              console.log(e);
+            });
+          }
+        },);
+      }
+    });
+
+    this.lengthDate = {
+      min: new Date(1790, 0, 1),
+      max: new Date(),
+    };
 
     // get images
     this.collectionData = this.db.collection('imagesForView');
@@ -93,9 +167,6 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
     }, (error) => {
       console.log('error');
     });
-  }
-
-  ngAfterContentChecked() {
   }
 
   private onClickSong(data: any) {
@@ -238,4 +309,25 @@ export class WelcomeComponent implements OnInit, AfterContentChecked {
   private moveCurrentTime(event: any) {
     this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
+
+  private register() {
+    this.authService.registerUser(this.emailFormControl.value,
+      this.passwordFormControl.value,
+      this.firstnameFormControl.value,
+      this.lastnameFormControl.value,
+      this.phoneFormControl.value,
+      this.dateFormControl.value)
+      .then(res => {
+
+      }).catch(err => {
+        this.toastr.warning(err.message, 'Warning');
+        console.log(err);
+      }).finally(() =>
+      location.reload());
+  }
+}
+
+export interface LengthOfDate {
+  min: Date;
+  max: Date;
 }

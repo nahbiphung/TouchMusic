@@ -1,12 +1,12 @@
 interface User {
     uid: string;
     email: string;
-    firstName?: string;
-    lastName?: string;
-    birthday?: Date;
-    phone?: string;
-    photoURL?: string;
-    role?: Roles;
+    firstName: string;
+    lastName: string;
+    birthday: Date;
+    phone: string;
+    photoURL: string;
+    role: Roles;
 }
 
 interface Roles {
@@ -16,10 +16,14 @@ interface Roles {
 
 interface FavoriteList {
     id: string;
+    image: string;
     name: string;
-    user: string;
-    details: {
-        song: string;
-    }
+    userId: string;
+    details: [{
+        author: string;
+        id: string;
+        mp3Url: string;
+        name: string;
+    }];
 }
 

@@ -40,8 +40,14 @@
       <li><a href="#" routerLink="/home" class="active">Home</a></li>
       <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openLoginModal()" *ngIf="!isLogin">Login</a></li>
       <li><a href="#" data-toggle="modal" data-target="#loginModal" onclick="openRegisterModal()" *ngIf="!isLogin">Register</a></li>
-      <li><a href="#" *ngIf="isLogin">
-        <img src="{{photoURL}}" alt="photo of {{email}}" class="width-45px"> {{email}}</a></li>
+      <li>
+        <a *ngIf="isLogin" (click)="profileUser()" class="d-flex justify-content-center align-items-center">
+          <div class="photo">
+            <img src="{{photoURL}}" alt="photo of {{email}}" class="photoNav">
+          </div> 
+          <div>{{email}}</div>
+        </a>
+      </li>
       <li><a href="#" *ngIf="isLogin" (click)='onClickLogout()'>Logout</a></li>
     </ul>
   </nav>

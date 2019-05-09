@@ -163,8 +163,20 @@
   width: 100%;
 }
 
+.width-45 {
+  width: 45%;
+}
+
 .width-200px {
   width: 200px;
+}
+
+.height-100vh {
+  height: 100vh;
+}
+
+.width-100vw {
+  width: 100vw;
 }
 
 .width-height-100 {
@@ -174,6 +186,27 @@
 
 .margin-right-10 {
   margin-right: 10px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.padding-left-1-5em {
+  padding-left: 1.5em
+}
+
+.padding-left-right-15 {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .font-weight {
@@ -194,4 +227,16 @@
 
 .display-block {
   display: block;
+}
+
+.googleColor {
+  color: brown;
+}
+
+.facebookColor {
+  color: #3C5A99;
+}
+
+.twitterColor {
+  color: #00aced;
 }

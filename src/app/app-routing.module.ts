@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { SongComponent } from './components/song/song.component';
 import { HomeComponent } from './components/home/home.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -15,8 +16,10 @@ const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'song/:name/:id', component: SongComponent},
-  { path: 'playlist', component: PlaylistComponent,
-  },
+  { path: 'playlist/album/:id', component: PlaylistComponent},
+  { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},
+  { path: 'playlist/country/:id', component: PlaylistComponent},
+  { path: 'profile/:uid', component: ProfileComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // Modules
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { SlideshowModule } from 'ng-simple-slideshow';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +20,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+
+// Angular Bootstrap
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
@@ -44,8 +49,12 @@ import {MatSliderModule} from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { ProfileComponent } from './components/profile/profile.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,12 +67,16 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     SongComponent,
     HomeComponent,
     UiLoadingComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    ProfileComponent,
+    DialogComponent,
   ],
+  entryComponents: [DialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-left',
@@ -90,9 +103,13 @@ import { PlaylistComponent } from './components/playlist/playlist.component';
     MDBBootstrapModule.forRoot(),
     MatProgressSpinnerModule,
     SlickCarouselModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    NgbPopoverModule,
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
