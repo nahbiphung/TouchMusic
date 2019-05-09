@@ -32,13 +32,15 @@ export class AuthService {
   }
 
   // Register
-  registerUser(email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string) {
+  registerUser(email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string, isPopup: boolean) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(email, pass)
         .then(userData => {
           this.updateUserData(userData.user, firstname, lastname, birthday, phone)
             .then(() => {
-              this.closeModal();
+              if (isPopup) {
+                this.closeModal();
+              }
               this.toastr.success('Create user thanh cong', 'Success');
               this.router.navigate(['/home']);
             });

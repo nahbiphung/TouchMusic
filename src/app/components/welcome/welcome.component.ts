@@ -311,19 +311,34 @@ export class WelcomeComponent implements OnInit {
   }
 
   private register() {
-    this.authService.registerUser(this.emailFormControl.value,
-      this.passwordFormControl.value,
-      this.firstnameFormControl.value,
-      this.lastnameFormControl.value,
-      this.phoneFormControl.value,
-      this.dateFormControl.value)
-      .then(res => {
+    this.loadingSpinner = true;
+    if (this.validateInfo()) {
+      this.authService.registerUser(this.emailFormControl.value,
+        this.passwordFormControl.value,
+        this.firstnameFormControl.value,
+        this.lastnameFormControl.value,
+        this.phoneFormControl.value,
+        this.dateFormControl.value,
+        false)
+        .then(res => {
+        }).catch(err => {
+          this.toastr.warning(err.message, 'Warning');
+          this.loadingSpinner = false;
+        }).finally(() =>
+        location.reload());
+    } else {
+      this.toastr.error('Some field is invalid');
+      this.loadingSpinner = false;
+    }
+  }
 
-      }).catch(err => {
-        this.toastr.warning(err.message, 'Warning');
-        console.log(err);
-      }).finally(() =>
-      location.reload());
+  validateInfo(): boolean {
+    if(this.emailFormControl.errors || this.passwordFormControl.errors ||
+      this.firstnameFormControl.errors || this.lastnameFormControl.errors ||
+      this.phoneFormControl.errors || this.dateFormControl.errors) {
+        return false;
+      }
+    return true;
   }
 }
 

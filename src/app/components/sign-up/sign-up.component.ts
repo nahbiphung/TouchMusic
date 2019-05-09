@@ -47,9 +47,8 @@ export class SignUpComponent implements OnInit, AfterContentChecked {
   }
 
   onSubmitAddUser() {
-    this.authService.registerUser(this.email, this.password, this.firstName, this.lastName, this.birthday, this.phone)
+    this.authService.registerUser(this.email, this.password, this.firstName, this.lastName, this.birthday, this.phone, true)
       .then(res => {
-
       }).catch(err => {
         this.toastr.warning(err.message, 'Warning');
         console.log(err);
