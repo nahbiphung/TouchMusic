@@ -28,14 +28,14 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit() {}
 
   onSelectFile(event: any) {
-    console.log(event);
-    console.log(event.target.value);
+    // console.log(event);
+    // console.log(event.target.value);
     this.thisFile = event.target.files[0];
     this.fileName = event.target.files[0].name;
     const reader = new FileReader();
     reader.readAsDataURL(this.thisFile);
     reader.onload = (e) => {
-      this.fileSrc = reader.result;
+      this.userService.formUser.controls.photoURL.setValue(reader.result);
       // console.log(this.fileSrc);
     };
     // console.log(this.fileName);
@@ -43,6 +43,9 @@ export class UserDetailsComponent implements OnInit {
 
   onclickClearForm() {
     this.userService.initializeFormGroup();
+    // const a = this.userService.formUser.controls.birthday.value;
+    // console.log(a);
+    // console.log(this.userService.formUser.controls.birthday.value);
   }
   // onSubmitAddUser() {
   //   const filePath = 'images/avartar/' + this.fileName;

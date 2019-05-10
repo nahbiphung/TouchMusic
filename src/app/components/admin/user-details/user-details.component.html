@@ -21,9 +21,9 @@
           </mat-error>
         </mat-form-field>
         <span>
-          <input formControlName='photoURL' type='file' accept="image/*" (change)='onSelectFile($event)'>
-          <img *ngIf="this.fileSrc" src="{{this.fileSrc}}" alt="user avt">
-          <div *ngIf="!this.fileSrc" class="display-inline-block witdh-height-80"><i class="far fa-image"></i></div>
+          <input type='file' accept="image/*" (change)='onSelectFile($event)'>
+          <img *ngIf="userService.formUser.controls.photoURL.value" src="{{userService.formUser.controls.photoURL.value}}" alt="user avt">
+          <div *ngIf="!userService.formUser.controls.photoURL.value" class="display-inline-block witdh-height-80"><i class="far fa-image"></i></div>
           <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
             <div class="flex-bar">
               <progress class="progress is-info" [value]="pct" max="100"></progress>
@@ -38,7 +38,7 @@
     <mat-grid-tile>
       <div class="control-container padding-bottom-60 height-50vh">
         <mat-form-field>
-          <input formControlName='birthday' matInput [matDatepicker]="picker" placeholder="Choose a date">
+          <input formControlName="birthday" matInput [matDatepicker]="picker" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error>This field is required</mat-error>
@@ -48,7 +48,7 @@
           <mat-error>This field is required</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input formControlName='displayName' matInput readonly='true' placeholder="Display Name" value='{{userService.formUser.controls.firstName.value}} {{userService.formUser.controls.lastName.value}}'>
+          <input formControlName='displayName' matInput readonly='true' placeholder="Display Name" >
         </mat-form-field>
         <div formGroupName='role'>
           <div>Role</div>

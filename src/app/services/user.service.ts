@@ -77,24 +77,6 @@ export class UserService {
     console.log(this.formUser.controls);
   }
 
-  setValueTest() {
-    this.formUser.setValue({
-      $key: null,
-      email: '1234@gmail.com',
-      firstName: '',
-      lastName: '',
-      displayName: '',
-      birthday: '',
-      phone: '',
-      photoURL: '',
-      role: {
-        subscriber: true,
-        admin: false
-      },
-      uid: ''
-    });
-  }
-
   // add but no password
   // addUser(data: any) {
   //   this.userList.add({

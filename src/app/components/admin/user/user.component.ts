@@ -35,28 +35,51 @@ export class UserComponent implements OnInit {
           ...item.payload.doc.data()
         }as User;
       });
-      // if (this.listUser) {
-      //   for (const data of this.listUser) {
-      //     if (data.birthday === null) {
-      //       // data.birthday = new Date(Date.now());
-      //     } else {
-      //       // data.birthday = data.birthday.toDate();
-      //     }
-      //   }
-      // }
-      // console.log(this.listUser);
+      if (this.listUser) {
+        let data: any;
+        for (data of this.listUser) {
+          if (data.birthday) {
+            if (data.birthday.seconds) {
+              data.birthday = data.birthday.toDate();
+            }
+          } else {
+            // data.birthday = new Date(Date.now());
+          }
+        }
+      }
+      console.log(this.listUser);
       this.listdata = new MatTableDataSource(this.listUser);
+      this.listdata.sortingDataAccessor = (item, property) => {
+        switch (property) {
+          case('roleAdmin') : return item.role.admin;
+          case('roleSubscriber') : return item.role.subscriber;
+          default: return item[property];
+        }
+      };
       this.listdata.sort = this.sort;
       this.listdata.paginator = this.paginator;
       // tslint:disable-next-line:no-shadowed-variable
+      // TODO: unlock displayName when merge code
       this.listdata.filterPredicate = (data, filter) => {
+        if ( data.firstName == null || data.firstName === '') {
+          data.firstName = '';
+        }
+        if ( data.lastName == null || data.lastName === '') {
+          data.lastName = '';
+        }
+        // if ( data.displayName == null || data.displayName === '') {
+        //   data.displayName = '';
+        // }
+        if ( data.phone == null || data.phone === '') {
+          data.phone = '';
+        }
         return data.email.toLowerCase().indexOf(filter) !== -1
-        || data.firstName.toLowerCase().indexOf(filter) !== -1
-        || data.lastName.toLowerCase().indexOf(filter) !== -1
-        || data.displayName.toLowerCase().indexOf(filter) !== -1
-        || data.phone.toLowerCase().indexOf(filter) !== -1;
-        // || data.role.admin.toLowerCase().indexOf(filter) !== -1
-        // || data.role.subscriber.toLowerCase().indexOf(filter) !== -1;
+        || data.firstName.toString().toLowerCase().indexOf(filter) !== -1
+        || data.lastName.toString().toLowerCase().indexOf(filter) !== -1
+        // || data.displayName.toString().toLowerCase().indexOf(filter) !== -1
+        || data.phone.toString().indexOf(filter) !== -1
+        || data.role.admin.toString().indexOf(filter) !== -1
+        || data.role.subscriber.toString().indexOf(filter) !== -1;
       };
     });
   }
@@ -80,6 +103,7 @@ export class UserComponent implements OnInit {
   }
 
   private onClickEdit(element) {
+    this.userService.popupForm(element);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
