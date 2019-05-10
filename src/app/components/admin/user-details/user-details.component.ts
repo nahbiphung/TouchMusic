@@ -5,7 +5,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
@@ -20,34 +19,17 @@ export class UserDetailsComponent implements OnInit {
   imageUrl: any;
   uploadPercent: Observable<number>;
 
-  private email: string;
-  private password: string;
-  private firstName: string;
-  private lastName: string;
-  private birthday: Date;
-  private phone: string;
-  private photoURL: string;
-  private subscriber: boolean;
-  private admin: boolean;
-
   constructor(private userService: UserService,
               private storage: AngularFireStorage,
               private toastr: ToastrService,
-              public authService: AuthService,
     // private dialogRef: MatDialogRef<UserDetailsComponent>
   ) { }
 
-  ngOnInit() {
-    // this.userService.getUsers();
-  }
-
-  // onclickClearForm() {
-  //   this.userService.form.reset();
-  //   this.userService.initializeFormGroup();
-  // }
+  ngOnInit() {}
 
   onSelectFile(event: any) {
-    // console.log(event);
+    console.log(event);
+    console.log(event.target.value);
     this.thisFile = event.target.files[0];
     this.fileName = event.target.files[0].name;
     const reader = new FileReader();
@@ -59,6 +41,9 @@ export class UserDetailsComponent implements OnInit {
     // console.log(this.fileName);
   }
 
+  onclickClearForm() {
+    this.userService.initializeFormGroup();
+  }
   // onSubmitAddUser() {
   //   const filePath = 'images/avartar/' + this.fileName;
   //   const fileRef = this.storage.ref(filePath);
@@ -85,23 +70,5 @@ export class UserDetailsComponent implements OnInit {
   //     .subscribe();
   // }
 
-  resetForm() {
-    this.email = '';
-    this.firstName = '';
-    this.lastName = '';
-    this.birthday = null;
-    this.phone = '';
-    this.photoURL = '';
-    this.admin = false;
-    this.subscriber = true;
-    this.fileSrc = '';
-  }
-  // onSubmit() {
-  //   if (this.userService.form.valid) {
-  //     this.userService.photoURL = this.imageUrl;
-  //     this.userService.addUser(this.userService.form.value);
-  //     this.userService.form.reset();
-  //     this.userService.initializeFormGroup();
-  //   }
-  // }
+
 }

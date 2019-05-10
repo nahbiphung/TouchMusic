@@ -26,6 +26,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule} from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
+
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
@@ -115,10 +117,11 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
     ReactiveFormsModule,
     MatGridListModule,
     MatCheckboxModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    MatSortModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [UserDetailsComponent]
 })
 export class AppModule { }

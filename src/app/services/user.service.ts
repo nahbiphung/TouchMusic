@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -31,33 +31,39 @@ export class UserService {
     );
   }
 
-  form: FormGroup = new FormGroup({
+  formUser: FormGroup = new FormGroup({
     $key: new FormControl(null),
-    email: new FormControl('', [Validators.email, Validators.required]),
-    password: new FormControl('', Validators.minLength(8)),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    // password: new FormControl('', Validators.minLength(8)),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    birthday: new FormControl(''),
+    displayName: new FormControl(''),
+    birthday: new FormControl('', Validators.required),
     phone: new FormControl('', [Validators.required, Validators.minLength(8)]),
     photoURL: new FormControl(''),
-    admin: new FormControl(false),
-    subscriber: new FormControl(true)
+    role: new FormGroup({
+      admin: new FormControl(''),
+      subscriber: new FormControl('')
+    }),
+    uid: new FormControl('')
   });
 
   initializeFormGroup() {
-    this.form.setValue({
+    this.formUser.setValue({
       $key: null,
       email: '',
-      password: '',
+      // password: '',
       firstName: '',
       lastName: '',
+      displayName: '',
       birthday: '',
       phone: '',
       photoURL: '',
       role: {
         subscriber: true,
         admin: false
-      }
+      },
+      uid: ''
     });
   }
 
@@ -66,26 +72,49 @@ export class UserService {
     return this.userList.snapshotChanges();
   }
 
-  // add but no password
-  addUser(data: any) {
-    this.userList.add({
-      uid: '',
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      birthday: data.birthday,
-      phone: data.phone,
-      photoURL: this.photoURL,
+  popupForm(element) {
+    this.formUser.setValue(element);
+    console.log(this.formUser.controls);
+  }
+
+  setValueTest() {
+    this.formUser.setValue({
+      $key: null,
+      email: '1234@gmail.com',
+      firstName: '',
+      lastName: '',
+      displayName: '',
+      birthday: '',
+      phone: '',
+      photoURL: '',
       role: {
         subscriber: true,
         admin: false
-      }
-    }).then(res => {
-      if (res) {
-        this.afs.collection('users').doc(res.id).update({
-          uid: res.id
-        });
-      }
+      },
+      uid: ''
     });
   }
+
+  // add but no password
+  // addUser(data: any) {
+  //   this.userList.add({
+  //     uid: '',
+  //     email: data.email,
+  //     firstName: data.firstName,
+  //     lastName: data.lastName,
+  //     birthday: data.birthday,
+  //     phone: data.phone,
+  //     photoURL: this.photoURL,
+  //     role: {
+  //       subscriber: true,
+  //       admin: false
+  //     }
+  //   }).then(res => {
+  //     if (res) {
+  //       this.afs.collection('users').doc(res.id).update({
+  //         uid: res.id
+  //       });
+  //     }
+  //   });
+  // }
 }

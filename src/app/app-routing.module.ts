@@ -24,7 +24,6 @@ const routes: Routes = [
     { path: 'user', component: UserComponent, children: [] },
     { path: 'song', component: AdminSongComponent }
   ]},
-  { path : 'user-details', component: UserDetailsComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
