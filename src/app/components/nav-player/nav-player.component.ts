@@ -60,6 +60,13 @@ export class NavPlayerComponent implements OnInit {
     }
   }
 
+  private startDragging(data: any) {
+    setTimeout(() => {
+      const getSong: any = document.getElementsByClassName('cdk-drag-preview');
+      getSong[0].style.zIndex = '1030';
+    }, );
+  }
+
   private drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.songService.playlistSong, event.previousIndex, event.currentIndex);
     this.playlist = this.songService.playlistSong;

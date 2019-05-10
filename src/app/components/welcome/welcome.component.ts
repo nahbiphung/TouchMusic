@@ -317,8 +317,8 @@ export class WelcomeComponent implements OnInit {
         this.passwordFormControl.value,
         this.firstnameFormControl.value,
         this.lastnameFormControl.value,
-        this.phoneFormControl.value,
         this.dateFormControl.value,
+        this.phoneFormControl.value,
         false)
         .then(res => {
         }).catch(err => {
