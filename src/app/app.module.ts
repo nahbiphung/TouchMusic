@@ -54,6 +54,7 @@ import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PerformerComponent } from './components/performer/performer.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     PlaylistComponent,
     ProfileComponent,
     DialogComponent,
+    PerformerComponent,
   ],
   entryComponents: [DialogComponent],
   imports: [
