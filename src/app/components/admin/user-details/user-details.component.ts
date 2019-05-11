@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { UserService } from '../../../services/user.service';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -22,10 +21,13 @@ export class UserDetailsComponent implements OnInit {
   constructor(private userService: UserService,
               private storage: AngularFireStorage,
               private toastr: ToastrService,
+              public dialogRef: MatDialogRef<UserDetailsComponent>
     // private dialogRef: MatDialogRef<UserDetailsComponent>
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userService.getUsers();
+  }
 
   onSelectFile(event: any) {
     // console.log(event);
@@ -47,31 +49,17 @@ export class UserDetailsComponent implements OnInit {
     // console.log(a);
     // console.log(this.userService.formUser.controls.birthday.value);
   }
-  // onSubmitAddUser() {
-  //   const filePath = 'images/avartar/' + this.fileName;
-  //   const fileRef = this.storage.ref(filePath);
-  //   const task = this.storage.upload(filePath, this.thisFile);
-  //   // observe percentage changes
-  //   this.uploadPercent = task.percentageChanges();
-  //   task.snapshotChanges().pipe(
-  //     finalize(() => {
-  //       this.downLoadURL = fileRef.getDownloadURL();
-  //       this.downLoadURL.subscribe((url) => {
-  //         if (url) {
-  //           this.imageUrl = url;
-  //           console.log(this.imageUrl);
-  //           console.log('thanh cong');
 
-  //           this.photoURL = this.imageUrl;
-  // tslint:disable-next-line:max-line-length
-  //           this.authService.registerUser2(this.email, this.password, this.firstName, this.lastName, this.birthday, this.phone, this.photoURL, this.subscriber, this.admin);
-  //           this.resetForm();
-  //         }
-  //       });
-  //     })
-  //   )
-  //     .subscribe();
-  // }
+  onSubmit() {
+    if (this.userService.formUser.valid) {
+      this.userService.updateUser(this.userService.formUser.value);
+      this.onClose();
+    }
+  }
 
+  onClose() {
+    this.userService.initializeFormGroup();
+    this.dialogRef.close();
+  }
 
 }

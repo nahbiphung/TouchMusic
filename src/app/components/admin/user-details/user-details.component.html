@@ -1,4 +1,4 @@
-<form [formGroup] = 'userService.formUser'>
+<form [formGroup] = 'userService.formUser' (submit)='onSubmit()'>
   Value: {{ userService.formUser.value | json }}
   formUser Valid: {{ userService.formUser.valid }}
   <mat-grid-list cols="2">

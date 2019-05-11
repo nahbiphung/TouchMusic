@@ -27,6 +27,8 @@ export class UserComponent implements OnInit {
     private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.getUsers();
+
     this.getUserCol = this.afs.collection('users');
     this.getUserCol.snapshotChanges().subscribe(actionArray => {
       this.listUser = actionArray.map(item => {
@@ -109,5 +111,11 @@ export class UserComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.dialog.open(UserDetailsComponent, dialogConfig);
+  }
+
+  private onDelete(element) {
+    if (confirm('Are you want to delete?')) {
+      this.userService.deleteUser(element.$key);
+    }
   }
 }

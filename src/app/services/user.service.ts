@@ -77,26 +77,24 @@ export class UserService {
     console.log(this.formUser.controls);
   }
 
-  // add but no password
-  // addUser(data: any) {
-  //   this.userList.add({
-  //     uid: '',
-  //     email: data.email,
-  //     firstName: data.firstName,
-  //     lastName: data.lastName,
-  //     birthday: data.birthday,
-  //     phone: data.phone,
-  //     photoURL: this.photoURL,
-  //     role: {
-  //       subscriber: true,
-  //       admin: false
-  //     }
-  //   }).then(res => {
-  //     if (res) {
-  //       this.afs.collection('users').doc(res.id).update({
-  //         uid: res.id
-  //       });
-  //     }
-  //   });
-  // }
+  updateUser(user) {
+    this.userList.doc(user.$key).update({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      displayName: user.displayName,
+      birthday: user.birthday,
+      phone: user.phone,
+      photoURL: user.photoURL,
+      role: {
+        admin: user.role.admin,
+        subscriber: user.role.subscriber
+      },
+    });
+  }
+
+  deleteUser(id: string) {
+    this.userList.doc(id).delete();
+  }
+
 }
