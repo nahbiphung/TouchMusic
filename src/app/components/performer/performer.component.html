@@ -8,9 +8,9 @@
     <div class="song row">
       <div *ngFor="let item of songData" class="songDetail d-flex flex-column col-lg-6 col-md-6 col-sm-12 col-sx-12">
         <h5>{{item.name}}</h5>
-        <div class="d-flex justify-content-start">
-          <span><i class="material-icons">remove_red_eye</i> {{item.like}}</span>
-          <span><i class="material-icons">favorite_border</i> {{item.view}}</span>
+        <div class="d-flex justify-content-start align-items-center">
+          <span><i class="material-icons logo-size">remove_red_eye</i> {{item.like}}</span>
+          <span><i class="material-icons logo-size">favorite_border</i> {{item.view}}</span>
         </div>
       </div>
     </div>
