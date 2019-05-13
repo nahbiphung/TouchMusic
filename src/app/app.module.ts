@@ -127,7 +127,10 @@ import { ProfileComponent } from './components/profile/profile.component';
     MatGridListModule,
     MatCheckboxModule,
     AngularFireStorageModule,
-    MatSortModule
+    MatSortModule,
+    MatTabsModule,
+    MatExpansionModule,
+    NgbPopoverModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
