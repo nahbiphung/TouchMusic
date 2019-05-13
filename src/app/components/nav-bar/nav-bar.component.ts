@@ -16,6 +16,7 @@ export class NavBarComponent implements OnInit {
   public firstName: string;
   public lastName: string;
   public photoURL: string;
+  public displayName: string;
   private currentUser: firebase.User;
 
   constructor(
@@ -31,6 +32,7 @@ export class NavBarComponent implements OnInit {
         this.email = auth.email;
         this.firstName = auth.firstName;
         this.lastName = auth.lastName;
+        this.displayName = auth.displayName;
         // this.photoURL = auth.photoURL;
         if (auth.photoURL === null) {
           // const randomColor = Math.floor(Math.random() * 16777215).toString(16);

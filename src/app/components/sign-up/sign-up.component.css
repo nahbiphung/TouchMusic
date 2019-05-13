@@ -18,3 +18,26 @@ input.example-right-align::-webkit-outer-spin-button,
 input.example-right-align::-webkit-inner-spin-button {
   display: none;
 }
+
+.center{
+    text-align: center;
+}
+
+.height-130{
+    height: 130px;
+}
+
+.width-height-100{
+    width: 100px;
+    height: 100px;
+}
+
+.font-size-100{
+    font-size: 80px;
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
