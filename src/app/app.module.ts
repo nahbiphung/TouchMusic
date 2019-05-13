@@ -5,11 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // Modules
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { SlideshowModule } from 'ng-simple-slideshow';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
 
 // Material Module
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +26,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule} from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+
+// Angular Bootstrap
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
@@ -61,6 +65,8 @@ import { AdminComponent } from './components/admin/admin/admin.component';
 import { UserComponent } from './components/admin/user/user.component';
 import { AdminSongComponent } from './components/admin/admin-song/admin-song.component';
 import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -78,12 +84,15 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
     AdminComponent,
     UserComponent,
     AdminSongComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    ProfileComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-left',
@@ -122,6 +131,6 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
-  entryComponents: [UserDetailsComponent]
+  entryComponents: [UserDetailsComponent, DialogComponent]
 })
 export class AppModule { }

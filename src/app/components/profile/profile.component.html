@@ -1,0 +1,104 @@
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
+<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-height-100" 
+  *ngIf="!loadingSpinner">
+  <div class="profile width-height-100 background-color-white border-radius-10">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="avatar position-relative">
+            <div class="position-absolute pointer">
+              <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
+              <mat-icon class="material-icons color-organe" (click)="openFile.click()">camera</mat-icon>
+            </div>
+          <img src="{{userData.photoURL}}" alt="avartar" class="img-avatar">
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 color-organe contentProfile">
+        <h1>{{userData.lastName}} {{userData.firstName}}</h1>
+      </div>
+    </div>
+  </div>
+  <div class="content row d-flex flex-wrap justify-content-center align-items-start">
+    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 profileDetails">
+      <div class="width-height-100 background-color-white border-radius-10 padding-20">
+        <h2 class="font-weight color-organe title-details text-align-center">Main Info</h2>
+        <div class="content-details width-height-100">
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Fisrt name" [formControl]="fnameFormControl" [value]="userData.firstName"
+            [errorStateMatcher]="matcher">
+            <mat-error *ngIf="fnameFormControl.hasError('maxLength')">
+              Fisrt name is too long
+            </mat-error>
+            <mat-error *ngIf="fnameFormControl.hasError('required')">
+              First name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Last name" [formControl]="lnameFormControl" [value]="userData.lastName"
+            [errorStateMatcher]="matcher">
+            <mat-error *ngIf="lnameFormControl.hasError('maxLength')">
+              Last name is too long
+            </mat-error>
+            <mat-error *ngIf="lnameFormControl.hasError('required')">
+              Last name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Email" [value]="userData.email" [formControl]="emailFormControl"
+             [errorStateMatcher]="matcher">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Phone" [value]="userData.phone" [formControl]="phoneFormControl"
+            [errorStateMatcher]="matcher">
+            <mat-error *ngIf="phoneFormControl.hasError('pattern')">
+              Please enter a valid phone number
+            </mat-error>
+            <mat-error *ngIf="phoneFormControl.hasError('required')">
+              Phone is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="width-100 my-form-field">
+            <input matInput placeholder="Birthday" [min]="lengthDate.min" [max]="lengthDate.max" [matDatepicker]="picker" [formControl]="dateFormControl"
+            [errorStateMatcher]="matcher">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dateFormControl.hasError('required')">
+              Please enter a valid date
+            </mat-error>
+          </mat-form-field>
+          <div class="d-flex justify-content-center align-items-center">
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock" (click)="allowEdit()" mdbWavesEffect>Edit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="updateProfile()" mdbWavesEffect>Submit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()" mdbWavesEffect>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 favoritePlaylist width-height-100 background-color-white border-radius-10">
+      <div class="row padding-20">
+        <h1 class="font-weight color-organe text-align-center">Favorite Playlist</h1>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
+          <div *ngFor="let item of faPlaylist" class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+            d-flex flex-column justify-content-center align-items-center margin-top-10">
+            
+            <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+            <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image" class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+            <div class="title-playlist flex-grow-1 margin-top-10">
+              <h5>{{item.name}}</h5>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+            d-flex justify-content-center align-items-start margin-top-10">
+            <img src="{{imageData}}" alt="image" class="create-playlist pointer" (click)="createNewFaPlaylist()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>

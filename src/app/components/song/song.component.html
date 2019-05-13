@@ -11,7 +11,24 @@
         <div class="songOption display-flex-spaceAround">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()" mdbWavesEffect>Play</button>
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="playSong()" mdbWavesEffect>Pause</button>
-            <i class="material-icons pointer" (click)="addToPlaylist(data)">playlist_play</i>
+            <div>
+                <i class="material-icons margin-right-10 context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click"
+                 #p="ngbPopover">more_horiz</i>
+                <ng-template #popContent>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToFavoritePlaylist(data, p)">
+                        <i class="material-icons">playlist_add</i>
+                        <span>Add to favorite</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToPlaylist(data, p)">
+                        <i class="material-icons">queue_music</i>
+                        <span>Add to queue</span>
+                    </div>
+                  </div>
+                </ng-template>
+                
+            </div>
+            
             <div class="display-flex">
                 <i class="material-icons margin-right-10 pointer" (click)="favoriteSong(data)">favorite_border</i>
                 <div>{{data.like}}</div>
@@ -31,52 +48,39 @@
         </div>
         <div class="lyris">
           <h3 class="margin-top-20 font-weight-bold color-organe">Lyris</h3>
-          <div>
-              Made last it seen went no just when of by. Occasional entreaties comparison me difficulty so themselves.
-              At brother inquiry of offices without do my service. As particular to companions at sentiments. Weather
-              however luckily enquire so certain do. Aware did stood was day under ask. Dearest affixed enquire on
-              explain opinion he. Reached who the mrs joy offices pleased. Towards did colonel article any parties.
-
-              Am terminated it excellence invitation projection as. She graceful shy believed distance use nay. Lively
-              is people so basket ladies window expect. Supply as so period it enough income he genius. Themselves
-              acceptance bed sympathize get dissimilar way admiration son. Design for are edward regret met lovers. This
-              are calm case roof and.
-
-              Depart do be so he enough talent. Sociable formerly six but handsome. Up do view time they shot. He
-              concluded disposing provision by questions as situation. Its estimating are motionless day sentiments end.
-              Calling an imagine at forbade. At name no an what like spot. Pressed my by do affixed he studied.
-
-              Ye on properly handsome returned throwing am no whatever. In without wishing he of picture no exposed
-              talking minutes. Curiosity continual belonging offending so explained it exquisite. Do remember to
-              followed yourself material mr recurred carriage. High drew west we no or at john. About or given on witty
-              event. Or sociable up material bachelor bringing landlord confined. Busy so many in hung easy find well
-              up. So of exquisite my an explained remainder. Dashwood denoting securing be on perceive my laughing so.
-
-              Assure polite his really and others figure though. Day age advantages end sufficient eat expression
-              travelling. Of on am father by agreed supply rather either. Own handsome delicate its property mistress
-              her end appetite. Mean are sons too sold nor said. Son share three men power boy you. Now merits wonder
-              effect garret own.
-
-              Surrounded affronting favourable no mr. Lain knew like half she yet joy. Be than dull as seen very shot.
-              Attachment ye so am travelling estimating projecting is. Off fat address attacks his besides. Suitable
-              settling mr attended no doubtful feelings. Any over for say bore such sold five but hung.
-
-              Improve him believe opinion offered met and end cheered forbade. Friendly as stronger speedily by
-              recurred. Son interest wandered sir addition end say. Manners beloved affixed picture men ask. Explain few
-              led parties attacks picture company. On sure fine kept walk am in it. Resolved to in believed desirous
-              unpacked weddings together. Nor off for enjoyed cousins herself. Little our played lively she adieus far
-              sussex. Do theirs others merely at temper it nearer.
+          <div *ngIf="data.lyris">
+              {{data.lyris}}
+          </div>
+          <div *ngIf="!data.lyris">
+            No lyris !!!
           </div>
         </div>
+
       </div>
       <div class="relatedSong border-radius-10 background-color-white">
         <h3 class="margin-top-20 font-weight-bold color-organe">Related Song</h3>
-        <div>
-          Improve him believe opinion offered met and end cheered forbade. Friendly as stronger speedily by
-          recurred. Son interest wandered sir addition end say. Manners beloved affixed picture men ask. Explain few
-          led parties attacks picture company. On sure fine kept walk am in it. Resolved to in believed desirous
-          unpacked weddings together. Nor off for enjoyed cousins herself. Little our played lively she adieus far
-          sussex. Do theirs others merely at temper it nearer.
+        <div *ngFor="let item of relatedSong"
+          class="margin-bottom-10 border-bottom d-flex justify-content-between align-items-center">
+          <div class="d-flex flex-column pointer flex-grow-2"  [routerLink]="[ '/song', item.name, item.id.trim() ]" (click)="reLoadPage()">
+            <span class="font-weight-bold hoverUnderline">{{item.name}}</span>
+            <span>{{item.author}}</span>
+          </div>
+          <div class="context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click"
+          #p="ngbPopover">
+            <mat-icon class="material-icons">more_vert</mat-icon>
+            <ng-template #popContent>
+              <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToFavoritePlaylist(item, p)">
+                    <i class="material-icons">playlist_add</i>
+                    <span>Add to favorite</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToPlaylist(item, p)">
+                    <i class="material-icons">queue_music</i>
+                    <span>Add to queue</span>
+                </div>
+              </div>
+            </ng-template>
+          </div>
         </div>
       </div>
     </div>

@@ -168,3 +168,12 @@ header.scroll-effect .inline-search form{
 .width-45px{
   width: 45px;
 }
+
+.photoNav {
+  width: 100%;
+  object-fit: cover;
+}
+
+.photo {
+  width: 30px;
+}

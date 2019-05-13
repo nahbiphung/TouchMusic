@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import * as firebase from 'firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,9 +17,12 @@ export class NavBarComponent implements OnInit {
   public lastName: string;
   public photoURL: string;
   public displayName: string;
+  private currentUser: firebase.User;
+
   constructor(
     private authService: AuthService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -44,5 +49,15 @@ export class NavBarComponent implements OnInit {
   onClickLogout() {
     this.authService.logout();
     this.toast.success('Logout thanh cong', 'Logout');
+  }
+
+  private profileUser() {
+    // get current User
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUser = user;
+        this.router.navigate(['/profile/' + user.uid]);
+      }
+    });
   }
 }

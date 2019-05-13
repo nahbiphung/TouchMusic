@@ -44,7 +44,7 @@
   width: 400px;
   height: 375px;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .margin-left-right-20 {
