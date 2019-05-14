@@ -4,6 +4,7 @@ import { UserService } from '../../../services/user.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
@@ -52,8 +53,39 @@ export class UserDetailsComponent implements OnInit {
 
   onSubmit() {
     if (this.userService.formUser.valid) {
-      this.userService.updateUser(this.userService.formUser.value);
-      this.onClose();
+      if (this.fileName) {
+        if (this.userService.imageURL != null) {
+          if (this.userService.imageURL.slice(8, 23) === 'firebasestorage') {
+            this.storage.storage.refFromURL(this.userService.imageURL).delete();
+          }
+        }
+        const filePath = 'images/avartar/' + this.fileName;
+        const fileRef = this.storage.ref(filePath);
+        const task = this.storage.upload(filePath, this.thisFile);
+        // observe percentage changes
+        this.uploadPercent = task.percentageChanges();
+        task.snapshotChanges().pipe(
+          finalize(() => {
+            this.downLoadURL = fileRef.getDownloadURL();
+            this.downLoadURL.subscribe((url) => {
+              if (url) {
+                this.imageUrl = url;
+                console.log(this.imageUrl);
+                console.log('thanh cong');
+                // set image to dowloadURL cause it now from storage
+                this.userService.formUser.controls.photoURL.setValue(this.imageUrl);
+                // now add
+                this.userService.updateUser(this.userService.formUser.value);
+                this.onClose();
+              }
+            });
+          })
+        )
+          .subscribe();
+      } else {
+        this.userService.updateUser(this.userService.formUser.value);
+        this.onClose();
+      }
     }
   }
 
