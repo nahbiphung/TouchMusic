@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentChecked, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrls: ['./song.component.css']
 })
 export class SongComponent implements OnInit, AfterContentChecked {
+  @ViewChild('video') videoElement: ElementRef;
   imageColectionData: AngularFirestoreCollection<any>;
   imageDocumentData: AngularFirestoreDocument<any>;
 
@@ -24,6 +25,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private avatar: any[];
   private isPlay: boolean;
   private videoSong: boolean;
+  private videoEvent: boolean;
   private cmtContent: string;
   private song: Song;
   private postComment: boolean;
@@ -35,6 +37,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private currentUser: firebase.User;
   private currentUserRef: any;
   private relatedSong: Song[];
+  private cmtId: string;
 
   constructor(
     private db: AngularFirestore,
@@ -42,8 +45,9 @@ export class SongComponent implements OnInit, AfterContentChecked {
     private songService: SongService,
     public dialog: MatDialog) {
     this.loadingSpinner = true;
-    this.isPlay = true;
+    this.isPlay = false;
     this.videoSong = false;
+    this.videoEvent = false;
     this.postComment = false;
     this.pageIndex = 0;
     this.pageSize = 5;
@@ -78,6 +82,9 @@ export class SongComponent implements OnInit, AfterContentChecked {
             }
           });
         }
+        if (this.data.video) {
+          this.videoSong = true;
+        }
       }
       this.colectionData = this.db.collection('Song', query => query.where('countryId', '==', this.data.countryId));
       this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
@@ -90,8 +97,32 @@ export class SongComponent implements OnInit, AfterContentChecked {
     this.getCurrentUser();
   }
 
-  ngAfterContentChecked(): void {
+  ngAfterContentChecked() {
+    if (this.songService.isPlay) {
+      this.isPlay = true;
+      const e: any = document.getElementById('video');
+      if (!e.paused) {
+        e.pause();
+      }
+    } else {
+      this.isPlay = false;
+    }
+  }
 
+  private detectVideo() {
+    if(!this.videoEvent) {
+      const e = document.getElementById('video');
+      this.videoEvent = true;
+      this.controlVideo(e);
+    }
+  }
+
+  private controlVideo(element: HTMLElement) {
+    element.addEventListener('play', (e) => {
+      if (!this.songService.audio.paused) {
+        this.songService.PlayOrPause();
+      }
+    });
   }
 
   private getCurrentUser() {
@@ -121,7 +152,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   private playSong() {
-    if (this.isPlay && this.songService.audio.src !== this.data.mp3Url) {
+    if (!this.isPlay && this.songService.audio.src !== this.data.mp3Url) {
       this.songService.playlistSong = [];
       this.songService.playlistSong.push(this.data);
       this.songService.audio.src = this.data.mp3Url;
@@ -129,6 +160,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
       this.songService.audio.author = this.data.author;
     }
     this.isPlay = !this.isPlay;
+    console.log('click' + this.isPlay);
     this.songService.PlayOrPause();
   }
 
@@ -141,11 +173,11 @@ export class SongComponent implements OnInit, AfterContentChecked {
       like: 0,
       postDate: date,
       subComment: [],
-      userId: this.currentUser.email
+      user: this.currentUser.displayName,
+      userAvatar: this.currentUser.photoURL,
     });
-    this.db.collection('Song').doc(this.data.id).update(this.data).then(res => {
-      this.cmtContent = '';
-    });
+    this.db.collection('Song').doc(this.data.id).update(this.data);
+    this.cmtContent = '';
   }
 
   private cancel() {
@@ -184,14 +216,15 @@ export class SongComponent implements OnInit, AfterContentChecked {
   private postSubComment(cmt: any) {
     const date = new Date();
     const getId = this.getIdOfComment(false, cmt.commentId);
-    this.data.comment.forEach(element => {
-      if (element === cmt) {
+    this.data.comment.forEach((element: Comment) => {
+      if (element.commentId === cmt.commentId) {
         element.subComment.unshift({
           subCommentId: getId,
           content: this.subCmtContent,
           like: 0,
           postDate: date,
-          userId: this.currentUser.email
+          user: this.currentUser.displayName,
+          userAvatar: this.currentUser.photoURL,
         });
       }
     });
@@ -202,14 +235,21 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   private openComment(cmtId: any) {
-    const e = document.getElementById(cmtId);
-    if (e.classList.contains('display-none')) {
-      e.classList.remove('display-none');
-      e.classList.add('d-flex');
-    } else {
-      e.classList.add('display-none');
-      e.classList.remove('d-flex');
-    }
+    this.data.comment.forEach((element: Comment) => {
+      const e = document.getElementById(element.commentId.toString());
+      if (element.commentId === cmtId) {
+        if (e.classList.contains('display-none')) {
+          e.classList.remove('display-none');
+          e.classList.add('d-flex');
+        } else {
+          e.classList.add('display-none');
+          e.classList.remove('d-flex');
+        }
+      } else {
+        e.classList.add('display-none');
+        e.classList.remove('d-flex');
+      }
+    });
   }
 
   private like(data: any, cmt: any, subcmt: any) {
