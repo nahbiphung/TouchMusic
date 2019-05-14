@@ -1,0 +1,36 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon aria-label="Example icon-button with a heart icon">close</mat-icon>
+  </button>
+</mat-dialog-actions>
+<form [formGroup]='countryService.formCountry' (submit)='onSubmit()'>
+  Value: {{ countryService.formCountry.value | json }}
+  formCountry Valid: {{ countryService.formCountry.valid }}
+  <div class="control-container">
+    <input type="hidden" formControlName='$key'>
+    <span>
+      <input type='file' accept="image/*" (change)='onSelectFile($event)'>
+      <img *ngIf="countryService.formCountry.controls.image.value"
+        src="{{countryService.formCountry.controls.image.value}}" alt="user avt">
+      <div *ngIf="!countryService.formCountry.controls.image.value" class="display-inline-block witdh-height-80"><i
+          class="far fa-image"></i></div>
+      <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </span>
+    <mat-form-field>
+      <input formControlName='name' matInput placeholder="Name*">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <div class="button-row">
+      <button *ngIf="!countryService.formCountry.controls.$key.value" mat-raised-button color="primary" [disabled]="countryService.formCountry.invalid">Submit</button>
+      <button *ngIf="countryService.formCountry.controls.$key.value" mat-raised-button color="primary" [disabled]="countryService.formCountry.invalid">Update</button>
+      <button mat-raised-button color="warn" (click)="onclickClearForm()">Clear</button>
+    </div>
+  </div>
+</form>

@@ -9,6 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { SlideshowModule } from 'ng-simple-slideshow';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 // Material Module
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,9 +31,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // FireBase Module
 import { AngularFireModule } from '@angular/fire';
@@ -49,16 +56,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavPlayerComponent } from './components/nav-player/nav-player.component';
 import { HomeComponent } from './components/home/home.component';
-
-
-import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatSliderModule } from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { AdminComponent } from './components/admin/admin/admin.component';
@@ -68,6 +66,8 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
+import { CountryComponent } from './components/admin/country/country.component';
+import { CountryDetailComponent } from './components/admin/country/country-detail/country-detail.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +89,8 @@ import { PerformerComponent } from './components/performer/performer.component';
     ProfileComponent,
     DialogComponent,
     PerformerComponent,
+    CountryComponent,
+    CountryDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,6 +138,6 @@ import { PerformerComponent } from './components/performer/performer.component';
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
-  entryComponents: [UserDetailsComponent, DialogComponent]
+  entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent]
 })
 export class AppModule { }
