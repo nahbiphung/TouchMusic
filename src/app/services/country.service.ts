@@ -7,6 +7,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class CountryService {
 
+  imageURL: string;
+
   constructor(
     private afs: AngularFirestore
   ) { }
@@ -46,6 +48,8 @@ export class CountryService {
 
   popupForm(element) {
     this.formCountry.setValue(element);
+    this.imageURL = element.image;
+    console.log(this.imageURL);
   }
 
   updateCountry() {

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA, MatSort, MatPaginator } from '@angular/material';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { UserService } from '../../../services/user.service';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-user',
@@ -24,7 +25,9 @@ export class UserComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private dialog: MatDialog,
-    private userService: UserService) { }
+    private userService: UserService,
+    private storage: AngularFireStorage,
+    ) { }
 
   ngOnInit() {
     this.userService.getUsers();
@@ -116,6 +119,7 @@ export class UserComponent implements OnInit {
   private onDelete(element) {
     if (confirm('Are you want to delete?')) {
       this.userService.deleteUser(element.$key);
+      this.storage.storage.refFromURL(element.photoURL).delete();
     }
   }
 }
