@@ -4,6 +4,7 @@ import { CountryService } from '../../../services/country.service';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogConfig, MatSort, MatPaginator } from '@angular/material';
 import { CountryDetailComponent } from './country-detail/country-detail.component';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-country',
@@ -24,6 +25,7 @@ export class CountryComponent implements OnInit {
     private afs: AngularFirestore,
     private countryService: CountryService,
     private dialog: MatDialog,
+    private storage: AngularFireStorage,
   ) { }
 
   ngOnInit() {
@@ -71,6 +73,7 @@ export class CountryComponent implements OnInit {
   private onDelete(element) {
     if (confirm('Are you want to delete?')) {
       this.countryService.deleteCountry(element.$key);
+      this.storage.storage.refFromURL(element.image).delete();
     }
   }
 }
