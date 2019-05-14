@@ -31,16 +31,17 @@ export class AuthService {
     );
   }
 
-  // Register
-  registerUser(email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string, isPopup: boolean) {
+  // Register Version 2.0
+  registerUser(email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string , photoURL: string) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(email, pass)
         .then(userData => {
-          this.updateUserData(userData.user, firstname, lastname, birthday, phone)
+          this.updateUserData(userData.user, firstname, lastname, birthday, phone, photoURL)
             .then(() => {
-              if (isPopup) {
-                this.closeModal();
-              }
+              // if (isPopup) {
+              //   this.closeModal();
+              // }
+              this.closeModal();
               this.toastr.success('Create user thanh cong', 'Success');
               this.router.navigate(['/home']);
             });
@@ -49,7 +50,7 @@ export class AuthService {
     });
   }
 
-  private updateUserData(user, firstName: string, lastName: string, birthday: Date, phone: string) {
+  private updateUserData(user, firstName: string, lastName: string, birthday: Date, phone: string , photoURL: string) {
     // set user data to firestore on login
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
@@ -58,9 +59,10 @@ export class AuthService {
       email: user.email,
       firstName: firstName || null,
       lastName: lastName || null,
+      displayName: firstName + ' ' + lastName || null,
       birthday: birthday || null,
       phone: phone || null,
-      photoURL: user.photoURL,
+      photoURL: photoURL || null,
       role: {
         subscriber: true,
         admin: false
@@ -111,6 +113,7 @@ export class AuthService {
       firstName: user.firstName || null,
       lastName: user.lastName || null,
       birthday: user.birthday || null,
+      displayName: user.displayName || null,
       phone: user.phone || null,
       photoURL: user.photoURL,
       role: {
@@ -139,4 +142,41 @@ export class AuthService {
       })
     );
   }
+
+  // Register Version 1.0
+  // registerUser(email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string) {
+  //   return new Promise((resolve, reject) => {
+  //     this.afAuth.auth.createUserWithEmailAndPassword(email, pass)
+  //       .then(userData => {
+  //         this.updateUserData(userData.user, firstname, lastname, birthday, phone)
+  //           .then(() => {
+  //             this.closeModal();
+  //             this.toastr.success('Create user thanh cong', 'Success');
+  //             this.router.navigate(['/home']);
+  //           });
+  //       },
+  //         err => reject(err));
+  //   });
+  // }
+
+  // private updateUserData(user, firstName: string, lastName: string, birthday: Date, phone: string) {
+  //   // set user data to firestore on login
+  //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+
+  //   const data: User = {
+  //     uid: user.uid,
+  //     email: user.email,
+  //     firstName: firstName || null,
+  //     lastName: lastName || null,
+  //     birthday: birthday || null,
+  //     phone: phone || null,
+  //     photoURL: user.photoURL,
+  //     role: {
+  //       subscriber: true,
+  //       admin: false
+  //     }
+  //   };
+
+  //   return userRef.set(data, { merge: true });
+  // }
 }

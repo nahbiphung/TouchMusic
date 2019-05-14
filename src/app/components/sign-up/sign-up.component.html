@@ -1,16 +1,33 @@
-<form (submit)="onSubmitAddUser()" >
+<form [formGroup]="formSignUp" (submit)="onSubmitAddUser()" >
 <div class="form-sign-up">
   
+  <span class="center">
+    <input name="photoURL" type='file' (change)='onSelectFile($event)'>
+    <div *ngIf="this.fileSrc" class="height-130 flex-center"><img class="width-height-100" src="{{this.fileSrc}}" alt="user avt"></div>
+    <div *ngIf="!this.fileSrc" class="height-130 flex-center"><i class="far fa-image font-size-100"></i></div>
+    <div *ngIf="uploadPercent | async as pct">
+      <div class="flex-center">
+        <progress class="progress is-info" [value]="pct" max="100"></progress>
+        <div>
+          {{ pct | number }}%
+        </div>
+      </div>
+    </div>
+  </span>
+
   <mat-form-field>
     <mat-label>Email</mat-label>
-    <input matInput placeholder="Enter Your Email" type="email" name="email" [(ngModel)]="email" required>
+    <input matInput placeholder="Enter Your Email" type="email" name="email" formControlName="email" required>
     <mat-icon matSuffix>email</mat-icon>
+    <mat-error>Invalid Email address</mat-error>
   </mat-form-field>
   
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password" required>
+    <input matInput placeholder="Enter Your Password" [type]="hide ? 'password' : 'text'" name="password" formControlName="password" required>
     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    <mat-error *ngIf="this.formSignUp.controls['password'].errors?.required">This field is required</mat-error>
+    <mat-error *ngIf="this.formSignUp.controls['password'].errors?.minlength">Minimum 8 charactors needed.</mat-error>
   </mat-form-field>
   
   <table cellspacing="0">
@@ -18,15 +35,17 @@
       <td>
         <mat-form-field>
           <mat-label>First Name</mat-label>
-          <input matInput placeholder="Enter your First Name" type="text" [(ngModel)]="firstName" name="firstName" required>
+          <input matInput placeholder="Enter your First Name" type="text" name="firstName" formControlName="firstName" required>
           <mat-icon matSuffix>perm_identity</mat-icon>
+          <mat-error>This field is required</mat-error>
         </mat-form-field>
       </td>
       <td>
         <mat-form-field>
           <mat-label>Last Name</mat-label>
-          <input matInput placeholder="Enter your Last Name" type="text" [(ngModel)]="lastName" name="lastName" required>
+          <input matInput placeholder="Enter your Last Name" type="text" name="lastName" formControlName="lastName" required>
           <mat-icon matSuffix>perm_identity</mat-icon>
+          <mat-error>This field is required</mat-error>
         </mat-form-field>
       </td>
     </tr>
@@ -34,18 +53,20 @@
   
   <mat-form-field>
     <mat-label>Date of Birth</mat-label>
-    <input matInput [matDatepicker]="testpicker" placeholder="Choose a date" [(ngModel)]="birthday" name="birthday" required>
+    <input matInput [matDatepicker]="testpicker" placeholder="Choose a date" name="birthday" formControlName="birthday" required>
     <mat-datepicker-toggle matSuffix [for]="testpicker">
       <mat-icon matDatepickerToggleIcon (click)="datetime=true">date_range</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #testpicker></mat-datepicker>
+    <mat-error>This field is required</mat-error>
   </mat-form-field>
   
   <mat-form-field>
     <mat-label>Phone</mat-label>
-    <input matInput placeholder="Enter your Phone number" class="example-right-align" type="text" [(ngModel)]="phone" name="phone" required>
+    <input matInput placeholder="Enter your Phone number" class="example-right-align" type="text" name="phone" formControlName="phone" required>
     <mat-icon matSuffix>smartphone</mat-icon>
+    <mat-error>This field is required</mat-error>
   </mat-form-field>
-  <button mat-raised-button color="primary" type="submit">Register</button>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!formSignUp.valid">Register</button>
 </div>
 </form>

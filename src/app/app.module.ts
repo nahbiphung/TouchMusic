@@ -19,7 +19,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule} from '@angular/material/grid-list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 
@@ -30,6 +36,10 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+// Services
+import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 
 // Components
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -39,19 +49,22 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavPlayerComponent } from './components/nav-player/nav-player.component';
 import { HomeComponent } from './components/home/home.component';
-import { AuthService } from './services/auth.service';
+
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatSliderModule } from '@angular/material/slider';
 import { SongComponent } from './components/song/song.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UiLoadingComponent } from './ui-loading/ui-loading.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { AdminComponent } from './components/admin/admin/admin.component';
+import { UserComponent } from './components/admin/user/user.component';
+import { AdminSongComponent } from './components/admin/admin-song/admin-song.component';
+import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
@@ -69,11 +82,14 @@ import { PerformerComponent } from './components/performer/performer.component';
     HomeComponent,
     UiLoadingComponent,
     PlaylistComponent,
+    AdminComponent,
+    UserComponent,
+    AdminSongComponent,
+    UserDetailsComponent,
     ProfileComponent,
     DialogComponent,
     PerformerComponent,
   ],
-  entryComponents: [DialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -106,12 +122,20 @@ import { PerformerComponent } from './components/performer/performer.component';
     MatProgressSpinnerModule,
     SlickCarouselModule,
     MatPaginatorModule,
+    MatSidenavModule,
+    MatTableModule,
     MatDialogModule,
-    NgbPopoverModule,
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatCheckboxModule,
+    AngularFireStorageModule,
+    MatSortModule,
+    MatTabsModule,
     MatExpansionModule,
-    MatTabsModule
+    NgbPopoverModule
   ],
-  providers: [AuthService, { provide: FirestoreSettingsToken, useValue: {} }],
+  providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
+  entryComponents: [UserDetailsComponent, DialogComponent]
 })
 export class AppModule { }

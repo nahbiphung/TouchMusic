@@ -7,6 +7,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { SongComponent } from './components/song/song.component';
 import { HomeComponent } from './components/home/home.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
+import { AdminComponent } from './components/admin/admin/admin.component';
+import { UserComponent } from './components/admin/user/user.component';
+import { AdminSongComponent } from './components/admin/admin-song/admin-song.component';
+import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
 
@@ -17,6 +21,10 @@ const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'song/:name/:id', component: SongComponent},
+  { path: 'admin', component: AdminComponent, children: [
+    { path: 'user', component: UserComponent, children: [] },
+    { path: 'song', component: AdminSongComponent }
+  ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},
   { path: 'playlist/country/:id', component: PlaylistComponent},

@@ -319,7 +319,7 @@ export class WelcomeComponent implements OnInit {
         this.lastnameFormControl.value,
         this.dateFormControl.value,
         this.phoneFormControl.value,
-        false)
+        '')
         .then(res => {
         }).catch(err => {
           this.toastr.warning(err.message, 'Warning');

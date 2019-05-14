@@ -1,0 +1,24 @@
+<mat-sidenav-container style="height: 100vh;" autosize>
+    <mat-sidenav #sidenav mode="side" opened>
+      <div class="user-infor width-180px">
+        <div class="back-img">
+          <div>
+            <img src="{{this.avt}}" alt="user avt">
+          </div>
+        </div>
+        <div class="padding-top-10">
+          <div class="email handle-content">{{this.email}}</div>
+          <div class="name center-text">{{this.displayName}}</div>
+        </div>
+        <div class="center-text cursor-pointer" (click)="onclickLogout()">Logout</div>
+      </div>
+      <div class="center-text"><a [routerLink]="[ './user' ]">User</a></div>
+      <div class="center-text"><a [routerLink]="[ './song' ]">Song</a></div>
+    </mat-sidenav>
+
+    <!-- Body -->
+    <mat-sidenav-content>
+      <div class="padding-10"><i class="fas fa-bars" (click)="sidenav.toggle()"></i></div>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

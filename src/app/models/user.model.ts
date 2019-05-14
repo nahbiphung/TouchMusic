@@ -1,12 +1,13 @@
 interface User {
     uid: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    birthday: Date;
-    phone: string;
-    photoURL: string;
-    role: Roles;
+    firstName?: string;
+    lastName?: string;
+    displayName?: string;
+    birthday?: Date;
+    phone?: string;
+    photoURL?: string;
+    role?: Roles;
 }
 
 interface Roles {
