@@ -74,7 +74,7 @@
           <div class="d-flex justify-content-center align-items-center">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock" (click)="allowEdit()" mdbWavesEffect>Edit</button>
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="updateProfile()" mdbWavesEffect>Submit</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()" mdbWavesEffect>Cancel</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="cancel()" mdbWavesEffect>Cancel</button>
           </div>
         </div>
       </div>

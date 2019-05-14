@@ -33,11 +33,21 @@ export class AuthService {
 
   // Register Version 2.0
   registerUser(
-    email: string, pass: string, firstname: string, lastname: string, birthday: Date, phone: string , photoURL: string, isPopup?: boolean) {
+      email: string,
+      pass: string,
+      firstname: string,
+      lastname: string,
+      birthday: Date,
+      phone: string ,
+      photoURLs: string,
+      isPopup?: boolean) {
+    if (photoURLs === '') {
+      photoURLs = 'https://ui-avatars.com/api/?name=' + email + '&size=512';
+    }
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(email, pass)
         .then(userData => {
-          this.updateUserData(userData.user, firstname, lastname, birthday, phone, photoURL)
+          this.updateUserData(userData.user, firstname, lastname, birthday, phone, photoURLs)
             .then(() => {
               if (!isPopup) {
                 this.closeModal();
@@ -45,6 +55,10 @@ export class AuthService {
               this.toastr.success('Create user thanh cong', 'Success');
               this.router.navigate(['/home']);
             });
+          this.afAuth.auth.currentUser.updateProfile({
+            photoURL: photoURLs,
+            displayName: firstname + ' ' + lastname,
+          });
         },
           err => reject(err));
     });
