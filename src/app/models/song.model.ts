@@ -11,24 +11,7 @@ interface Song {
     countryId: string;
     view: number;
     like: number;
-    comment: [
-        {
-            commentId: number,
-            content: string,
-            like: number,
-            postDate: Date,
-            userId: string,
-            subComment: [
-                {
-                    subCommentId: number;
-                    content: string,
-                    like: number,
-                    postDate: Date,
-                    userId: string,
-                }
-            ]
-        }
-    ];
+    comment: [Comment];
 }
 
 interface Album {
@@ -57,11 +40,22 @@ interface Video {
 }
 
 interface Comment {
-    id: string;
-    user: string;
-    postDate: string;
+    commentId: number;
     content: string;
     like: number;
+    postDate: Date;
+    userAvatar: string;
+    user: string;
+    subComment: [SubComment];
+}
+
+interface SubComment {
+    subCommentId: number;
+    content: string;
+    like: number;
+    postDate: Date;
+    user: string;
+    userAvatar: string;
 }
 
 interface Performer {

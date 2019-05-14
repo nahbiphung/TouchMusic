@@ -148,13 +148,14 @@ export class ProfileComponent implements OnInit {
   }
 
   private cancel() {
+    console.log(this.userData);
     this.isBlock = true;
     this.disableFormControl();
-    this.emailFormControl.reset();
-    this.dateFormControl.reset();
-    this.fnameFormControl.reset();
-    this.lnameFormControl.reset();
-    this.phoneFormControl.reset();
+    this.emailFormControl.reset(this.userData.email);
+    this.dateFormControl.reset(this.userData.birthday.toDateString());
+    this.fnameFormControl.reset(this.userData.firstName);
+    this.lnameFormControl.reset(this.userData.lastName);
+    this.phoneFormControl.reset(this.userData.phone);
   }
 
   private onFileSelected(event: any) {

@@ -92,3 +92,9 @@
 .hoverUnderline:hover {
   text-decoration: underline;
 }
+
+.video {
+  width: 100%;
+  position: relative;
+  
+}
