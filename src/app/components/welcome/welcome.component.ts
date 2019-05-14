@@ -47,12 +47,12 @@ export class WelcomeComponent implements OnInit {
   ]);
   private firstnameFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.max(30),
+    Validators.maxLength(30),
   ]);
   private passwordFormControl: FormControl = new FormControl('', [
     Validators.required,
-    Validators.max(30),
-    Validators.min(6),
+    Validators.maxLength(30),
+    Validators.minLength(6),
   ]);
   private lastnameFormControl: FormControl = new FormControl('', [
     Validators.maxLength(30),
@@ -319,7 +319,8 @@ export class WelcomeComponent implements OnInit {
         this.lastnameFormControl.value,
         this.dateFormControl.value,
         this.phoneFormControl.value,
-        '')
+        '',
+        true)
         .then(res => {
         }).catch(err => {
           this.toastr.warning(err.message, 'Warning');

@@ -150,8 +150,8 @@
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Password" [formControl]="passwordFormControl"
             [errorStateMatcher]="matcher" type="password">
-            <mat-error *ngIf="passwordFormControl.hasError('max') || passwordFormControl.hasError('min')">
-              Password is too long!
+            <mat-error *ngIf="passwordFormControl.hasError('minlength') || passwordFormControl.hasError('maxlength')">
+              Password is between 6 to 30 character
             </mat-error>
             <mat-error *ngIf="passwordFormControl.hasError('required')">
               Password is <strong>required</strong>
