@@ -2,13 +2,13 @@ interface Song {
     id: string;
     author: string;
     name: string;
-    performer: string;
+    performerId: string;
     mp3Url: string;
     video: string;
-    songType: string;
-    user: string;
-    album: string;
-    country: string;
+    songTypeId: string;
+    userId: string;
+    albumId: string;
+    countryId: string;
     view: number;
     like: number;
     comment: [
@@ -34,12 +34,14 @@ interface Song {
 interface Album {
     id: string;
     name: string;
-    performer: string;
-    user: string;
+    performerId: string;
+    userId: string;
+    image: string;
 }
 
 interface Country {
     id: string;
+    image: string;
     name: string;
 }
 

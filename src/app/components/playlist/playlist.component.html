@@ -3,21 +3,43 @@
   <div class="container">
     <div class="row title background-color-white border-radius-10">
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-        <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
+        <div *ngIf="isCountry" class="width-height-100">
+            <img *ngIf="country.image" src="{{country.image}}" class="imageTitle" alt="">
+            <img *ngIf="country.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+        </div>
+        <div *ngIf="isAlbum" class="width-height-100">
+            <img *ngIf="albumInfo.image" src="{{albumInfo.image}}" class="imageTitle" alt="">
+            <img *ngIf="albumInfo.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+        </div>
+        <div *ngIf="isFavorite" class="width-height-100">
+            <img *ngIf="favoritePlaylist.image" src="{{favoritePlaylist.image}}" class="imageTitle" alt="">
+            <img *ngIf="favoritePlaylist.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+        </div>
       </div>
       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
-        <div class="songName color-organe">What ever you want me to do for you</div>
-        <div class="author color-organe">Micheal Jackson</div>
+        <div *ngIf="isCountry">
+          <div class="songName color-organe">{{country.name}}</div>
+          <div class="author color-organe">Touch Music</div>
+        </div>
+        <div *ngIf="isAlbum">
+          <div class="songName color-organe">{{albumInfo.name}}</div>
+          <div class="author color-organe">{{performer.name}}</div>
+        </div>
+        <div *ngIf="isFavorite">
+          <div class="songName color-organe">{{favoritePlaylist.name}}</div>
+          <div class="author color-organe">{{userData.lastName}} {{userData.firstName}}</div>
+        </div>
+        
         <div class="songOption display-flex-spaceAround">
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="selectedAction()" mdbWavesEffect>Play</button>
             <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="selectedAction()" mdbWavesEffect>Pause</button>
-            <i class="material-icons">playlist_play</i>
+            <i class="material-icons pointer" (click)="addAllToPlaylist()">playlist_play</i>
             <div class="display-flex">
-                <i class="material-icons margin-right-10">favorite_border</i>
+                <i class="material-icons margin-right-10 context-menu">favorite_border</i>
                 <div>122.000</div>
             </div>
             <div class="display-flex">
-                <i class="material-icons margin-right-10">remove_red_eye</i>
+                <i class="material-icons margin-right-10 context-menu">remove_red_eye</i>
                 <div>122.000</div>
             </div>
         </div>

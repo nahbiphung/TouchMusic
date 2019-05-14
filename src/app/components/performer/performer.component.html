@@ -1,0 +1,38 @@
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
+<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-height-100"
+  *ngIf="!loadingSpinner">
+  <div class="performer width-height-100 background-color-white border-radius-10">
+
+  </div>
+  <div class="content row d-flex flex-column background-color-white align-items-start justify-content-start">
+    <div class="song row">
+      <div *ngFor="let item of songData" class="songDetail d-flex flex-column col-lg-6 col-md-6 col-sm-12 col-sx-12">
+        <h5>{{item.name}}</h5>
+        <div class="d-flex justify-content-start align-items-center">
+          <span><i class="material-icons logo-size">remove_red_eye</i> {{item.like}}</span>
+          <span><i class="material-icons logo-size">favorite_border</i> {{item.view}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="album row">
+      <div *ngFor="let item of albumData"
+        class="d-flex flex-column justify-content-center align-items-center margin-top-10">
+        <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
+          [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+        <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
+          class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+        <div class="title-playlist flex-grow-1 margin-top-10">
+          <h5>{{item.name}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="video">
+      <div *ngFor="let item of songData">
+        <div *ngIf="item.video">
+          <div>{{item.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

@@ -67,6 +67,7 @@ import { AdminSongComponent } from './components/admin/admin-song/admin-song.com
 import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PerformerComponent } from './components/performer/performer.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     UserDetailsComponent,
     ProfileComponent,
     DialogComponent,
+    PerformerComponent,
   ],
   imports: [
     BrowserModule,

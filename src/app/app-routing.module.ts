@@ -12,6 +12,7 @@ import { UserComponent } from './components/admin/user/user.component';
 import { AdminSongComponent } from './components/admin/admin-song/admin-song.component';
 import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PerformerComponent } from './components/performer/performer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},
   { path: 'playlist/country/:id', component: PlaylistComponent},
   { path: 'profile/:uid', component: ProfileComponent},
+  { path: 'performer/:id', component: PerformerComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 

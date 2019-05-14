@@ -44,7 +44,8 @@
       </div>
       <div cdkDropList [cdkDropListData]="playlist" class="listSong display-flex width-height-100 display-column"
         (cdkDropListDropped)="drop($event)" *ngIf="playlist">
-        <div class="song" *ngFor="let item of playlist" (click)="onClickSong(item)" cdkDrag>{{item.name}} -
+        <div class="song" *ngFor="let item of playlist" id="{{item.id}}" (cdkDragStarted)="startDragging(item.id)"
+         (click)="onClickSong(item)" cdkDrag>{{item.name}} -
           {{item.author}}</div>
       </div>
       <div *ngIf="!playlist">
