@@ -107,4 +107,8 @@ export class CountryDetailComponent implements OnInit {
     this.countryService.formReset();
     this.dialogRef.close();
   }
+
+  onclickClearForm() {
+    this.countryService.formReset();
+  }
 }

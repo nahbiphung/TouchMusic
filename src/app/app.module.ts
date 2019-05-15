@@ -26,14 +26,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -68,6 +69,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
 import { CountryComponent } from './components/admin/country/country.component';
 import { CountryDetailComponent } from './components/admin/country/country-detail/country-detail.component';
+import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
+// tslint:disable-next-line:max-line-length
+import { AdminPerformerDetailsComponent } from './components/admin/admin-performer/admin-performer-details/admin-performer-details.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +95,8 @@ import { CountryDetailComponent } from './components/admin/country/country-detai
     PerformerComponent,
     CountryComponent,
     CountryDetailComponent,
+    AdminPerformerComponent,
+    AdminPerformerDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -134,10 +140,11 @@ import { CountryDetailComponent } from './components/admin/country/country-detai
     MatSortModule,
     MatTabsModule,
     MatExpansionModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    MatSelectModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
-  entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent]
+  entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent, AdminPerformerDetailsComponent]
 })
 export class AppModule { }

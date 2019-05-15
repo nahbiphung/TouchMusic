@@ -21,7 +21,7 @@ export class PerformerComponent implements OnInit {
 
   ngOnInit() {
     const getParams = this.route.snapshot.paramMap.get('id');
-    
+
     this.documentData = this.db.collection('Performer').doc(getParams);
     this.documentData.valueChanges().subscribe((res: Performer) => {
       if (res) {

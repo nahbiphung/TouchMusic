@@ -14,6 +14,7 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
 import { CountryComponent } from './components/admin/country/country.component';
+import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -25,7 +26,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent, children: [
     { path: 'user', component: UserComponent, children: [] },
     { path: 'song', component: AdminSongComponent },
-    { path: 'country', component: CountryComponent }
+    { path: 'country', component: CountryComponent },
+    { path: 'performer', component: AdminPerformerComponent }
   ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},
