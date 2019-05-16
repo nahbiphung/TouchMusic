@@ -72,6 +72,8 @@ import { CountryDetailComponent } from './components/admin/country/country-detai
 import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
 // tslint:disable-next-line:max-line-length
 import { AdminPerformerDetailsComponent } from './components/admin/admin-performer/admin-performer-details/admin-performer-details.component';
+import { SongTypeComponent } from './components/admin/song-type/song-type.component';
+import { SongTypeDetailComponent } from './components/admin/song-type/song-type-detail/song-type-detail.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +99,8 @@ import { AdminPerformerDetailsComponent } from './components/admin/admin-perform
     CountryDetailComponent,
     AdminPerformerComponent,
     AdminPerformerDetailsComponent,
+    SongTypeComponent,
+    SongTypeDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,6 +149,7 @@ import { AdminPerformerDetailsComponent } from './components/admin/admin-perform
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
-  entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent, AdminPerformerDetailsComponent]
+  entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent, AdminPerformerDetailsComponent
+    , SongTypeDetailComponent]
 })
 export class AppModule { }

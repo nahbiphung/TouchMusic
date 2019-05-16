@@ -1,0 +1,53 @@
+<div class="create-user">
+  <button mat-icon-button (click)="onClickCreate()">
+    <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+  </button>
+</div>
+
+<div>
+  <mat-form-field class="padding-0-10">
+    <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search Country" autocomplete="off">
+    <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div>
+  <mat-table mat-table [dataSource]='listdata' matSort class="width-100">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="option">
+      <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="onClickEdit(element)">
+          <mat-icon class="mat-18">launch</mat-icon>
+        </button>
+        <button mat-icon-button color='warn' (click)="onDelete(element)">
+          <mat-icon class="mat-18">delete_outline</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef>
+        Loading data....
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef>
+        No Data....
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listdata!=null}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(listdata!=null && listdata.data.length==0)}">
+    </mat-footer-row>
+  </mat-table>
+  <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
