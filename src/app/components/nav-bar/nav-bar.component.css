@@ -177,3 +177,13 @@ header.scroll-effect .inline-search form{
 .photo {
   width: 30px;
 }
+
+.width-0{
+  width: 0;
+  transition: 0.5s ease-in;
+}
+
+.width-250px {
+  width: 250px;
+  transition: 0.5s ease-in;
+}

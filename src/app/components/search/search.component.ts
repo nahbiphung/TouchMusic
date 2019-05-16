@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogComponent } from '../dialog/dialog.component';
+import { DialogComponent, FavoriteList } from '../dialog/dialog.component';
 import * as firebase from 'firebase';
 import { SongService } from 'src/app/services/song.service';
 
 @Component({
-  selector: 'app-performer',
-  templateUrl: './performer.component.html',
-  styleUrls: ['./performer.component.scss']
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss']
 })
-export class PerformerComponent implements OnInit {
+export class SearchComponent implements OnInit {
 
   private collectionData: AngularFirestoreCollection<any>;
   private documentData: AngularFirestoreDocument<any>;
-  private data: Performer;
+  private favoriteData: FavoriteList[];
   private performerData: Performer[];
   private loadingSpinner: boolean;
   private songData: Song[];
@@ -23,6 +23,7 @@ export class PerformerComponent implements OnInit {
   private videoData: any[];
   private currentUserRef: any;
   private currentUser: firebase.User;
+  private text: string;
   constructor(
     private db: AngularFirestore,
     private route: ActivatedRoute,
@@ -33,48 +34,40 @@ export class PerformerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const getParams = this.route.snapshot.paramMap.get('id');
-    this.collectionData = this.db.collection('Performer');
+    const getParams = this.route.snapshot.paramMap.get('keyword');
+    this.text = getParams;
+    this.collectionData = this.db.collection('Performer', query => query.where('name', '==', getParams));
     this.collectionData.valueChanges().subscribe((res: Performer[]) => {
       if (res) {
-        this.performerData = this.shuffler(res).slice(0, 4);
-        res = res.filter(e => e.id === getParams);
-        this.data = res[0];
+        this.performerData = res;
+        console.log('performer' + res);
       }
     });
-    this.documentData = this.db.collection('Performer').doc(getParams);
-    this.documentData.snapshotChanges().subscribe((res: any) => {
+    this.collectionData = this.db.collection('Song', query => query.where('name', '==', getParams));
+    this.collectionData.valueChanges().subscribe((res: Song[]) => {
       if (res) {
-        this.collectionData = this.db.collection('Song', query =>
-          query.where('performerId', '==', res.payload.ref));
-        this.collectionData.valueChanges().subscribe((songRes: Song[]) => {
-          if (songRes) {
-            this.songData = songRes;
-            this.videoData = songRes.filter(e => e.video !== '');
-          }
-        });
-        this.collectionData = this.db.collection('Album', query =>
-          query.where('performerId', '==', res.payload.ref));
-        this.collectionData.valueChanges().subscribe((albumRes: Album[]) => {
-          if (albumRes) {
-            this.albumData = albumRes;
-            console.log(albumRes);
-            this.loadingSpinner = false;
-
-          }
-        });
+        this.songData = res;
+        this.videoData = res.filter(e => e.video !== '');
+        console.log('song ' + res);
+        console.log('video' + res);
+      }
+    });
+    this.collectionData = this.db.collection('Album', query => query.where('name', '==', getParams));
+    this.collectionData.valueChanges().subscribe((res: Album[]) => {
+      if (res) {
+        this.albumData = res;
+        console.log('album' + res);
+      }
+    });
+    this.collectionData = this.db.collection('FavoritePlaylist', query => query.where('name', '==', getParams));
+    this.collectionData.valueChanges().subscribe((res: FavoriteList[]) => {
+      if (res) {
+        this.favoriteData = res;
+        console.log('FAvoritelist' + res);
+        this.loadingSpinner = false;
       }
     });
     this.getCurrentUser();
-  }
-
-  private getCurrentUser() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.currentUser = user;
-        this.currentUserRef = this.db.collection('users').doc(this.currentUser.uid).ref;
-      }
-    });
   }
 
   private openVideo(songVideo: Song) {
@@ -86,6 +79,15 @@ export class PerformerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       console.log('The dialog was closed');
+    });
+  }
+
+  private getCurrentUser() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUser = user;
+        this.currentUserRef = this.db.collection('users').doc(this.currentUser.uid).ref;
+      }
     });
   }
 
@@ -106,9 +108,6 @@ export class PerformerComponent implements OnInit {
 
   private changePerformer(per: Performer) {
     this.router.navigate(['/performer/' + per.id]);
-    this.router.routeReuseStrategy.shouldReuseRoute = () => {
-      return false;
-    };
   }
 
   private gotoSong(song: Song) {

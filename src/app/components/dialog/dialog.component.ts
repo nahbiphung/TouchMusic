@@ -21,6 +21,7 @@ export class DialogComponent implements OnInit {
   private isAvatar: boolean;
   private isCreateNewFaList: boolean;
   private isAddToFaList: boolean;
+  private isVideo: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
   private loadingSpinner: boolean;
@@ -33,6 +34,8 @@ export class DialogComponent implements OnInit {
     this.name = '';
     this.isAvatar = false;
     this.isCreateNewFaList = false;
+    this.isVideo = false;
+    this.isAddToFaList = false;
     this.panelOpenState = true;
     this.loadingSpinner = true;
   }
@@ -42,23 +45,34 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data.selector === 'A') {
-      this.isAvatar = true;
-      this.onFileSelected(this.data.data);
-      this.loadingSpinner = false;
-    } else if (this.data.selector === 'B') {
-      this.isCreateNewFaList = true;
-      this.loadingSpinner = false;
-    } else if (this.data.selector === 'C') {
-      this.isAddToFaList = true;
-      this.collectionData = this.db.collection('FavoritePlaylist',
-        query => query.where('userId', '==', this.data.currentUser));
-      this.collectionData.valueChanges().subscribe((res) => {
-        if (res) {
-          this.faPlaylist = res;
-          this.loadingSpinner = false;
-        }
-      });
+    switch (this.data.selector) {
+      case 'A':
+        this.isAvatar = true;
+        this.onFileSelected(this.data.data);
+        this.loadingSpinner = false;
+        break;
+      case 'B':
+        this.isCreateNewFaList = true;
+        this.loadingSpinner = false;
+        break;
+      case 'C':
+        this.isAddToFaList = true;
+        this.collectionData = this.db.collection('FavoritePlaylist',
+          query => query.where('userId', '==', this.data.currentUser));
+        this.collectionData.valueChanges().subscribe((res) => {
+          if (res) {
+            this.faPlaylist = res;
+            this.loadingSpinner = false;
+          }
+        });
+        break;
+      case 'D':
+        this.isVideo = true;
+        this.loadingSpinner = false;
+        break;
+      default:
+        this.loadingSpinner = false;
+        break;
     }
   }
 
@@ -68,7 +82,7 @@ export class DialogComponent implements OnInit {
       this.haveImage = true;
       const copyThis = this;
       const previewImage = new FileReader();
-      previewImage.onload = function (e: any) {
+      previewImage.onload = (e: any) => {
         copyThis.imagePreview = e.currentTarget.result;
       };
       previewImage.readAsDataURL(this.loadImage);
@@ -114,6 +128,7 @@ export class DialogComponent implements OnInit {
               });
               if (copyThis.isCreateNewFaList) {
                 copyThis.dialogRef.close(falist);
+                this.resetForm();
               } else {
                 this.resetForm();
               }
@@ -137,6 +152,7 @@ export class DialogComponent implements OnInit {
         });
         if (this.isCreateNewFaList) {
           this.dialogRef.close(falist);
+          this.resetForm();
         } else {
           this.resetForm();
         }
@@ -145,7 +161,6 @@ export class DialogComponent implements OnInit {
       });
 
     }
-    
   }
 
   private resetForm() {
@@ -196,11 +211,11 @@ export class DialogComponent implements OnInit {
       this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
       this.documentData.update({
         details: firebase.firestore.FieldValue.arrayUnion({
-            author: this.data.data.author,
-            id: this.data.data.id,
-            mp3Url: this.data.data.mp3Url,
-            name: this.data.data.name,
-          })
+          author: this.data.data.author,
+          id: this.data.data.id,
+          mp3Url: this.data.data.mp3Url,
+          name: this.data.data.name,
+        })
       }).then(() => {
         this.loadingSpinner = false;
         this.dialogRef.close();
