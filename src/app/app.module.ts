@@ -68,6 +68,7 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { PerformerComponent } from './components/performer/performer.component';
     ProfileComponent,
     DialogComponent,
     PerformerComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

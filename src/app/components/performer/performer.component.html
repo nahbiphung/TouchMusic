@@ -1,35 +1,106 @@
 <app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
-<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-height-100"
+<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-100 position-relative"
   *ngIf="!loadingSpinner">
   <div class="performer width-height-100 background-color-white border-radius-10">
-
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div class="avatar position-relative">
+          <img src="{{data.image}}" alt="avartar" class="img-avatar">
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12 color-organe contentProfile">
+        <h1 class="font-weight">{{data.name}}</h1>
+      </div>
+    </div>
   </div>
-  <div class="content row d-flex flex-column background-color-white align-items-start justify-content-start">
-    <div class="song row">
-      <div *ngFor="let item of songData" class="songDetail d-flex flex-column col-lg-6 col-md-6 col-sm-12 col-sx-12">
-        <h5>{{item.name}}</h5>
-        <div class="d-flex justify-content-start align-items-center">
-          <span><i class="material-icons logo-size">remove_red_eye</i> {{item.like}}</span>
-          <span><i class="material-icons logo-size">favorite_border</i> {{item.view}}</span>
+  <div
+    class="content d-flex flex-column background-color-white align-items-start justify-content-start border-radius-10">
+    <div class="song row margin-top-10">
+      <h2 class="font-weight width-100 padding-left-right-15">Songs</h2>
+      <div *ngFor="let item of songData"
+        class="songDetail margin-top-10 d-flex flex-column col-lg-6 col-md-6 col-sm-12 col-sx-12">
+        <h5 class="font-weight color-organe hoverUnderline pointer" (click)="gotoSong(item)">{{item.name}}</h5>
+        <div class="d-flex justify-content-between align-items-center border-bottom">
+          <span class="d-flex" *ngIf="!songService.isPlay"><i
+              class="material-icons logo-size margin-right-left-5 context-menu"
+              (click)="playSong(item)">play_arrow</i></span>
+          <span class="d-flex" *ngIf="songService.isPlay"><i
+              class="material-icons logo-size margin-right-left-5 context-menu"
+              (click)="playSong(item)">pause</i></span>
+          <span class="d-flex">
+            <i class="material-icons logo-size margin-right-left-5 context-menu" [ngbPopover]="popContent"
+              [autoClose]="'outside'" triggers="click" #p="ngbPopover" placement="bottom"
+              container="body">more_horiz</i>
+            <ng-template #popContent>
+              <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToFavoritePlaylist(item, p)">
+                  <i class="material-icons">playlist_add</i>
+                  <span>Add to favorite</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToPlaylist(item, p)">
+                  <i class="material-icons">queue_music</i>
+                  <span>Add to queue</span>
+                </div>
+              </div>
+            </ng-template>
+          </span>
+          <span class="d-flex"><i class="material-icons logo-size margin-right-left-5 context-menu">remove_red_eye</i>
+            {{item.view}}</span>
+          <span class="d-flex" (click)="favoriteSong(item)"><i
+              class="material-icons logo-size margin-right-left-5 context-menu" id="like">favorite_border</i>
+            {{item.like}}</span>
         </div>
       </div>
     </div>
-    <div class="album row">
-      <div *ngFor="let item of albumData"
-        class="d-flex flex-column justify-content-center align-items-center margin-top-10">
-        <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
-          [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
-        <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
-          class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+    <div class="album row margin-top-10">
+      <h2 class="font-weight width-100 padding-left-right-15">Albums</h2>
+      <div *ngIf="albumData.length !== 0" class="width-100 d-flex justify-content-start">
+        <div *ngFor="let item of albumData"
+          class="col-lg-3 col-md-4 col-sm-6 col-sx-12 d-flex flex-column justify-content-center align-items-center margin-top-10">
+          <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
+            [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+          <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
+            class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+          <div class="title-playlist flex-grow-1 margin-top-10">
+            <h5>{{item.name}}</h5>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="albumData.length === 0" class="col-lg-3 col-md-4 col-sm-6 col-sx-12">
         <div class="title-playlist flex-grow-1 margin-top-10">
-          <h5>{{item.name}}</h5>
+          <h5>There is no album!!!</h5>
+        </div>
+      </div>
+
+    </div>
+    <div class="video row margin-top-10">
+      <h2 class="font-weight width-100 padding-left-right-15">Videos</h2>
+      <div *ngFor="let item of videoData" class="col-lg-3 col-md-4 col-sm-6 col-sx-12 margin-top-10">
+        <div *ngIf="item.video" class="d-flex flex-column justify-content-center align-items-center">
+          <img *ngIf="item.imageSong" src="{{item.imageSong}}" alt="image" class="img-playlist flex-grow-2"
+            (click)="openVideo(item)">
+          <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
+            class="img-playlist flex-grow-2" (click)="openVideo(item)">
+          <div class="title-playlist flex-grow-1 margin-top-10">
+            <h5>{{item.name}}</h5>
+          </div>
         </div>
       </div>
     </div>
-    <div class="video">
-      <div *ngFor="let item of songData">
-        <div *ngIf="item.video">
-          <div>{{item.name}}</div>
+    <div class="relatedPerformer row margin-top-10">
+      <h2 class="font-weight width-100 padding-left-right-15">Related Performer</h2>
+      <div *ngFor="let item of performerData" class="col-lg-3 col-md-4 col-sm-6 col-sx-12 margin-top-10">
+        <div class="performer-image d-flex flex-column justify-content-center align-items-center hoverList pointer"
+          (click)="changePerformer(item)">
+          <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-avatar" (click)="openPerformer(item)">
+          <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image" class="img-avatar"
+            (click)="openPerformer(item)">
+        </div>
+        <div class="title-playlist d-flex justify-content-center margin-top-10 hoverUnderline pointer"
+          (click)="changePerformer(item)">
+          <h5>{{item.name}}</h5>
         </div>
       </div>
     </div>

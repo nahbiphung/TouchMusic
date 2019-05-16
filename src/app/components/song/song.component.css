@@ -81,10 +81,6 @@
   width: 100%;
 }
 
-.hoverList:hover {
-  background: #a2b1a4;
-}
-
 .border-bottom {
   border-bottom: 1px solid #324a45;
 }
