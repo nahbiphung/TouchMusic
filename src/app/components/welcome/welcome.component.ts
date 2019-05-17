@@ -114,7 +114,7 @@ export class WelcomeComponent implements OnInit {
       console.log('error');
     });
 
-    //get video
+    // get video
     this.collectionData = this.db.collection('Video');
     this.collectionData.valueChanges().subscribe((res) => {
       if (res) {
@@ -127,7 +127,7 @@ export class WelcomeComponent implements OnInit {
               console.log(e);
             });
           }
-        },);
+        });
       }
     });
 
@@ -334,7 +334,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   validateInfo(): boolean {
-    if(this.emailFormControl.errors || this.passwordFormControl.errors ||
+    if (this.emailFormControl.errors || this.passwordFormControl.errors ||
       this.firstnameFormControl.errors || this.lastnameFormControl.errors ||
       this.phoneFormControl.errors || this.dateFormControl.errors) {
         return false;

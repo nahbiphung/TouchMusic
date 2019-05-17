@@ -179,7 +179,7 @@ export class DialogComponent implements OnInit {
       function then(snapshot) {
         const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         copyThis.uploadProgress = percent;
-        console.log(copyThis.uploadProgress)
+        console.log(copyThis.uploadProgress);
       },
       function wrong(error) {
         console.log(error);
