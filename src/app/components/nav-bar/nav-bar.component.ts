@@ -52,7 +52,7 @@ export class NavBarComponent implements OnInit {
         this.router.navigate(['search/' + this.searchContent.trim()]);
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
           return false;
-        }
+        };
       }
     });
   }
