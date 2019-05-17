@@ -67,7 +67,6 @@ import { UserDetailsComponent } from './components/admin/user-details/user-detai
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
-<<<<<<< HEAD
 import { CountryComponent } from './components/admin/country/country.component';
 import { CountryDetailComponent } from './components/admin/country/country-detail/country-detail.component';
 import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
@@ -75,9 +74,7 @@ import { AdminPerformerComponent } from './components/admin/admin-performer/admi
 import { AdminPerformerDetailsComponent } from './components/admin/admin-performer/admin-performer-details/admin-performer-details.component';
 import { SongTypeComponent } from './components/admin/song-type/song-type.component';
 import { SongTypeDetailComponent } from './components/admin/song-type/song-type-detail/song-type-detail.component';
-=======
 import { SearchComponent } from './components/search/search.component';
->>>>>>> 8d433c36ddd2e5c780ea5ccbbd0988e7003b5f37
 
 @NgModule({
   declarations: [
@@ -99,16 +96,13 @@ import { SearchComponent } from './components/search/search.component';
     ProfileComponent,
     DialogComponent,
     PerformerComponent,
-<<<<<<< HEAD
     CountryComponent,
     CountryDetailComponent,
     AdminPerformerComponent,
     AdminPerformerDetailsComponent,
     SongTypeComponent,
     SongTypeDetailComponent,
-=======
     SearchComponent,
->>>>>>> 8d433c36ddd2e5c780ea5ccbbd0988e7003b5f37
   ],
   imports: [
     BrowserModule,

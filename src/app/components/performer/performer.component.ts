@@ -34,14 +34,8 @@ export class PerformerComponent implements OnInit {
 
   ngOnInit() {
     const getParams = this.route.snapshot.paramMap.get('id');
-<<<<<<< HEAD
-
-    this.documentData = this.db.collection('Performer').doc(getParams);
-    this.documentData.valueChanges().subscribe((res: Performer) => {
-=======
     this.collectionData = this.db.collection('Performer');
     this.collectionData.valueChanges().subscribe((res: Performer[]) => {
->>>>>>> 8d433c36ddd2e5c780ea5ccbbd0988e7003b5f37
       if (res) {
         this.performerData = this.shuffler(res).slice(0, 4);
         res = res.filter(e => e.id === getParams);

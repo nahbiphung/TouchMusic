@@ -13,13 +13,10 @@ import { AdminSongComponent } from './components/admin/admin-song/admin-song.com
 import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
-<<<<<<< HEAD
 import { CountryComponent } from './components/admin/country/country.component';
 import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
 import { SongTypeComponent } from './components/admin/song-type/song-type.component';
-=======
 import { SearchComponent } from './components/search/search.component';
->>>>>>> 8d433c36ddd2e5c780ea5ccbbd0988e7003b5f37
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
