@@ -18,6 +18,7 @@ export class NavBarComponent implements OnInit {
   public photoURL: string;
   public displayName: string;
   private currentUser: firebase.User;
+  private searchContent: string;
 
   constructor(
     private authService: AuthService,
@@ -44,11 +45,35 @@ export class NavBarComponent implements OnInit {
         this.isLogin = false;
       }
     });
+
+    const search = document.getElementById('searchBar');
+    search.addEventListener('keyup', (e) => {
+      if (e.keyCode === 13) {
+        this.router.navigate(['search/' + this.searchContent.trim()]);
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+          return false;
+        }
+      }
+    });
   }
 
   onClickLogout() {
     this.authService.logout();
     this.toast.success('Logout thanh cong', 'Logout');
+  }
+
+  private search() {
+    const searchBar = document.getElementById('searchBar');
+    if (searchBar.classList.contains('width-0')) {
+      searchBar.classList.remove('width-0');
+      searchBar.classList.add('width-250px');
+      searchBar.classList.add('padding-left-right-15');
+      searchBar.focus();
+    } else {
+      searchBar.classList.add('width-0');
+      searchBar.classList.remove('width-250px');
+      searchBar.classList.remove('padding-left-right-15');
+    }
   }
 
   private profileUser() {

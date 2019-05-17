@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterContentChecked, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { SongService } from 'src/app/services/song.service';
 import * as firebase from 'firebase';
@@ -22,7 +22,6 @@ export class SongComponent implements OnInit, AfterContentChecked {
   documentData: AngularFirestoreDocument<any>;
   data: any;
   private loadingSpinner: boolean;
-  private avatar: any[];
   private isPlay: boolean;
   private videoSong: boolean;
   private videoEvent: boolean;
@@ -43,6 +42,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
     private db: AngularFirestore,
     private route: ActivatedRoute,
     private songService: SongService,
+    private router: Router,
     public dialog: MatDialog) {
     this.loadingSpinner = true;
     this.isPlay = false;
@@ -56,16 +56,6 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    this.imageColectionData = this.db.collection('imagesForView');
-    this.imageColectionData.valueChanges().subscribe((res) => {
-      if (res) {
-        this.avatar = res[0];
-      }
-      this.loadingSpinner = false;
-    }, (error) => {
-      console.log('error');
-      this.loadingSpinner = false;
-    });
 
     const param = this.route.snapshot.paramMap.get('id');
     this.documentData = this.db.collection('Song').doc(param);
@@ -85,14 +75,14 @@ export class SongComponent implements OnInit, AfterContentChecked {
         if (this.data.video) {
           this.videoSong = true;
         }
+        this.colectionData = this.db.collection('Song', query => query.where('countryId', '==', this.data.countryId));
+        this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
+          if (relateRes) {
+            this.relatedSong = relateRes.filter(e => e.name !== this.data.name);
+          }
+        });
+        this.loadingSpinner = false;
       }
-      this.colectionData = this.db.collection('Song', query => query.where('countryId', '==', this.data.countryId));
-      this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
-        if (relateRes) {
-          this.relatedSong = relateRes.filter(e => e.name !== this.data.name);
-        }
-      });
-      this.loadingSpinner = false;
     });
     this.getCurrentUser();
   }
@@ -110,7 +100,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   private detectVideo() {
-    if(!this.videoEvent) {
+    if (!this.videoEvent) {
       const e = document.getElementById('video');
       this.videoEvent = true;
       this.controlVideo(e);
@@ -134,10 +124,17 @@ export class SongComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  reLoadPage() {
-    setTimeout(() => {
-      this.ngOnInit();
-    }, );
+  private changeSong(song: Song) {
+    this.data = [];
+    this.router.navigate(['/song/' + song.name + '/' + song.id]);
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
+  }
+
+  private changePerformer(song: any) {
+    this.router.navigate(['/performer/' + song.performerId.id]);
+
   }
 
   private getPaginatorData(event: any) {

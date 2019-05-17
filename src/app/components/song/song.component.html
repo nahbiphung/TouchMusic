@@ -2,41 +2,45 @@
 <section class="background-color-dark-blue padding-top-nav padding-bottom-nav-player" *ngIf="!loadingSpinner">
   <div class="container" *ngIf="data">
     <div class="row title background-color-white border-radius-10">
-      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-        <img src="{{avatar.musicType1}}" class="imageTitle" alt="">
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 width-height-100">
+        <img src="{{data.imageSong}}" class="imageTitle" alt="">
       </div>
       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
         <div class="songName color-organe">{{data.name}}</div>
         <div class="author color-organe">{{data.author}}</div>
         <div class="songOption display-flex-spaceAround">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="playSong()" mdbWavesEffect>Play</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()" mdbWavesEffect>Pause</button>
-            <div>
-                <i class="material-icons margin-right-10 context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click"
-                 #p="ngbPopover">more_horiz</i>
-                <ng-template #popContent>
-                  <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToFavoritePlaylist(data, p)">
-                        <i class="material-icons">playlist_add</i>
-                        <span>Add to favorite</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToPlaylist(data, p)">
-                        <i class="material-icons">queue_music</i>
-                        <span>Add to queue</span>
-                    </div>
-                  </div>
-                </ng-template>
-                
-            </div>
-            
-            <div class="display-flex">
-                <i class="material-icons margin-right-10 pointer" (click)="favoriteSong(data)">favorite_border</i>
-                <div>{{data.like}}</div>
-            </div>
-            <div class="display-flex">
-                <i class="material-icons margin-right-10 pointer">remove_red_eye</i>
-                <div>{{data.view}}</div>
-            </div>
+          <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="playSong()"
+            mdbWavesEffect>Play</button>
+          <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()"
+            mdbWavesEffect>Pause</button>
+          <div>
+            <i class="material-icons margin-right-10 context-menu" [ngbPopover]="popContent" [autoClose]="'outside'"
+              triggers="click" #p="ngbPopover">more_horiz</i>
+            <ng-template #popContent>
+              <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToFavoritePlaylist(data, p)">
+                  <i class="material-icons">playlist_add</i>
+                  <span>Add to favorite</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToPlaylist(data, p)">
+                  <i class="material-icons">queue_music</i>
+                  <span>Add to queue</span>
+                </div>
+              </div>
+            </ng-template>
+
+          </div>
+
+          <div class="display-flex">
+            <i class="material-icons margin-right-10 pointer" (click)="favoriteSong(data)">favorite_border</i>
+            <div>{{data.like}}</div>
+          </div>
+          <div class="display-flex">
+            <i class="material-icons margin-right-10 pointer">remove_red_eye</i>
+            <div>{{data.view}}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -44,14 +48,14 @@
       <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
         <div class="video" *ngIf="videoSong">
           <h3 class="margin-top-20 font-weight-bold color-organe">Video</h3>
-          <video width="100%" poster="../../../assets/images/musical-note.png" id="video" (mouseenter)="detectVideo()" controls>
+          <video width="100%" poster="{{data.imageVideo}}" id="video" (mouseenter)="detectVideo()" controls>
             <source src="{{data.video}}" type="video/mp4">
           </video>
         </div>
         <div class="lyris">
           <h3 class="margin-top-20 font-weight-bold color-organe">Lyris</h3>
           <div *ngIf="data.lyris">
-              {{data.lyris}}
+            {{data.lyris}}
           </div>
           <div *ngIf="!data.lyris">
             No lyris !!!
@@ -63,22 +67,23 @@
         <h3 class="margin-top-20 font-weight-bold color-organe">Related Song</h3>
         <div *ngFor="let item of relatedSong"
           class="margin-bottom-10 border-bottom d-flex justify-content-between align-items-center">
-          <div class="d-flex flex-column pointer flex-grow-2"  [routerLink]="[ '/song', item.name, item.id.trim() ]" (click)="reLoadPage()">
-            <span class="font-weight-bold hoverUnderline">{{item.name}}</span>
-            <span>{{item.author}}</span>
+          <div class="d-flex flex-column pointer flex-grow-2">
+            <span class="font-weight-bold hoverUnderline" (click)="changeSong(item)">{{item.name}}</span>
+            <span class="hoverUnderline" (click)="changePerformer(item)">{{item.author}}</span>
           </div>
-          <div class="context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click"
-          #p="ngbPopover">
+          <div class="context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click" #p="ngbPopover">
             <mat-icon class="material-icons">more_vert</mat-icon>
             <ng-template #popContent>
               <div class="d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToFavoritePlaylist(item, p)">
-                    <i class="material-icons">playlist_add</i>
-                    <span>Add to favorite</span>
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToFavoritePlaylist(item, p)">
+                  <i class="material-icons">playlist_add</i>
+                  <span>Add to favorite</span>
                 </div>
-                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15" (click)="addToPlaylist(item, p)">
-                    <i class="material-icons">queue_music</i>
-                    <span>Add to queue</span>
+                <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
+                  (click)="addToPlaylist(item, p)">
+                  <i class="material-icons">queue_music</i>
+                  <span>Add to queue</span>
                 </div>
               </div>
             </ng-template>
@@ -86,21 +91,24 @@
         </div>
       </div>
     </div>
-    <div class="row col-lg-8 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white">
+    <div
+      class="row col-lg-8 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white">
       <h3 class="margin-top-20 d-block width-height-100 font-weight-bold color-organe">Comment</h3>
       <div class="userComment width-100">
         <div class="media d-block d-md-flex mt-4">
-            <img class="d-flex mb-3 mx-auto avatar" src="{{currentUser.photoURL}}" alt="Generic placeholder image">
-            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">{{currentUser.displayName}}</h5>
-                <mat-form-field class="my-form-field width-100">
-                  <textarea matInput [(ngModel)]="cmtContent" placeholder="Say something"></textarea>
-                </mat-form-field>
-                <div class="d-flex justify-content-end">
-                  <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="submit()" mdbWavesEffect>Post</button>
-                  <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()" mdbWavesEffect>Cancel</button>
-                </div>
+          <img class="d-flex mb-3 mx-auto avatar" src="{{currentUser.photoURL}}" alt="Generic placeholder image">
+          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+            <h5 class="mt-0 font-weight-bold">{{currentUser.displayName}}</h5>
+            <mat-form-field class="my-form-field width-100">
+              <textarea matInput [(ngModel)]="cmtContent" placeholder="Say something"></textarea>
+            </mat-form-field>
+            <div class="d-flex justify-content-end">
+              <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="submit()"
+                mdbWavesEffect>Post</button>
+              <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="cancel()"
+                mdbWavesEffect>Cancel</button>
             </div>
+          </div>
         </div>
       </div>
       <div class="otherComment width-100" *ngIf="data.comment">
@@ -109,8 +117,8 @@
           <img class="d-flex mb-3 mx-auto avatar" src="{{item.userAvatar}}" alt="Generic placeholder image">
           <div class="position-relative media-body text-center text-md-left ml-md-3 ml-0">
             <div class="d-flex justify-content-between">
-                <h5 class="mt-0 font-weight-bold">{{item.user}}</h5>
-                <span class="font-size-13">{{item.stringPostDate}}</span>
+              <h5 class="mt-0 font-weight-bold">{{item.user}}</h5>
+              <span class="font-size-13">{{item.stringPostDate}}</span>
             </div>
             <span>{{item.content}}</span>
             <div class="d-flex justify-content-start align-items-center">
@@ -120,7 +128,8 @@
                 <mat-form-field class="my-form-field width-100">
                   <input matInput [(ngModel)]="subCmtContent" placeholder="Say something">
                 </mat-form-field>
-                <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="postSubComment(item)" mdbWavesEffect>Post</button>  
+                <button mdbBtn type="button" color="amber" size="sm" class="waves-light" (click)="postSubComment(item)"
+                  mdbWavesEffect>Post</button>
               </div>
             </div>
             <!-- subcomment -->
@@ -128,27 +137,24 @@
               <img class="d-flex mb-3 mx-auto avatar" src="{{subcmt.userAvatar}}" alt="Generic placeholder image">
               <div class="media-body text-center text-md-left ml-md-3 ml-0">
                 <div class="d-flex justify-content-between">
-                    <h5 class="mt-0 font-weight-bold">{{subcmt.user}}</h5>
-                    <span class="font-size-13">{{subcmt.stringPostDate}}</span>
+                  <h5 class="mt-0 font-weight-bold">{{subcmt.user}}</h5>
+                  <span class="font-size-13">{{subcmt.stringPostDate}}</span>
                 </div>
                 <span>{{subcmt.content}}</span>
                 <div class="d-flex justify-content-between">
-                    <div class="d-flex">
-                        <i class="material-icons margin-right-10 pointer" (click)="like(data, item ,subcmt)">thumb_up</i>
-                        <span>{{subcmt.like}}</span>
-                    </div>
+                  <div class="d-flex">
+                    <i class="material-icons margin-right-10 pointer" (click)="like(data, item ,subcmt)">thumb_up</i>
+                    <span>{{subcmt.like}}</span>
                   </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <mat-paginator [length]="data.comment.length"
-                  [pageSize]="5"
-                  [pageSizeOptions]="[5, 10, 25, 100]"
-                  (page)="pageEvent = getPaginatorData($event)"
-                  class="my-form-field paginator">
-        </mat-paginator>
+      <mat-paginator [length]="data.comment.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="pageEvent = getPaginatorData($event)" class="my-form-field paginator">
+      </mat-paginator>
     </div>
   </div>
 </section>

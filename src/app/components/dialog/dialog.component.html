@@ -103,3 +103,9 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="isVideo">
+  <video width="100%" poster="data.data.imageVideo" controls>
+    <source src="{{data.data.video}}" type="video/mp4">
+  </video>
+</div>

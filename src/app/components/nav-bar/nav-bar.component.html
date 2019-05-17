@@ -37,6 +37,12 @@
   </div>
   <nav>
     <ul>
+      <li (click)="search()"><a class="material-icons">search</a></li>
+      <li>
+        <mat-form-field class="width-0 my-form-field" id="searchBar">
+          <input matInput [(ngModel)]="searchContent">
+        </mat-form-field>
+      </li> 
       <li><a routerLink="/home" class="active">Home</a></li>
       <li><a data-toggle="modal" data-target="#loginModal" onclick="openLoginModal()" *ngIf="!isLogin">Login</a></li>
       <li><a data-toggle="modal" data-target="#loginModal" onclick="openRegisterModal()" *ngIf="!isLogin">Register</a></li>
@@ -85,42 +91,3 @@
     </div>
   </div>
 </div>
-
-<!--Navbar-->
-<!-- <mdb-navbar SideClass="navbar navbar-expand-lg default-color-dark deeppurple-amber fixed-top">
-
-  <mdb-navbar-brand>
-    <a class="navbar-brand" href="#">
-      <img src="assets/images/logo/touch-music-logo.png" height="30" class="d-inline-block align-top" alt="">
-    </a>
-  </mdb-navbar-brand>
-
-  <mdb-icon fas icon="angle-left" size="lg" class="text-white mr-auto d-flex d-md-none align-self-center"></mdb-icon>
-
-
-  <links>
-
-    <form class="form-inline waves-light" mdbWavesEffect>
-      <div class="md-form my-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      </div>
-  </form>
-
-    <ul class="navbar-nav ml-auto view overlay">
-      <li class="nav-item rounded-sm active">
-        <a class="nav-link white-text" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item rounded-sm">
-        <a class="nav-link white-text" mdbWavesEffect>Login</a>
-      </li>
-      <li class="nav-item rounded-sm">
-        <a class="nav-link white-text" mdbWavesEffect>Register</a>
-      </li>    
-    </ul>
-
-  </links>
-
-
-
-</mdb-navbar> -->
-<!--/.Navbar-->
