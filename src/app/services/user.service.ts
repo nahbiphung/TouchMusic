@@ -12,6 +12,7 @@ import * as firebase from 'firebase/app';
 })
 export class UserService {
 
+  imageURL: string;
   user: Observable<User>;
   public userList: AngularFirestoreCollection<any>;
   photoURL: Observable<string>;
@@ -74,7 +75,7 @@ export class UserService {
 
   popupForm(element) {
     this.formUser.setValue(element);
-    console.log(this.formUser.controls);
+    this.imageURL = element.photoURL;
   }
 
   updateUser(user) {
@@ -82,7 +83,7 @@ export class UserService {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      displayName: user.displayName,
+      displayName: user.firstName + ' ' + user.lastName,
       birthday: user.birthday,
       phone: user.phone,
       photoURL: user.photoURL,

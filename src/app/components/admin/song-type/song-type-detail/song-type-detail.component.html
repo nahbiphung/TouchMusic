@@ -1,0 +1,21 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon aria-label="Example icon-button with a heart icon">close</mat-icon>
+  </button>
+</mat-dialog-actions>
+<form [formGroup]='songtypeService.formSongtype' (submit)='onSubmit()'>
+  Value: {{ songtypeService.formSongtype.value | json }}
+  formCountry Valid: {{ songtypeService.formSongtype.valid }}
+  <div class="control-container">
+    <input type="hidden" formControlName='$key'>
+    <mat-form-field>
+      <input formControlName='name' matInput placeholder="Name*">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    <div class="button-row">
+      <button *ngIf="!songtypeService.formSongtype.controls.$key.value" mat-raised-button color="primary" [disabled]="songtypeService.formSongtype.invalid">Submit</button>
+      <button *ngIf="songtypeService.formSongtype.controls.$key.value" mat-raised-button color="primary" [disabled]="songtypeService.formSongtype.invalid">Update</button>
+      <button mat-raised-button color="warn" (click)="onclickClearForm()">Clear</button>
+    </div>
+  </div>
+</form>

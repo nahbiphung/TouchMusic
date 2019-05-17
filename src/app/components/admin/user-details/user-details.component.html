@@ -1,3 +1,8 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon aria-label="Example icon-button with a heart icon">close</mat-icon>
+  </button>
+</mat-dialog-actions>
 <form [formGroup] = 'userService.formUser' (submit)='onSubmit()'>
   Value: {{ userService.formUser.value | json }}
   formUser Valid: {{ userService.formUser.valid }}

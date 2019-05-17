@@ -13,6 +13,9 @@ import { AdminSongComponent } from './components/admin/admin-song/admin-song.com
 import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PerformerComponent } from './components/performer/performer.component';
+import { CountryComponent } from './components/admin/country/country.component';
+import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
+import { SongTypeComponent } from './components/admin/song-type/song-type.component';
 import { SearchComponent } from './components/search/search.component';
 
 const routes: Routes = [
@@ -24,7 +27,10 @@ const routes: Routes = [
   { path: 'song/:name/:id', component: SongComponent},
   { path: 'admin', component: AdminComponent, children: [
     { path: 'user', component: UserComponent, children: [] },
-    { path: 'song', component: AdminSongComponent }
+    { path: 'song', component: AdminSongComponent },
+    { path: 'country', component: CountryComponent },
+    { path: 'performer', component: AdminPerformerComponent },
+    { path: 'songtype', component: SongTypeComponent }
   ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},
