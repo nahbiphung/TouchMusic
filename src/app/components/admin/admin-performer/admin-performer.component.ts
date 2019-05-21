@@ -3,6 +3,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { PerformerService } from '../../../services/performer.service';
 import { AdminPerformerDetailsComponent } from './admin-performer-details/admin-performer-details.component';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-admin-performer',
@@ -15,7 +16,7 @@ export class AdminPerformerComponent implements OnInit {
   private getCountry: AngularFirestoreCollection<any>;
   private listPerformer: any[];
   private listdata: MatTableDataSource<any>;
-  displayedColumns: string[] = ['birthday', 'country', 'countryname', 'name', 'option'];
+  displayedColumns: string[] = ['name', 'image', 'birthday', 'country', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private searchValue: string;
@@ -25,6 +26,7 @@ export class AdminPerformerComponent implements OnInit {
     private afs: AngularFirestore,
     private performerService: PerformerService,
     private dialog: MatDialog,
+    private storage: AngularFireStorage
   ) {}
 
   ngOnInit() {
@@ -97,6 +99,7 @@ export class AdminPerformerComponent implements OnInit {
   private onDelete(element) {
     if (confirm('Are you want to delete?')) {
       this.performerService.deletePerformer(element.$key);
+      this.storage.storage.refFromURL(element.image).delete();
     }
   }
 

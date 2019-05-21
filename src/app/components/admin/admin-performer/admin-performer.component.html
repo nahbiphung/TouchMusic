@@ -16,24 +16,24 @@
 <div>
   <mat-table mat-table [dataSource]='listdata' matSort class="width-100">
 
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+      <mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="performer {{element.name}} image"></mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="birthday">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.birthday}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="country">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Country </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.countryId.id}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="countryname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Country Name </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.countryName}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="option">
