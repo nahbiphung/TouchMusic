@@ -10,8 +10,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { SlideshowModule } from 'ng-simple-slideshow';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import * as request from 'request';
 
 // Material Module
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -129,6 +130,8 @@ import { SearchComponent } from './components/search/search.component';
     AngularFireModule.initializeApp(environment.firebase),
     HttpClientModule,
     HttpModule,
+    Http,
+    request,
     MatProgressBarModule,
     DragDropModule,
     MatSliderModule,
