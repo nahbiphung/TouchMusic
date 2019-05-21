@@ -26,6 +26,7 @@
     "@mdi/font": "^3.5.95",
     "@ng-bootstrap/ng-bootstrap": "^4.1.2",
     "@types/chart.js": "^2.7.50",
+    "@types/request": "^2.48.1",
     "angular-bootstrap-md": "^7.4.4",
     "audio-player-ng": "^0.1.1",
     "bootstrap": "^4.3.1",
