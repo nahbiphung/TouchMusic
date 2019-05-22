@@ -1,6 +1,8 @@
 import { AuthService } from '../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs';
 // import * as cherrio from 'cheerio';
 // import * as request from 'request';
 // import * as request from 'request';
@@ -12,14 +14,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdminComponent implements OnInit {
 
-  private isLogin: boolean;
-  private email: string;
-  private name: string;
-  private avt: string;
-  private displayName: string;
+  public isLogin: boolean;
+  public email: string;
+  public name: string;
+  public avt: string;
+  public displayName: string;
 
   constructor(private authService: AuthService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private http: HttpClient) {
                }
 
   ngOnInit() {
@@ -43,6 +46,7 @@ export class AdminComponent implements OnInit {
       } else {
         this.isLogin = false;
       }
+      this.getInfoFromServer();
     });
     // const request = require('request');
     // request('https://www.nhaccuatui.com/', (error, respone, html) => {
@@ -53,6 +57,13 @@ export class AdminComponent implements OnInit {
     //     console.log(output);
     //   }
     // });
+  }
+
+  // make a callon Server
+  getInfoFromServer() {
+    return this.http.get('http://localhost:3001/*').subscribe((res) => {
+      console.log(res);
+    });
   }
 
   onclickLogout() {

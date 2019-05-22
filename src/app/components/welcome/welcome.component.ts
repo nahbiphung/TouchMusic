@@ -36,7 +36,7 @@ export class WelcomeComponent implements OnInit {
   private logo: string;
   private playlistSong = [];
   private backgroundImage: string;
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private imagePlaylist: string;
   private listCountryMusic = [];
   private listVideo = [];

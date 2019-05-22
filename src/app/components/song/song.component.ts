@@ -21,7 +21,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   colectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
   data: any;
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private isPlay: boolean;
   private videoSong: boolean;
   private videoEvent: boolean;

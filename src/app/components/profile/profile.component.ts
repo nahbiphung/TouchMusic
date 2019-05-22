@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
 
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private userData: User;
   private faPlaylist: FavoriteList[];
   private imageData: any;

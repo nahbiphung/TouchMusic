@@ -19,7 +19,7 @@ export class CountryDetailComponent implements OnInit {
   uploadPercent: Observable<number>;
 
   constructor(
-    private countryService: CountryService,
+    public countryService: CountryService,
     private storage: AngularFireStorage,
     public dialogRef: MatDialogRef<CountryDetailComponent>
   ) { }

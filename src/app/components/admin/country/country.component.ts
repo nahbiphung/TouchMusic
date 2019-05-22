@@ -15,11 +15,11 @@ export class CountryComponent implements OnInit {
 
   getCountry: AngularFirestoreCollection<any>;
   private listCountry: Country[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   displayedColumns: string[] = ['image', 'name', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
 
   constructor(
     private afs: AngularFirestore,
@@ -43,16 +43,16 @@ export class CountryComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
-  private onClickClearSearch() {
+  onClickClearSearch() {
     this.searchValue = '';
     this.applyFilter();
   }
 
-  private onClickCreate() {
+  onClickCreate() {
     this.countryService.formReset();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -61,7 +61,7 @@ export class CountryComponent implements OnInit {
     this.dialog.open(CountryDetailComponent, dialogConfig);
   }
 
-  private onClickEdit(element) {
+  onClickEdit(element) {
     this.countryService.popupForm(element);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -70,7 +70,7 @@ export class CountryComponent implements OnInit {
     this.dialog.open(CountryDetailComponent, dialogConfig);
   }
 
-  private onDelete(element) {
+  onDelete(element) {
     if (confirm('Are you want to delete?')) {
       this.countryService.deleteCountry(element.$key);
       this.storage.storage.refFromURL(element.image).delete();

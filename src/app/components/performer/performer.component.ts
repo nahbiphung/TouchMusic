@@ -17,7 +17,7 @@ export class PerformerComponent implements OnInit {
   private documentData: AngularFirestoreDocument<any>;
   private data: Performer;
   private performerData: Performer[];
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private songData: Song[];
   private albumData: Album[];
   private videoData: any[];
