@@ -129,7 +129,6 @@ import { SearchComponent } from './components/search/search.component';
     AngularFireModule.initializeApp(environment.firebase),
     HttpClientModule,
     HttpModule,
-    Http,
     MatProgressBarModule,
     DragDropModule,
     MatSliderModule,

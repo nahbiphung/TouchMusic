@@ -1,8 +1,8 @@
 import { AuthService } from '../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import * as cherrio from 'cheerio';
-import * as request from 'request';
+// import * as cherrio from 'cheerio';
+// import * as request from 'request';
 // import * as request from 'request';
 
 @Component({
@@ -45,14 +45,14 @@ export class AdminComponent implements OnInit {
       }
     });
     // const request = require('request');
-    request('https://www.nhaccuatui.com/', (error, respone, html) => {
-      if (html) {
-        const $ = cherrio.load(html);
-        const site = $('.title');
-        const output = site.text();
-        console.log(output);
-      }
-    });
+    // request('https://www.nhaccuatui.com/', (error, respone, html) => {
+    //   if (html) {
+    //     const $ = cherrio.load(html);
+    //     const site = $('.title');
+    //     const output = site.text();
+    //     console.log(output);
+    //   }
+    // });
   }
 
   onclickLogout() {
