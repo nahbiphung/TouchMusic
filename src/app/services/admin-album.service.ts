@@ -54,9 +54,15 @@ export class AdminAlbumService {
   }
 
   popupForm(element) {
-    this.formAlbum.setValue(element);
     this.imageURL = element.image;
-    console.log(this.imageURL);
+    this.formAlbum.setValue({
+      $key: element.$key,
+      id: element.id,
+      name: element.name,
+      image: element.image,
+      performerId: element.performerId.id,
+      userId: element.userId.id
+    });
   }
 
   updateAlbum() {

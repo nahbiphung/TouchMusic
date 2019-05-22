@@ -3,6 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialogConfig, MatDialog }
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { AdminAlbumService } from '../../../services/admin-album.service';
 import { AdminAlbumDetailsComponent } from './admin-album-details/admin-album-details.component';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-admin-album',
@@ -24,7 +25,8 @@ export class AdminAlbumComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private albumService: AdminAlbumService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private storage: AngularFireStorage
   ) {}
 
   ngOnInit() {
@@ -85,10 +87,18 @@ export class AdminAlbumComponent implements OnInit {
   }
 
   private onClickEdit(element) {
-
+    this.albumService.popupForm(element);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AdminAlbumDetailsComponent, dialogConfig);
   }
 
   private onDelete(element) {
-
+    if (confirm('Are you sure to detele')) {
+      this.albumService.deleteAlbum(element.$key);
+      this.storage.storage.refFromURL(element.image).delete();
+    }
   }
 }

@@ -72,7 +72,7 @@ export class AdminAlbumDetailsComponent implements OnInit {
     if (this.albumService.formAlbum.valid) {
       if (!this.albumService.formAlbum.controls.$key.value) {
         if (this.fileName) {
-          const filePath = 'images/performer/' + this.fileName;
+          const filePath = 'images/album/' + this.fileName;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, this.thisFile);
           // observe percentage changes
@@ -106,7 +106,7 @@ export class AdminAlbumDetailsComponent implements OnInit {
               this.storage.storage.refFromURL(this.albumService.imageURL).delete();
             }
           }
-          const filePath = 'images/performer/' + this.fileName;
+          const filePath = 'images/album/' + this.fileName;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, this.thisFile);
           // observe percentage changes
