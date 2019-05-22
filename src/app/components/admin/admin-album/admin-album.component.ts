@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialogConfig, MatDialog } from '@angular/material';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AdminAlbumService } from '../../../services/admin-album.service';
+import { AdminAlbumDetailsComponent } from './admin-album-details/admin-album-details.component';
 
 @Component({
   selector: 'app-admin-album',
@@ -21,6 +23,8 @@ export class AdminAlbumComponent implements OnInit {
 
   constructor(
     private afs: AngularFirestore,
+    private albumService: AdminAlbumService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -72,7 +76,12 @@ export class AdminAlbumComponent implements OnInit {
   }
 
   private onClickCreate() {
-
+    this.albumService.formReset();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AdminAlbumDetailsComponent, dialogConfig);
   }
 
   private onClickEdit(element) {
