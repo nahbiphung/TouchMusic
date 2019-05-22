@@ -21,29 +21,9 @@
       <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="imageSong">
+    <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
-      <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.name}} image"> </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="mp3Url">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Mp3 </mat-header-cell>
-      <mat-cell *matCellDef="let element"><a href="{{element.mp3Url}}" target="_blank">{{element.name}}</a></mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="album">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Album </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.albumName}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="video">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Video </mat-header-cell>
-      <mat-cell *matCellDef="let element"><a *ngIf="element.video" href="{{element.video}}" target="_blank">{{element.name}}</a></mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="country">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Country </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.countryName}}</mat-cell>
+      <mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="{{element.name}} image"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="performer">

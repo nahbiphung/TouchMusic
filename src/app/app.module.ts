@@ -75,6 +75,7 @@ import { AdminPerformerDetailsComponent } from './components/admin/admin-perform
 import { SongTypeComponent } from './components/admin/song-type/song-type.component';
 import { SongTypeDetailComponent } from './components/admin/song-type/song-type-detail/song-type-detail.component';
 import { SearchComponent } from './components/search/search.component';
+import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { SearchComponent } from './components/search/search.component';
     SongTypeComponent,
     SongTypeDetailComponent,
     SearchComponent,
+    AdminAlbumComponent,
   ],
   imports: [
     BrowserModule,
