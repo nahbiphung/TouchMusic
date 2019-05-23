@@ -83,8 +83,8 @@ export class AdminAlbumDetailsComponent implements OnInit {
               this.downLoadURL.subscribe((url) => {
                 if (url) {
                   this.imageUrl = url;
-                  console.log(this.imageUrl);
-                  console.log('thanh cong');
+                  // console.log(this.imageUrl);
+                  // console.log('thanh cong');
                   // set image to dowloadURL cause it now from storage
                   this.albumService.formAlbum.controls.image.setValue(this.imageUrl);
                   // now add

@@ -33,6 +33,7 @@ export class AdminAlbumService {
       userId: '',
     });
   }
+
   getAlbum() {
     this.listAlbum = this.afs.collection('Album');
     return this.listAlbum.snapshotChanges();

@@ -46,6 +46,11 @@
       <mat-cell *matCellDef="let element">{{element.countryName}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="songtype">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> SongType </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.songTypeName}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="performer">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.performerName}}</mat-cell>

@@ -77,6 +77,7 @@ import { SongTypeDetailComponent } from './components/admin/song-type/song-type-
 import { SearchComponent } from './components/search/search.component';
 import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
 import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
+import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin
     SearchComponent,
     AdminAlbumComponent,
     AdminAlbumDetailsComponent,
+    AdminSongDetailsComponent,
   ],
   imports: [
     BrowserModule,
