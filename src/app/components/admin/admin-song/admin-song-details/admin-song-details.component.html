@@ -26,17 +26,33 @@
 
     <div>
       <input type='file' accept="audio/*" (change)='onSelectMp3($event)'>
+      <div *ngIf="uploadMp3Percent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
     </div>
 
     <div>
       <input type='file' accept="video/*" (change)='onSelectVideo($event)'>
+      <div *ngIf="uploadVideoPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
     </div>
 
     <mat-form-field>
       <input formControlName='name' matInput placeholder="Song Name">
       <mat-error>This field is required</mat-error>
     </mat-form-field>
-
+    
     <mat-form-field>
       <mat-select formControlName="albumId" placeholder="Album">
         <mat-option>None</mat-option>
@@ -87,7 +103,21 @@
       <mat-error>This field is required</mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="onClickAddComment()">Add Comment</button>
+    <mat-form-field>
+      <input formControlName='like' matInput placeholder="Like" value="0">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName='view' matInput placeholder="View" value="0">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea formControlName='lyric' matInput placeholder="Lyric write here!"></textarea>
+    </mat-form-field>
+
+    <!-- Comment -->
+
+    <input type="button" (click)="onClickAddComment()" value="Add Comment">
 
     <!-- <div formArrayName='comment' *ngFor="let c of songService.formSong.get('comment').controls; let i = index">
       <div [formGroupName]='i' *ngIf="songService.formSong.get('comment').length > 0">
@@ -136,17 +166,16 @@
                 </mat-form-field>
     
               </div>
-              <button mat-raised-button color="warn" (click)="onClickRemoveSubComment(ix,iy)">Remove SubComment</button>
+              <input type="button" (click)="onClickRemoveSubComment(ix,iy)" value="Remove SubComment">
             </div>
-            <input type="button" (click)="onClickAddSubComment(ix)" value="Add Y">
+            <input type="button" (click)="onClickAddSubComment(ix)" value="Add SubComment">
           </div>
           <!-- Y End-->
         </div>
-        <button mat-raised-button color="warn" (click)="onClickRemoveComment(ix)">Remove Comment</button>
+        <input type="button" (click)="onClickRemoveComment(ix)" value="Remove Comment">
       </div>
     </div>
     <!-- X End -->
-
 
     <div class="button-row">
       <button *ngIf="!songService.formSong.controls.$key.value" mat-raised-button color="primary" [disabled]="songService.formSong.invalid">Submit</button>

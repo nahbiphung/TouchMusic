@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Injectable({
@@ -17,17 +17,22 @@ export class AdminSongService {
   formSong: FormGroup = new FormGroup({
     $key: new FormControl(null),
     id: new FormControl(''),
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
+    album: new FormControl(''),
     albumId: new FormControl(''),
-    imageSong: new FormControl(''),
-    mp3Url: new FormControl(''),
+    imageSong: new FormControl('', Validators.required),
+    mp3Url: new FormControl('', Validators.required),
+    performer: new FormControl(''),
     performerId: new FormControl(''),
     video: new FormControl(''),
-    like: new FormControl(''),
-    view: new FormControl(''),
+    like: new FormControl('0'),
+    view: new FormControl('0'),
     lyric: new FormControl(''),
+    country: new FormControl(''),
     countryId: new FormControl(''),
-    userId: new FormControl(''),
+    user: new FormControl(''),
+    userId: new FormControl('', Validators.required),
+    songType: new FormControl(''),
     songTypeId: new FormControl(''),
     comment: new FormArray([
       // this.addComment()
@@ -69,12 +74,13 @@ export class AdminSongService {
       mp3Url: '',
       performerId: '',
       video: '',
-      like: '',
-      vieww: '',
+      like: '0',
+      view: '0',
       lyric: '',
       countryId: '',
       userId: '',
       songTypeId: '',
+      comment: [],
     });
   }
 
@@ -83,20 +89,26 @@ export class AdminSongService {
     return this.listSong.snapshotChanges();
   }
 
-  createAlbum() {
+  createSong() {
     this.listSong.add({
       name: this.formSong.controls.name.value,
       album: this.formSong.controls.name.value,
-      albumId: this.formSong.controls.name.value,
-      imageSong: this.formSong.controls.name.value,
+      albumId: this.formSong.controls.albumId.value,
+      imageSong: this.formSong.controls.imageSong.value,
       mp3Url: this.formSong.controls.mp3Url.value,
-      performerId: this.formSong.controls.name.value,
-      video: this.formSong.controls.name.value,
-      like: this.formSong.controls.name.value,
-      vieww: this.formSong.controls.name.value,
-      lyric: this.formSong.controls.name.value,
-      countryId: this.formSong.controls.name.value,
-      userId: this.formSong.controls.name.value,
+      performer: this.formSong.controls.performer.value,
+      performerId: this.formSong.controls.performerId.value,
+      video: this.formSong.controls.video.value,
+      like: this.formSong.controls.like.value,
+      view: this.formSong.controls.view.value,
+      lyric: this.formSong.controls.lyric.value,
+      country: this.formSong.controls.country.value,
+      countryId: this.formSong.controls.countryId.value,
+      user: this.formSong.controls.user.value,
+      userId: this.formSong.controls.userId.value,
+      songType: this.formSong.controls.songType.value,
+      songTypeId: this.formSong.controls.songTypeId.value,
+      comment: this.formSong.controls.comment.value,
     }).then(res => {
       if (res) {
         this.afs.collection('Song').doc(res.id).update({
@@ -118,7 +130,7 @@ export class AdminSongService {
     });
   }
 
-  updateAlbum() {
+  updateSong() {
     this.afs.collection('Song').doc(this.formSong.controls.$key.value).update({
 
     });
