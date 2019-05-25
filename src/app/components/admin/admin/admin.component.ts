@@ -1,11 +1,7 @@
 import { AuthService } from '../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs';
-// import * as cherrio from 'cheerio';
-// import * as request from 'request';
-// import * as request from 'request';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin',
@@ -46,17 +42,7 @@ export class AdminComponent implements OnInit {
       } else {
         this.isLogin = false;
       }
-      this.getInfoFromServer();
     });
-    // const request = require('request');
-    // request('https://www.nhaccuatui.com/', (error, respone, html) => {
-    //   if (html) {
-    //     const $ = cherrio.load(html);
-    //     const site = $('.title');
-    //     const output = site.text();
-    //     console.log(output);
-    //   }
-    // });
   }
 
   // make a callon Server

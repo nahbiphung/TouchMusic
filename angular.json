@@ -51,9 +51,7 @@
               "./node_modules/hammerjs/hammer.min.js",
               "./src/app/components/nav-player/nav-player.js",
               "./node_modules/slick-carousel/slick/slick.min.js",
-              "./src/app/components/home/home.js",
-              "./node_modules/cheerio/lib/cheerio.js",
-              "./node_modules/request/request.js"
+              "./src/app/components/home/home.js"
             ],
             "es5BrowserSupport": true
           },
