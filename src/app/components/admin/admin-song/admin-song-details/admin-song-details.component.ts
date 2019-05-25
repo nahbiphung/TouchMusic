@@ -5,6 +5,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize, filter, takeLast } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-admin-song-details',
@@ -44,6 +45,7 @@ export class AdminSongDetailsComponent implements OnInit {
     private songService: AdminSongService,
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
+    public dialogRef: MatDialogRef<AdminSongDetailsComponent>
   ) { }
 
   ngOnInit() {
@@ -142,7 +144,7 @@ export class AdminSongDetailsComponent implements OnInit {
   onSelectVideo(event: any) {
     this.thisFileVideo = event.target.files[0];
     this.fileVideoName = event.target.files[0].name;
-    this.songService.formSong.controls.mp3Url.setValue(this.fileVideoName);
+    this.songService.formSong.controls.video.setValue(this.fileVideoName);
     // const filePath = 'video/' + this.fileName;
     // const fileRef = this.storage.ref(filePath);
     // this.storage.upload(filePath, this.thisFile);
@@ -264,21 +266,17 @@ export class AdminSongDetailsComponent implements OnInit {
       if (!this.songService.formSong.controls.$key.value) {
         this.songService.listSong.add({
           name: this.songService.formSong.controls.name.value,
-          albumId: this.songService.formSong.controls.albumId.value,
+          albumId: this.afs.collection('Album').doc(this.songService.formSong.controls.albumId.value).ref,
           imageSong: this.songService.formSong.controls.imageSong.value,
           mp3Url: this.songService.formSong.controls.mp3Url.value,
-
-          performerId: this.songService.formSong.controls.performerId.value,
+          performerId: this.afs.collection('Performer').doc(this.songService.formSong.controls.performerId.value).ref,
           video: this.songService.formSong.controls.video.value,
           like: this.songService.formSong.controls.like.value,
           view: this.songService.formSong.controls.view.value,
           lyric: this.songService.formSong.controls.lyric.value,
-
-          countryId: this.songService.formSong.controls.countryId.value,
-
-          userId: this.songService.formSong.controls.userId.value,
-
-          songTypeId: this.songService.formSong.controls.songTypeId.value,
+          countryId: this.afs.collection('Country').doc(this.songService.formSong.controls.countryId.value).ref,
+          userId: this.afs.collection('users').doc(this.songService.formSong.controls.userId.value).ref,
+          songTypeId: this.afs.collection('SongType').doc(this.songService.formSong.controls.songTypeId.value).ref,
           comment: this.songService.formSong.controls.comment.value,
         }).then(res => {
           if (res) {
@@ -367,8 +365,124 @@ export class AdminSongDetailsComponent implements OnInit {
             }
 
           }
+        }).finally(() => console.log('xong'));
+      } else {
+        this.songService.listSong.doc(this.songService.formSong.controls.$key.value).update({
+          name: this.songService.formSong.controls.name.value,
+          albumId: this.afs.collection('Album').doc(this.songService.formSong.controls.albumId.value).ref,
+          imageSong: this.songService.formSong.controls.imageSong.value,
+          mp3Url: this.songService.formSong.controls.mp3Url.value,
+          performerId: this.afs.collection('Performer').doc(this.songService.formSong.controls.performerId.value).ref,
+          video: this.songService.formSong.controls.video.value,
+          like: this.songService.formSong.controls.like.value,
+          view: this.songService.formSong.controls.view.value,
+          lyric: this.songService.formSong.controls.lyric.value,
+          countryId: this.afs.collection('Country').doc(this.songService.formSong.controls.countryId.value).ref,
+          userId: this.afs.collection('users').doc(this.songService.formSong.controls.userId.value).ref,
+          songTypeId: this.afs.collection('SongType').doc(this.songService.formSong.controls.songTypeId.value).ref,
+          comment: this.songService.formSong.controls.comment.value,
+        }).then(() => {
+          // update image song
+          if (this.fileName) {
+            if (this.songService.imageURL != null) {
+              if (this.songService.imageURL.slice(8, 23) === 'firebasestorage') {
+                this.storage.storage.refFromURL(this.songService.imageURL).delete();
+              }
+            }
+            const filePath = 'images/song/' + this.fileName;
+            const fileRef = this.storage.ref(filePath);
+            const task = this.storage.upload(filePath, this.thisFile);
+            // observe percentage changes
+            this.uploadPercent = task.percentageChanges();
+            task.snapshotChanges().pipe(
+              finalize(() => {
+                this.downLoadURL = fileRef.getDownloadURL();
+                this.downLoadURL.subscribe((url) => {
+                  if (url) {
+                    this.imageUrl = url;
+                    // console.log(this.imageUrl);
+                    // console.log('thanh cong');
+                    // set image to dowloadURL cause it now from storage
+                    this.afs.collection('Song').doc(this.songService.formSong.controls.$key.value).update({
+                      imageSong: this.imageUrl
+                    });
+                  }
+                });
+              })
+            )
+              .subscribe();
+          }
+
+          if (this.fileMp3Name) {
+            if (this.songService.songURL != null) {
+              if (this.songService.songURL.slice(8, 23) === 'firebasestorage') {
+                this.storage.storage.refFromURL(this.songService.songURL).delete();
+              }
+            }
+            const filePath = 'music/' + this.fileMp3Name;
+            const fileRef = this.storage.ref(filePath);
+            const taskMp3 = this.storage.upload(filePath, this.thisFileMp3);
+            // observe percentage changes
+            this.uploadMp3Percent = taskMp3.percentageChanges();
+            taskMp3.snapshotChanges().pipe(
+              finalize(() => {
+                this.downLoadMp3URL = fileRef.getDownloadURL();
+                this.downLoadMp3URL.subscribe((url) => {
+                  if (url) {
+                    this.mp3Url = url;
+                    // console.log(this.imageUrl);
+                    // console.log('thanh cong');
+                    // set image to dowloadURL cause it now from storage
+                    this.afs.collection('Song').doc(this.songService.formSong.controls.$key.value).update({
+                      mp3Url: this.mp3Url
+                    });
+                  }
+                });
+              })
+            )
+              .subscribe();
+          }
+
+          if (this.fileVideoName) {
+            if (this.songService.videoURL != null) {
+              if (this.songService.videoURL.slice(8, 23) === 'firebasestorage') {
+                this.storage.storage.refFromURL(this.songService.videoURL).delete();
+              }
+            }
+            const filePath = 'video/' + this.fileVideoName;
+            const fileRef = this.storage.ref(filePath);
+            const taskVideo = this.storage.upload(filePath, this.thisFileVideo);
+            // observe percentage changes
+            this.uploadVideoPercent = taskVideo.percentageChanges();
+            taskVideo.snapshotChanges().pipe(
+              finalize(() => {
+                this.downLoadVideoURL = fileRef.getDownloadURL();
+                this.downLoadVideoURL.subscribe((url) => {
+                  if (url) {
+                    this.videoUrl = url;
+                    // console.log(this.imageUrl);
+                    // console.log('thanh cong');
+                    // set image to dowloadURL cause it now from storage
+                    this.afs.collection('Song').doc(this.songService.formSong.controls.$key.value).update({
+                      video: this.videoUrl
+                    });
+                  }
+                });
+              })
+            )
+              .subscribe();
+          }
+
         });
       }
     }
+  }
+
+  onClose() {
+    this.dialogRef.close();
+  }
+
+  onclickClearForm() {
+    this.songService.formReset();
   }
 }

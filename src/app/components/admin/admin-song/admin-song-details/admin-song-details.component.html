@@ -1,8 +1,9 @@
-<!-- <mat-dialog-actions align="end">
+<mat-dialog-actions align="end">
   <button mat-icon-button>
     <mat-icon aria-label="Example icon-button with a heart icon" (click)="onClose()">close</mat-icon>
   </button>
-</mat-dialog-actions> -->
+</mat-dialog-actions>
+<mat-dialog-content>
 <form [formGroup]='songService.formSong' (submit)='onSubmit()'>
   Value: {{ songService.formSong.value | json }}
   formPerformer Valid: {{ songService.formSong.valid }}
@@ -26,6 +27,7 @@
 
     <div>
       <input type='file' accept="audio/*" (change)='onSelectMp3($event)'>
+      <span *ngIf="songService.formSong.controls.mp3Url.value">{{songService.formSong.controls.mp3Url.value}}</span>
       <div *ngIf="uploadMp3Percent | async as pct" class="display-inline-block">
         <div class="flex-bar">
           <progress class="progress is-info" [value]="pct" max="100"></progress>
@@ -38,6 +40,7 @@
 
     <div>
       <input type='file' accept="video/*" (change)='onSelectVideo($event)'>
+      <span *ngIf="songService.formSong.controls.video.value">{{songService.formSong.controls.video.value}}</span>
       <div *ngIf="uploadVideoPercent | async as pct" class="display-inline-block">
         <div class="flex-bar">
           <progress class="progress is-info" [value]="pct" max="100"></progress>
@@ -104,11 +107,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input formControlName='like' matInput placeholder="Like" value="0">
+      <input formControlName='like' matInput placeholder="Like">
     </mat-form-field>
 
     <mat-form-field>
-      <input formControlName='view' matInput placeholder="View" value="0">
+      <input formControlName='view' matInput placeholder="View">
     </mat-form-field>
 
     <mat-form-field>
@@ -180,7 +183,8 @@
     <div class="button-row">
       <button *ngIf="!songService.formSong.controls.$key.value" mat-raised-button color="primary" [disabled]="songService.formSong.invalid">Submit</button>
       <button *ngIf="songService.formSong.controls.$key.value" mat-raised-button color="primary" [disabled]="songService.formSong.invalid">Update</button>
-      <button mat-raised-button color="warn" (click)="onclickClearForm()">Clear SubComment</button>
+      <input type="button" (click)="onclickClearForm()" value="Clear">
     </div>
   </div>
 </form>
+</mat-dialog-content>

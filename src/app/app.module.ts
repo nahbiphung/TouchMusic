@@ -158,6 +158,6 @@ import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-s
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
   entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent, AdminPerformerDetailsComponent
-    , SongTypeDetailComponent, AdminAlbumDetailsComponent]
+    , SongTypeDetailComponent, AdminAlbumDetailsComponent, AdminSongDetailsComponent]
 })
 export class AppModule { }

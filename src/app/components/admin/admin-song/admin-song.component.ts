@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator, MatDialogConfig, MatDialog } from '@angular/material';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AdminSongService } from 'src/app/services/admin-song.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AdminSongDetailsComponent } from './admin-song-details/admin-song-details.component';
 
 @Component({
   selector: 'app-admin-song',
@@ -23,7 +26,10 @@ export class AdminSongComponent implements OnInit {
   private searchValue: string;
 
   constructor(
+    private songService: AdminSongService,
     private afs: AngularFirestore,
+    private storage: AngularFireStorage,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -78,6 +84,7 @@ export class AdminSongComponent implements OnInit {
                   || data.albumName.toLowerCase().indexOf(filter) !== -1
                   || data.countryName.toLowerCase().indexOf(filter) !== -1
                   || data.performerName.toLowerCase().indexOf(filter) !== -1
+                  || data.songTypeName.toLowerCase().indexOf(filter) !== -1
                   || data.userName.toLowerCase().indexOf(filter) !== -1;
                 };
               });
@@ -98,14 +105,29 @@ export class AdminSongComponent implements OnInit {
   }
 
   private onClickCreate() {
-
+    this.songService.formReset();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AdminSongDetailsComponent, dialogConfig);
   }
 
   private onClickEdit(element) {
-
+    this.songService.popupForm(element);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.dialog.open(AdminSongDetailsComponent, dialogConfig);
   }
 
   private onDelete(element) {
-
+    if (confirm('Are you sure to detele')) {
+      this.songService.deleteSong(element.$key);
+      this.storage.storage.refFromURL(element.mp3Url).delete();
+      this.storage.storage.refFromURL(element.imageSong).delete();
+      this.storage.storage.refFromURL(element.video).delete();
+    }
   }
 }

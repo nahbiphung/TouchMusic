@@ -34,7 +34,6 @@ const routes: Routes = [
     { path: 'performer', component: AdminPerformerComponent },
     { path: 'songtype', component: SongTypeComponent },
     { path: 'album', component: AdminAlbumComponent },
-    { path: 'songdetail', component: AdminSongDetailsComponent}
   ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},

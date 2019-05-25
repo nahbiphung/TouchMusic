@@ -8,6 +8,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 export class AdminSongService {
 
   imageURL: string;
+  songURL: string;
+  videoURL: string;
   listSong: AngularFirestoreCollection<any>;
 
   constructor(
@@ -25,8 +27,8 @@ export class AdminSongService {
     performer: new FormControl(''),
     performerId: new FormControl(''),
     video: new FormControl(''),
-    like: new FormControl('0'),
-    view: new FormControl('0'),
+    like: new FormControl(''),
+    view: new FormControl(''),
     lyric: new FormControl(''),
     country: new FormControl(''),
     countryId: new FormControl(''),
@@ -48,7 +50,7 @@ export class AdminSongService {
       user: new FormControl(''),
       userAvatar: new FormControl(''),
       subComment: new FormArray([
-        this.addSubComment()
+        // this.addSubComment()
       ])
     });
   }
@@ -69,16 +71,21 @@ export class AdminSongService {
       $key: null,
       id: '',
       name: '',
+      album: '',
       albumId: '',
       imageSong: '',
       mp3Url: '',
+      performer: '',
       performerId: '',
       video: '',
-      like: '0',
-      view: '0',
+      like: 0,
+      view: 0,
       lyric: '',
+      country: '',
       countryId: '',
+      user: '',
       userId: '',
+      songType: '',
       songTypeId: '',
       comment: [],
     });
@@ -89,54 +96,71 @@ export class AdminSongService {
     return this.listSong.snapshotChanges();
   }
 
-  createSong() {
-    this.listSong.add({
-      name: this.formSong.controls.name.value,
-      album: this.formSong.controls.name.value,
-      albumId: this.formSong.controls.albumId.value,
-      imageSong: this.formSong.controls.imageSong.value,
-      mp3Url: this.formSong.controls.mp3Url.value,
-      performer: this.formSong.controls.performer.value,
-      performerId: this.formSong.controls.performerId.value,
-      video: this.formSong.controls.video.value,
-      like: this.formSong.controls.like.value,
-      view: this.formSong.controls.view.value,
-      lyric: this.formSong.controls.lyric.value,
-      country: this.formSong.controls.country.value,
-      countryId: this.formSong.controls.countryId.value,
-      user: this.formSong.controls.user.value,
-      userId: this.formSong.controls.userId.value,
-      songType: this.formSong.controls.songType.value,
-      songTypeId: this.formSong.controls.songTypeId.value,
-      comment: this.formSong.controls.comment.value,
-    }).then(res => {
-      if (res) {
-        this.afs.collection('Song').doc(res.id).update({
-          id: res.id
-        });
-       }
-    });
-  }
+  // createSong() {
+  //   this.listSong.add({
+  //     name: this.formSong.controls.name.value,
+  //     album: this.formSong.controls.name.value,
+  //     albumId: this.formSong.controls.albumId.value,
+  //     imageSong: this.formSong.controls.imageSong.value,
+  //     mp3Url: this.formSong.controls.mp3Url.value,
+  //     performer: this.formSong.controls.performer.value,
+  //     performerId: this.formSong.controls.performerId.value,
+  //     video: this.formSong.controls.video.value,
+  //     like: this.formSong.controls.like.value,
+  //     view: this.formSong.controls.view.value,
+  //     lyric: this.formSong.controls.lyric.value,
+  //     country: this.formSong.controls.country.value,
+  //     countryId: this.formSong.controls.countryId.value,
+  //     user: this.formSong.controls.user.value,
+  //     userId: this.formSong.controls.userId.value,
+  //     songType: this.formSong.controls.songType.value,
+  //     songTypeId: this.formSong.controls.songTypeId.value,
+  //     comment: this.formSong.controls.comment.value,
+  //   }).then(res => {
+  //     if (res) {
+  //       this.afs.collection('Song').doc(res.id).update({
+  //         id: res.id
+  //       });
+  //      }
+  //   });
+  // }
 
   popupForm(element) {
-    this.imageURL = element.image;
+    console.log(element);
+    this.imageURL = element.imageSong;
+    this.songURL = element.mp3Url;
+    this.videoURL = element.video;
     this.formSong.setValue({
       $key: element.$key,
       id: element.id,
       name: element.name,
-      image: element.image,
+      album: element.albumName,
+      albumId: element.albumId.id,
+      imageSong: element.imageSong,
+      mp3Url: element.mp3Url,
+      performer: element.performerName,
       performerId: element.performerId.id,
-      userId: element.userId.id
+      video: element.video,
+      like: element.like,
+      view: element.view,
+      lyric: element.lyric,
+      country: element.countryName,
+      countryId: element.countryId.id,
+      user: element.userName,
+      userId: element.userId.id,
+      songType: element.songTypeName,
+      songTypeId: element.songTypeId.id,
+      comment: element.comment
     });
   }
 
-  updateSong() {
-    this.afs.collection('Song').doc(this.formSong.controls.$key.value).update({
+  // updateSong() {
+  //   this.afs.collection('Song').doc(this.formSong.controls.$key.value).update({
 
-    });
-  }
+  //   });
+  // }
 
-  deleteAlbum(id: string) {
+  deleteSong(id: string) {
     this.afs.collection('Song').doc(id).delete();
   }
 }
