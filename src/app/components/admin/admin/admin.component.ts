@@ -47,7 +47,7 @@ export class AdminComponent implements OnInit {
 
   // make a callon Server
   getInfoFromServer() {
-    return this.http.get('http://localhost:3001/*').subscribe((res) => {
+    return this.http.get('http://localhost:3001/newsongzingmp3').subscribe((res) => {
       console.log(res);
     });
   }
