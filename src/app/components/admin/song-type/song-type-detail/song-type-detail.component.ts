@@ -10,7 +10,7 @@ import { MatDialogRef } from '@angular/material';
 export class SongTypeDetailComponent implements OnInit {
 
   constructor(
-    private songtypeService: SongTypeService,
+    public songtypeService: SongTypeService,
     public dialogRef: MatDialogRef<SongTypeDetailComponent>
   ) { }
 

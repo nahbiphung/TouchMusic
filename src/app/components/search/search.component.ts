@@ -17,7 +17,7 @@ export class SearchComponent implements OnInit {
   private documentData: AngularFirestoreDocument<any>;
   private favoriteData: FavoriteList[];
   private performerData: Performer[];
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private songData: Song[];
   private albumData: Album[];
   private videoData: any[];

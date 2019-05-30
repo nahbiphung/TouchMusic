@@ -15,12 +15,11 @@ export class PlaylistComponent implements OnInit {
   documentData: AngularFirestoreDocument<any>;
   imageColectionData: AngularFirestoreCollection<any>;
   imageDocumentData: AngularFirestoreDocument<any>;
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   private avatar: any[];
   private playlistSong = [];
   private country: Country;
   private albumInfo: Album;
-  private countryInfo: Country;
   private favoritePlaylist: any;
   private isPlay: boolean;
   private videoSong: boolean;
@@ -96,25 +95,6 @@ export class PlaylistComponent implements OnInit {
         console.log('error');
       });
     } else if (getDetectRoute === 'country') {
-      // get country info
-      this.documentData = this.db.collection('Country').doc(getParams);
-      this.documentData.valueChanges().subscribe((res: Country) => {
-        if (res) {
-          this.countryInfo = res;
-          this.isCountry = true;
-        }
-      });
-      // get song in country
-      this.collectionData = this.db.collection('Song',
-        que => que.where('countryId', '==', getParams));
-      this.collectionData.valueChanges().subscribe((res: Song[]) => {
-        if (res) {
-          this.playlistSong = res;
-        }
-      }, (error) => {
-        console.log('error');
-      });
-
       // get country
       this.collectionData = this.db.collection('Country', query => query.where('name', '==', getParams));
       this.collectionData.valueChanges().subscribe((res: Country[]) => {
@@ -122,6 +102,18 @@ export class PlaylistComponent implements OnInit {
           this.country = res[0];
           this.isCountry = true;
         }
+        // get country reference
+        const refCountry = this.db.collection('Country').doc(this.country.id).ref;
+        // get song in country
+        this.collectionData = this.db.collection('Song',
+          que => que.where('countryId', '==', refCountry));
+        this.collectionData.valueChanges().subscribe((res: Song[]) => {
+          if (res) {
+            this.playlistSong = res;
+          }
+        }, (error) => {
+          console.log('error');
+        });
       }, (error) => {
         console.log(error);
       });

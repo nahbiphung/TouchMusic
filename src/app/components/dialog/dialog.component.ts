@@ -21,10 +21,10 @@ export class DialogComponent implements OnInit {
   private isAvatar: boolean;
   private isCreateNewFaList: boolean;
   private isAddToFaList: boolean;
-  private isVideo: boolean;
+  public isVideo: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
-  private loadingSpinner: boolean;
+  public loadingSpinner: boolean;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,

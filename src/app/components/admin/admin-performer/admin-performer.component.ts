@@ -14,11 +14,11 @@ export class AdminPerformerComponent implements OnInit {
   private getPerformer: AngularFirestoreCollection<any>;
   private getCountry: AngularFirestoreCollection<any>;
   private listPerformer: any[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   displayedColumns: string[] = ['birthday', 'country', 'countryname', 'name', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
   private countryName: string;
 
   constructor(
@@ -67,7 +67,7 @@ export class AdminPerformerComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
@@ -76,7 +76,7 @@ export class AdminPerformerComponent implements OnInit {
     this.applyFilter();
   }
 
-  private onClickCreate() {
+  onClickCreate() {
     this.performerService.formReset();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

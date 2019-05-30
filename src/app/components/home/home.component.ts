@@ -43,22 +43,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   colectionPlaylist: AngularFirestoreCollection<any>;
   documentAlbum: AngularFirestoreDocument<any>;
 
-  private topPlaylist = [];
-  private albums = [];
-  private songs = [];
-  private users = [];
-  private likeSongs = [];
-  private historySongs = [];
-  private album: any;
-  private lastItem: any;
-  private audio = new Audio();
-  private dataSong: Song;
-  private playlistForUser = [];
+  public topPlaylist = [];
+  public albums = [];
+  public songs = [];
+  public users = [];
+  public likeSongs = [];
+  public historySongs = [];
+  public album: any;
+  public lastItem: any;
+  public audio = new Audio();
+  public dataSong: Song;
+  public playlistForUser = [];
 
-  private isPlay = false;
-  private curTime: number;
-  private click = 0;
-  private curSrc: any;
+  public isPlay = false;
+  public curTime: number;
+  public click = 0;
+  public curSrc: any;
   slickInit(e) {
     console.log('slick initialized');
   }

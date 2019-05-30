@@ -15,16 +15,16 @@ import { FormControl, Validators, FormGroup, Form } from '@angular/forms';
 export class SignUpComponent implements OnInit, AfterContentChecked {
 
 
-  private hide: boolean;
+  public hide: boolean;
   // const for upload img
   private thisFile = null;
   private fileName = '';
-  private fileSrc: any;
+  public fileSrc: any;
   downLoadURL: any;
   imageUrl: any;
   uploadPercent: Observable<number>;
   // set datetime for picker register
-  private datetime: boolean;
+  public datetime: boolean;
 
   // private email = new FormControl('', Validators.required);
   // private password = new FormControl('', [Validators.required , Validators.minLength(8)]);
@@ -68,7 +68,7 @@ export class SignUpComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  onSubmitAddUser(form: Form) {
+  onSubmitAddUser() {
     if (this.formSignUp.valid) {
       if (this.fileName) {
         const filePath = 'images/avartar/' + this.fileName;

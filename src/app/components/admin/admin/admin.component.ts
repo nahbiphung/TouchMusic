@@ -1,6 +1,7 @@
 import { AuthService } from '../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin',
@@ -9,14 +10,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdminComponent implements OnInit {
 
-  private isLogin: boolean;
-  private email: string;
-  private name: string;
-  private avt: string;
-  private displayName: string;
+  public isLogin: boolean;
+  public email: string;
+  public name: string;
+  public avt: string;
+  public displayName: string;
 
   constructor(private authService: AuthService,
-              private toast: ToastrService) {
+              private toast: ToastrService,
+              private http: HttpClient) {
                }
 
   ngOnInit() {
@@ -40,6 +42,13 @@ export class AdminComponent implements OnInit {
       } else {
         this.isLogin = false;
       }
+    });
+  }
+
+  // make a callon Server
+  getInfoFromServer() {
+    return this.http.get('http://localhost:3001/newsongzingmp3').subscribe((res) => {
+      console.log(res);
     });
   }
 

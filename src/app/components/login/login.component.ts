@@ -10,9 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
 
-  private hide: boolean;
-  private email: string;
-  private password: string;
+  public hide: boolean;
+  public email: string;
+  public password: string;
 
   constructor(
     private authService: AuthService,

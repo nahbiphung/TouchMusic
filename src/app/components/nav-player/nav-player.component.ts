@@ -10,7 +10,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class NavPlayerComponent implements OnInit {
 
   private isPlaylistOpen: boolean;
-  private playlist: any[];
+  public playlist: any[];
   constructor(
     public songService: SongService
   ) {
@@ -27,28 +27,28 @@ export class NavPlayerComponent implements OnInit {
     }
   }
 
-  private onSelectPlayOrPauseSong() {
+  onSelectPlayOrPauseSong() {
     this.songService.PlayOrPause();
   }
 
-  private onSelectPlayBackward() {
+  onSelectPlayBackward() {
     this.songService.PlayBackward();
   }
 
-  private onSelectPlayForward() {
+  onSelectPlayForward() {
     this.songService.PlayForward();
   }
 
-  private moveCurrentTime(event: any) {
+  moveCurrentTime(event: any) {
     this.songService.audio.currentTime = (event.value / 100) * this.songService.audio.duration;
   }
 
-  private moveCurrentVolume(event: any) {
+  moveCurrentVolume(event: any) {
     this.songService.audio.volume = (event.value);
     console.log(this.songService.audio.volume);
   }
 
-  private openPlaylist() {
+  openPlaylist() {
     if (this.playlist) {
       this.isPlaylistOpen = !this.isPlaylistOpen;
       const element = document.getElementById('showPLaylist');
@@ -60,19 +60,19 @@ export class NavPlayerComponent implements OnInit {
     }
   }
 
-  private startDragging(data: any) {
+  startDragging(data: any) {
     setTimeout(() => {
       const getSong: any = document.getElementsByClassName('cdk-drag-preview');
       getSong[0].style.zIndex = '1030';
     }, );
   }
 
-  private drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.songService.playlistSong, event.previousIndex, event.currentIndex);
     this.playlist = this.songService.playlistSong;
   }
 
-  private onClickSong(data: any) {
+  onClickSong(data: any) {
     this.songService.playSong(data);
     this.songService.audio.src = data.mp3Url;
     this.songService.audio.name = data.name;

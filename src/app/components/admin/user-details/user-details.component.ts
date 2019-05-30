@@ -19,7 +19,7 @@ export class UserDetailsComponent implements OnInit {
   imageUrl: any;
   uploadPercent: Observable<number>;
 
-  constructor(private userService: UserService,
+  constructor(public userService: UserService,
               private storage: AngularFireStorage,
               private toastr: ToastrService,
               public dialogRef: MatDialogRef<UserDetailsComponent>

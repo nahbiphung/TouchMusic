@@ -9,6 +9,7 @@
         <div class="padding-top-10">
           <div class="email handle-content">{{this.email}}</div>
           <div class="name center-text">{{this.displayName}}</div>
+          <button (click)="getInfoFromServer()">click</button>
         </div>
         <div class="center-text cursor-pointer" (click)="onclickLogout()">Logout</div>
       </div>
