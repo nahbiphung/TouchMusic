@@ -16,7 +16,7 @@ export class AdminPerformerComponent implements OnInit {
   private getCountry: AngularFirestoreCollection<any>;
   private listPerformer: any[];
   public listdata: MatTableDataSource<any>;
-  displayedColumns: string[] = ['birthday', 'country', 'countryname', 'name', 'option'];
+  displayedColumns: string[] = ['name', 'image', 'birthday', 'country', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public searchValue: string;
