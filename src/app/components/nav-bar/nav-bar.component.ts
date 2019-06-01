@@ -11,14 +11,14 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
-  private isLogin: boolean;
+  public isLogin: boolean;
   public email: string;
   public firstName: string;
   public lastName: string;
   public photoURL: string;
   public displayName: string;
   private currentUser: firebase.User;
-  private searchContent: string;
+  public searchContent: string;
 
   constructor(
     private authService: AuthService,
@@ -62,7 +62,7 @@ export class NavBarComponent implements OnInit {
     this.toast.success('Logout thanh cong', 'Logout');
   }
 
-  private search() {
+  search() {
     const searchBar = document.getElementById('searchBar');
     if (searchBar.classList.contains('width-0')) {
       searchBar.classList.remove('width-0');

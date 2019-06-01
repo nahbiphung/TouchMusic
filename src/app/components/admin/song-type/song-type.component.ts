@@ -13,11 +13,11 @@ export class SongTypeComponent implements OnInit {
 
   getSongType: AngularFirestoreCollection<any>;
   private listSongType: SongType[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
 
   constructor(
     private afs: AngularFirestore,
@@ -43,7 +43,7 @@ export class SongTypeComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
@@ -52,7 +52,7 @@ export class SongTypeComponent implements OnInit {
     this.applyFilter();
   }
 
-  private onClickCreate() {
+  onClickCreate() {
     this.songtypeService.formReset();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

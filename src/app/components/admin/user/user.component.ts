@@ -15,12 +15,12 @@ export class UserComponent implements OnInit {
 
   getUserCol: AngularFirestoreCollection<any>;
   private listUser: User[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['email', 'firstName', 'lastName', 'displayName', 'photoURL', 'phone', 'birthday', 'roleAdmin', 'roleSubscriber', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
 
   constructor(
     private afs: AngularFirestore,
@@ -89,7 +89,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
