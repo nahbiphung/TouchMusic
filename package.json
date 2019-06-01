@@ -45,11 +45,8 @@
     "ngx-slick-carousel": "^0.4.4",
     "ngx-toastr": "^10.0.2",
     "popper.js": "^1.15.0",
-<<<<<<< HEAD
     "puppeteer": "^1.17.0",
-=======
     "request": "^2.88.0",
->>>>>>> 89f35691de22f8b130c6e9aa06c970ace0e398b7
     "rxjs": "~6.4.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "slick-carousel": "^1.8.1",
