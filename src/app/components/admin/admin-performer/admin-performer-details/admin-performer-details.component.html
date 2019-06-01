@@ -8,7 +8,27 @@
   formPerformer Valid: {{ performerService.formPerformer.valid }}
   <div class="control-container">
     <input type="hidden" formControlName='$key'>
-    
+    <span>
+      <input type='file' accept="image/*" (change)='onSelectFile($event)'>
+      <img *ngIf="performerService.formPerformer.controls.image.value"
+        src="{{performerService.formPerformer.controls.image.value}}" alt="user avt">
+      <div *ngIf="!performerService.formPerformer.controls.image.value" class="display-inline-block witdh-height-80"><i
+          class="far fa-image"></i></div>
+      <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </span>
+
+    <mat-form-field>
+      <input formControlName='name' matInput placeholder="Name*">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
     <mat-form-field>
       <input formControlName="birthday" matInput [matDatepicker]="picker" placeholder="Choose a date" autocomplete="off">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -26,10 +46,6 @@
       <mat-error>This field is required</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
-      <input formControlName='name' matInput placeholder="Name*">
-      <mat-error>This field is required</mat-error>
-    </mat-form-field>
     <div class="button-row">
       <button *ngIf="!performerService.formPerformer.controls.$key.value" mat-raised-button color="primary" [disabled]="performerService.formPerformer.invalid">Submit</button>
       <button *ngIf="performerService.formPerformer.controls.$key.value" mat-raised-button color="primary" [disabled]="performerService.formPerformer.invalid">Update</button>

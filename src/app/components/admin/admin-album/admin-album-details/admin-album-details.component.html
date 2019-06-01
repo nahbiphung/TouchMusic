@@ -1,0 +1,58 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button>
+    <mat-icon aria-label="Example icon-button with a heart icon" (click)="onClose()">close</mat-icon>
+  </button>
+</mat-dialog-actions>
+<form [formGroup]='albumService.formAlbum' (submit)='onSubmit()'>
+  Value: {{ albumService.formAlbum.value | json }}
+  formPerformer Valid: {{ albumService.formAlbum.valid }}
+  <div class="control-container">
+    <input type="hidden" formControlName='$key'>
+    <span>
+      <input type='file' accept="image/*" (change)='onSelectFile($event)'>
+      <img *ngIf="albumService.formAlbum.controls.image.value"
+        src="{{albumService.formAlbum.controls.image.value}}" alt="user avt">
+      <div *ngIf="!albumService.formAlbum.controls.image.value" class="display-inline-block witdh-height-80"><i
+          class="far fa-image"></i></div>
+      <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </span>
+
+    <mat-form-field>
+      <input formControlName='name' matInput placeholder="Album Name*">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="performerId" placeholder="Performer*">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listPerformer">
+          <mat-option value="{{data.id}}">{{data.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="userId" placeholder="User*">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listUser">
+          <mat-option value="{{data.id}}">{{data.displayName}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button *ngIf="!albumService.formAlbum.controls.$key.value" mat-raised-button color="primary" [disabled]="albumService.formAlbum.invalid">Submit</button>
+      <button *ngIf="albumService.formAlbum.controls.$key.value" mat-raised-button color="primary" [disabled]="albumService.formAlbum.invalid">Update</button>
+      <button mat-raised-button color="warn" (click)="onclickClearForm()">Clear</button>
+    </div>
+  </div>
+</form>

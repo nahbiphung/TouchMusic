@@ -17,6 +17,8 @@ import { CountryComponent } from './components/admin/country/country.component';
 import { AdminPerformerComponent } from './components/admin/admin-performer/admin-performer.component';
 import { SongTypeComponent } from './components/admin/song-type/song-type.component';
 import { SearchComponent } from './components/search/search.component';
+import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
+import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -30,7 +32,8 @@ const routes: Routes = [
     { path: 'song', component: AdminSongComponent },
     { path: 'country', component: CountryComponent },
     { path: 'performer', component: AdminPerformerComponent },
-    { path: 'songtype', component: SongTypeComponent }
+    { path: 'songtype', component: SongTypeComponent },
+    { path: 'album', component: AdminAlbumComponent },
   ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},
   { path: 'playlist/favoritePlaylist/:id', component: PlaylistComponent},

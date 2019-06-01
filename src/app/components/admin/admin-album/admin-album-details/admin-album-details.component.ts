@@ -1,47 +1,61 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
-import { PerformerService } from '../../../../services/performer.service';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { AdminAlbumService } from '../../../../services/admin-album.service';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-admin-performer-details',
-  templateUrl: './admin-performer-details.component.html',
-  styleUrls: ['./admin-performer-details.component.scss']
+  selector: 'app-admin-album-details',
+  templateUrl: './admin-album-details.component.html',
+  styleUrls: ['./admin-album-details.component.scss']
 })
-export class AdminPerformerDetailsComponent implements OnInit {
+export class AdminAlbumDetailsComponent implements OnInit {
 
   private thisFile = null;
   private fileName = '';
   downLoadURL: any;
   imageUrl: any;
   uploadPercent: Observable<number>;
-  getCountry: AngularFirestoreCollection<any>;
-  listCountry: Country[];
+  getPerformer: AngularFirestoreCollection<any>;
+  getUser: AngularFirestoreCollection<any>;
+  listPerformer: Performer[];
+  listUser: User[];
 
   constructor(
     public afs: AngularFirestore,
-    public performerService: PerformerService,
+    public albumService: AdminAlbumService,
     private storage: AngularFireStorage,
-    public dialogRef: MatDialogRef<AdminPerformerDetailsComponent>
+    public dialogRef: MatDialogRef<AdminAlbumDetailsComponent>
   ) { }
 
   ngOnInit() {
-    this.getCountry = this.afs.collection('Country');
-    this.getCountry.snapshotChanges().subscribe(arr => {
-      this.listCountry = arr.map(item => {
+    this.albumService.getAlbum();
+
+    this.getUser = this.afs.collection('users');
+    this.getUser.snapshotChanges().subscribe(arr => {
+      this.listUser = arr.map(item => {
         return {
           id: item.payload.doc.id,
           ...item.payload.doc.data()
-        } as Country;
+        } as User;
+      });
+    });
+
+    this.getPerformer = this.afs.collection('Performer');
+    this.getPerformer.snapshotChanges().subscribe(arr => {
+      this.listPerformer = arr.map(item => {
+        return {
+          id: item.payload.doc.id,
+          ...item.payload.doc.data()
+        } as Performer;
       });
     });
   }
 
   onclickClearForm() {
-    this.performerService.formReset();
+    this.albumService.formReset();
   }
 
   onSelectFile(event: any) {
@@ -50,15 +64,15 @@ export class AdminPerformerDetailsComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(this.thisFile);
     reader.onload = (e) => {
-      this.performerService.formPerformer.controls.image.setValue(reader.result);
+      this.albumService.formAlbum.controls.image.setValue(reader.result);
     };
   }
 
   onSubmit() {
-    if (this.performerService.formPerformer.valid) {
-      if (!this.performerService.formPerformer.controls.$key.value) {
+    if (this.albumService.formAlbum.valid) {
+      if (!this.albumService.formAlbum.controls.$key.value) {
         if (this.fileName) {
-          const filePath = 'images/performer/' + this.fileName;
+          const filePath = 'images/album/' + this.fileName;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, this.thisFile);
           // observe percentage changes
@@ -69,12 +83,12 @@ export class AdminPerformerDetailsComponent implements OnInit {
               this.downLoadURL.subscribe((url) => {
                 if (url) {
                   this.imageUrl = url;
-                  console.log(this.imageUrl);
-                  console.log('thanh cong');
+                  // console.log(this.imageUrl);
+                  // console.log('thanh cong');
                   // set image to dowloadURL cause it now from storage
-                  this.performerService.formPerformer.controls.image.setValue(this.imageUrl);
+                  this.albumService.formAlbum.controls.image.setValue(this.imageUrl);
                   // now add
-                  this.performerService.createPerformer();
+                  this.albumService.createAlbum();
                   this.onClose();
                 }
               });
@@ -83,16 +97,16 @@ export class AdminPerformerDetailsComponent implements OnInit {
             .subscribe();
         } else {
           alert('Please add image before Submit');
-          this.performerService.formReset();
+          this.albumService.formReset();
         }
       } else {
         if (this.fileName) {
-          if (this.performerService.imageURL != null) {
-            if (this.performerService.imageURL.slice(8, 23) === 'firebasestorage') {
-              this.storage.storage.refFromURL(this.performerService.imageURL).delete();
+          if (this.albumService.imageURL != null) {
+            if (this.albumService.imageURL.slice(8, 23) === 'firebasestorage') {
+              this.storage.storage.refFromURL(this.albumService.imageURL).delete();
             }
           }
-          const filePath = 'images/performer/' + this.fileName;
+          const filePath = 'images/album/' + this.fileName;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, this.thisFile);
           // observe percentage changes
@@ -106,8 +120,8 @@ export class AdminPerformerDetailsComponent implements OnInit {
                   console.log(this.imageUrl);
                   console.log('thanh cong');
                   // set image to dowloadURL cause it now from storage
-                  this.performerService.formPerformer.controls.image.setValue(this.imageUrl);
-                  this.performerService.updatePerformer();
+                  this.albumService.formAlbum.controls.image.setValue(this.imageUrl);
+                  this.albumService.updateAlbum();
                   this.onClose();
                 }
               });
@@ -115,7 +129,7 @@ export class AdminPerformerDetailsComponent implements OnInit {
           )
             .subscribe();
         } else {
-          this.performerService.updatePerformer();
+          this.albumService.updateAlbum();
           this.onClose();
         }
       }

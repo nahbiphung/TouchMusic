@@ -1,0 +1,190 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button>
+    <mat-icon aria-label="Example icon-button with a heart icon" (click)="onClose()">close</mat-icon>
+  </button>
+</mat-dialog-actions>
+<mat-dialog-content>
+<form [formGroup]='songService.formSong' (submit)='onSubmit()'>
+  Value: {{ songService.formSong.value | json }}
+  formPerformer Valid: {{ songService.formSong.valid }}
+  <div class="control-container">
+    <input type="hidden" formControlName='$key'>
+    <span>
+      <input type='file' accept="image/*" (change)='onSelectFile($event)'>
+      <img *ngIf="songService.formSong.controls.imageSong.value"
+        src="{{songService.formSong.controls.imageSong.value}}" alt="user avt">
+      <div *ngIf="!songService.formSong.controls.imageSong.value" class="display-inline-block witdh-height-80"><i
+          class="far fa-image"></i></div>
+      <div *ngIf="uploadPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </span>
+
+    <div>
+      <input type='file' accept="audio/*" (change)='onSelectMp3($event)'>
+      <span *ngIf="songService.formSong.controls.mp3Url.value">{{songService.formSong.controls.mp3Url.value}}</span>
+      <div *ngIf="uploadMp3Percent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <input type='file' accept="video/*" (change)='onSelectVideo($event)'>
+      <span *ngIf="songService.formSong.controls.video.value">{{songService.formSong.controls.video.value}}</span>
+      <div *ngIf="uploadVideoPercent | async as pct" class="display-inline-block">
+        <div class="flex-bar">
+          <progress class="progress is-info" [value]="pct" max="100"></progress>
+          <div>
+            {{ pct | number }}%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <input formControlName='name' matInput placeholder="Song Name">
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field>
+      <mat-select formControlName="albumId" placeholder="Album">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listAlbum">
+          <mat-option value="{{data.id}}">{{data.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="countryId" placeholder="Country">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listCountry">
+          <mat-option value="{{data.id}}">{{data.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="songTypeId" placeholder="SongType">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listSongType">
+          <mat-option value="{{data.id}}">{{data.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="performerId" placeholder="Performer">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listPerformer">
+          <mat-option value="{{data.id}}">{{data.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="userId" placeholder="User">
+        <mat-option>None</mat-option>
+        <ng-container *ngFor="let data of listUser">
+          <mat-option value="{{data.id}}">{{data.displayName}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName='like' matInput placeholder="Like">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName='view' matInput placeholder="View">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea formControlName='lyric' matInput placeholder="Lyric write here!"></textarea>
+    </mat-form-field>
+
+    <!-- Comment -->
+
+    <input type="button" (click)="onClickAddComment()" value="Add Comment">
+
+    <!-- <div formArrayName='comment' *ngFor="let c of songService.formSong.get('comment').controls; let i = index">
+      <div [formGroupName]='i' *ngIf="songService.formSong.get('comment').length > 0">
+        <div>Comment {{i}}</div>
+        <mat-form-field>
+          <input formControlName='content' matInput placeholder="Song Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName='like' matInput placeholder="Song Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName='postDate' matInput placeholder="Song Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName='user' matInput placeholder="Song Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName='userAvatar' matInput placeholder="Song Name">
+          <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="warn" (click)="onClickRemoveComment(i)">Remove</button>
+      </div>
+    </div> -->
+
+    <!-- X -->
+    <div formArrayName="comment">
+      <div *ngFor="let X of songService.formSong['controls'].comment['controls']; let ix=index">
+        <div formGroupName="{{ix}}">
+          <mat-form-field>
+            <input formControlName='content' matInput placeholder="Song Name">
+            <mat-error>This field is required</mat-error>
+          </mat-form-field>
+    
+          <!-- Y -->
+          <div formArrayName="subComment">
+            <div *ngFor="let Y of X['controls'].subComment['controls']; let iy=index">
+              <div formGroupName="{{iy}}">
+                
+                <mat-form-field>
+                  <input formControlName='content' matInput placeholder="Song Name">
+                  <mat-error>This field is required</mat-error>
+                </mat-form-field>
+    
+              </div>
+              <input type="button" (click)="onClickRemoveSubComment(ix,iy)" value="Remove SubComment">
+            </div>
+            <input type="button" (click)="onClickAddSubComment(ix)" value="Add SubComment">
+          </div>
+          <!-- Y End-->
+        </div>
+        <input type="button" (click)="onClickRemoveComment(ix)" value="Remove Comment">
+      </div>
+    </div>
+    <!-- X End -->
+
+    <div class="button-row">
+      <button *ngIf="!songService.formSong.controls.$key.value" mat-raised-button color="primary" [disabled]="songService.formSong.invalid">Submit</button>
+      <button *ngIf="songService.formSong.controls.$key.value" mat-raised-button color="primary" [disabled]="songService.formSong.invalid">Update</button>
+      <input type="button" (click)="onclickClearForm()" value="Clear">
+    </div>
+  </div>
+</form>
+</mat-dialog-content>

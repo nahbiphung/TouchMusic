@@ -75,6 +75,9 @@ import { AdminPerformerDetailsComponent } from './components/admin/admin-perform
 import { SongTypeComponent } from './components/admin/song-type/song-type.component';
 import { SongTypeDetailComponent } from './components/admin/song-type/song-type-detail/song-type-detail.component';
 import { SearchComponent } from './components/search/search.component';
+import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
+import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
+import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +106,9 @@ import { SearchComponent } from './components/search/search.component';
     SongTypeComponent,
     SongTypeDetailComponent,
     SearchComponent,
+    AdminAlbumComponent,
+    AdminAlbumDetailsComponent,
+    AdminSongDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,6 +158,6 @@ import { SearchComponent } from './components/search/search.component';
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
   entryComponents: [UserDetailsComponent, DialogComponent, CountryDetailComponent, AdminPerformerDetailsComponent
-    , SongTypeDetailComponent]
+    , SongTypeDetailComponent, AdminAlbumDetailsComponent, AdminSongDetailsComponent]
 })
 export class AppModule { }
