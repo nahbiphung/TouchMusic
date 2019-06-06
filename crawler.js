@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
  
 (async () => {
     // headless puppeteer.launch(); default is true
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
     const url ='https://zingmp3.vn/zing-chart/index.html';
     await page.goto(url);
@@ -10,27 +10,13 @@ const puppeteer = require('puppeteer');
 
 
 
-    // await page.waitForSelector('div.lyrics-text a.view-full');
+    // await page.waitForSelector('.artist-name');
 
-    // const button = await page.$('div.lyrics-text a.view-full');
-    // await page.waitFor(2000);
-    // await button.click();
-
-    // await page.waitForSelector('span p.lyrics-text');
-
-    // const lyric = await page.evaluate(
-    //     () => document.querySelector('span p.lyrics-text').innerHTML
+    // const artist = await page.evaluate(
+    //     () => document.querySelector('.artist-name').textContent
     // )
-    // console.log(lyric);
+    // console.log(artist);
 
-    // await page.waitForSelector('div.z-float-header div.z-box-title');
-    // await page.waitForSelector('div.lyrics-text span p.lyrics-text');
-    
-
-    // const name = await page.evaluate(
-    //     () => document.querySelector('div.lyrics-text span p.lyrics-text').textContent
-    // )
-    // console.log(name);
 
 
     await page.waitForSelector('li.bor-bottom');
@@ -53,31 +39,43 @@ const puppeteer = require('puppeteer');
             }))
     )
 
-    console.log(listSongTop);
+    // // console.log(listSongTop);
 
-    // for (let i = 1; i < 2; i++) {
-    //     console.log(listSongTop[i].title);
-    //     await page.goto(listSongTop[i].song);
+    for (let i = 1; i < 20; i++) {
+        console.log(listSongTop[i].title);
+        console.log(listSongTop[i].song);
+        await page.goto(listSongTop[i].song);
         
-    //     await page.waitForSelector('div.lyrics-text a.view-full');
+        await page.waitForSelector('.artist-name');
 
-    //     // click 'Xem Them'
-    //     const button = await page.$('div.lyrics-text a.view-full');
-    //     await page.waitFor(3000);
-    //     await button.click();
+        const artist = await page.evaluate(
+            () => document.querySelector('.artist-name').textContent
+        )
+        console.log(artist);
 
-    //     // await to get 'Xem Them' transfer
-    //     await page.waitForSelector('span p.lyrics-text');
+        await page.waitForSelector('div.lyrics-text a.view-full', {timeout: 2000});
 
-    //     const lyric = await page.evaluate(
-    //         () => document.querySelector('span p.lyrics-text').textContent
-    //     )
+        // click 'Xem Them'
+        const button = await page.$('div.lyrics-text a.view-full');
+        await page.waitFor(3000);
+        await button.click();
+        // if (button != null){
+        //     await button.click();
+        // }
+        
 
-    //     console.log(lyric);
-    //     console.log('\n\n');
-    //     // add lyric to array
-    //     listSongTop[i].lyric = lyric;
-    // }
+        // await to get 'Xem Them' transfer
+        await page.waitForSelector('span p.lyrics-text');
+
+        const lyric = await page.evaluate(
+            () => document.querySelector('span p.lyrics-text').textContent
+        )
+
+        console.log(lyric);
+        console.log('\n\n');
+        // add lyric to array
+        listSongTop[i].lyric = lyric;
+    }
     
     await browser.close();
 })();

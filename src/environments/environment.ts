@@ -10,7 +10,8 @@ export const environment = {
     databaseURL: 'https://touchmusic-2707e.firebaseio.com',
     projectId: 'touchmusic-2707e',
     storageBucket: 'touchmusic-2707e.appspot.com',
-    messagingSenderId: '349463369038'
+    messagingSenderId: '349463369038',
+    appId: '1:349463369038:web:2915931f5e7b2c8c'
   }
 };
 
