@@ -8,17 +8,6 @@ const puppeteer = require('puppeteer');
     await page.goto(url);
     // await page.screenshot({path: 'example.png'});
 
-
-
-    // await page.waitForSelector('.artist-name');
-
-    // const artist = await page.evaluate(
-    //     () => document.querySelector('.artist-name').textContent
-    // )
-    // console.log(artist);
-
-
-
     await page.waitForSelector('li.bor-bottom');
 
     const listSongTop = await page.evaluate(() => 
@@ -39,9 +28,9 @@ const puppeteer = require('puppeteer');
             }))
     )
 
-    // // console.log(listSongTop);
+    // console.log(listSongTop);
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < listSongTop.length; i++) {
         console.log(listSongTop[i].title);
         console.log(listSongTop[i].song);
         await page.goto(listSongTop[i].song);
@@ -53,28 +42,36 @@ const puppeteer = require('puppeteer');
         )
         console.log(artist);
 
-        await page.waitForSelector('div.lyrics-text a.view-full', {timeout: 2000});
+        try{
+            await page.waitForSelector('div.lyrics-text a.view-full', {timeout: 4000});
 
-        // click 'Xem Them'
-        const button = await page.$('div.lyrics-text a.view-full');
-        await page.waitFor(3000);
-        await button.click();
-        // if (button != null){
-        //     await button.click();
-        // }
-        
+            // click 'Xem Them'
+            const button = await page.$('div.lyrics-text a.view-full');
+            await page.waitFor(3000);
+            await button.click();
+            // if (button != null){
+            //     await button.click();
+            // }
+            
 
-        // await to get 'Xem Them' transfer
-        await page.waitForSelector('span p.lyrics-text');
+            // await to get 'Xem Them' transfer
+            await page.waitForSelector('span p.lyrics-text');
 
-        const lyric = await page.evaluate(
-            () => document.querySelector('span p.lyrics-text').textContent
-        )
+            const lyric = await page.evaluate(
+                () => document.querySelector('span p.lyrics-text').textContent
+            )
 
-        console.log(lyric);
-        console.log('\n\n');
-        // add lyric to array
-        listSongTop[i].lyric = lyric;
+            console.log(lyric);
+            console.log('\n\n');
+            // add lyric to array
+            listSongTop[i].lyric = lyric;
+        } catch (e) { // catch trường hợp không tìm thấy tag lyric => nghĩa là k có lyric.
+            console.log('element probably not exists')
+            const lyric = 'null';
+            console.log(lyric);
+            console.log('\n\n');
+            listSongTop[i].lyric = lyric;
+        }
     }
     
     await browser.close();
