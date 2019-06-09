@@ -31,3 +31,14 @@ img{
     justify-content: center;
     font-style: italic;
 }
+
+.title {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    height: 15vh;
+    font-size: 3em;
+
+}

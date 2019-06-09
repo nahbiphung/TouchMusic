@@ -187,6 +187,11 @@ export class DialogComponent implements OnInit {
       function complete() {
         task.snapshot.ref.getDownloadURL().then((res) => {
           if (res) {
+            firebase.auth().currentUser.updateProfile({
+              photoURL: res,
+            }).catch((error) => {
+              console.log(error);
+            });
             copyThis.db.collection('users').doc(copyThis.data.currentUser.id).update({
               photoURL: res
             }).then(() => {

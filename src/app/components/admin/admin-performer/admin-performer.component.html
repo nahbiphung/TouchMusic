@@ -1,11 +1,14 @@
-<div class="create-user">
+<!-- <div class="create-user">
   <button mat-icon-button (click)="onClickCreate()">
     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
   </button>
-</div>
+</div> -->
 
+<div class="title">
+  Peformer
+</div>
 <div>
-  <mat-form-field class="padding-0-10">
+  <mat-form-field class="padding-0-10 my-form-field width-100">
     <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search Country" autocomplete="off">
     <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearSearch()">
       <mat-icon>close</mat-icon>

@@ -94,7 +94,7 @@
     <div
       class="row col-lg-8 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white">
       <h3 class="margin-top-20 d-block width-height-100 font-weight-bold color-organe">Comment</h3>
-      <div class="userComment width-100">
+      <div class="userComment width-100" *ngIf="currentUser">
         <div class="media d-block d-md-flex mt-4">
           <img class="d-flex mb-3 mx-auto avatar" src="{{currentUser.photoURL}}" alt="Generic placeholder image">
           <div class="media-body text-center text-md-left ml-md-3 ml-0">
@@ -121,7 +121,7 @@
               <span class="font-size-13">{{item.stringPostDate}}</span>
             </div>
             <span>{{item.content}}</span>
-            <div class="d-flex justify-content-start align-items-center">
+            <div class="d-flex justify-content-start align-items-center" *ngIf="currentUser">
               <i class="material-icons margin-right-10 pointer">thumb_up</i>
               <i class="material-icons margin-right-10 pointer" (click)="openComment(item.commentId)">add_comment</i>
               <div id="{{item.commentId}}" class="display-none justify-content-center align-items-center width-100">
@@ -141,7 +141,7 @@
                   <span class="font-size-13">{{subcmt.stringPostDate}}</span>
                 </div>
                 <span>{{subcmt.content}}</span>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between" *ngIf="currentUser">
                   <div class="d-flex">
                     <i class="material-icons margin-right-10 pointer" (click)="like(data, item ,subcmt)">thumb_up</i>
                     <span>{{subcmt.like}}</span>
@@ -152,8 +152,11 @@
           </div>
         </div>
       </div>
+      <div class="otherComment width-100" *ngIf="data.comment">
+        There is no comment !!!
+      </div>
       <mat-paginator [length]="data.comment.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
-        (page)="pageEvent = getPaginatorData($event)" class="my-form-field paginator">
+        (page)="pageEvent = getPaginatorData($event)" class="my-form-field paginator" *ngIf="data.comment.length > 5">
       </mat-paginator>
     </div>
   </div>

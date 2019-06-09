@@ -189,3 +189,8 @@ header.scroll-effect .inline-search form{
   width: 250px;
   transition: 0.5s ease-in;
 }
+
+.setSize {
+  overflow: scroll;
+  height: 60vh;
+}
