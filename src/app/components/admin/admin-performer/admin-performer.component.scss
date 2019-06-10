@@ -13,8 +13,16 @@ img{
 }
 
 .create-user{
-    position: relative;
-    height: 5%;
+    z-index: 1;
+    background-color: #324a45;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 10px;
+    color: #f8f8fa;
 }
 
 .btn-create{
@@ -40,5 +48,4 @@ img{
     font-weight: 700;
     height: 15vh;
     font-size: 3em;
-
 }

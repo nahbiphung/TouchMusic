@@ -1,5 +1,5 @@
 .container {
-    background-color: white;
+    background-color: #f8f8fa;
     padding: 0px 30px;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .border-right {
-    border-right: 1px solid #f2f2f2;
+    border-right: 1px solid #a2b1a4 !important;
 }
 
 .font-23{
@@ -39,7 +39,7 @@
 }
 
 .main-module{
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #a2b1a4;
     margin-bottom: 34px;
 }
 
@@ -49,7 +49,7 @@
 
 .color-999-100{
     font-weight: 100;
-    color: #999;
+    color: #a2b1a4;
 }
 
 .list-style-none {
@@ -68,7 +68,7 @@
     position: relative;
     height: 220px;
     margin-bottom: 15px;
-    background-color: antiquewhite;
+    background-color: #f8f8fa;
 }
 
 .selectionPlaylistBanner-gradian{
@@ -99,7 +99,7 @@
 .selectionPlaylistBanner-img{
     width: 100%;
     height: 100%;
-    background-color: #999;
+    background-color: #a2b1a4;
 }
 
 .image-100{
@@ -121,7 +121,7 @@
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    background-color: rgb(11, 114, 17);
+    background-color: #324a45;
 }
 
 .selectionPlaylistBanner-playButton-icon{
@@ -131,7 +131,7 @@
     right: 34%;
     bottom: 34%;
     font-size: 24px;
-    color: aliceblue;
+    color: #f8f8fa;
 }
 
 .main-module-context{
@@ -150,7 +150,7 @@
     position: relative;
     width: 30px;
     height: 30px;
-    background-color: #999;
+    background-color: #a2b1a4;
     border-radius: 50%;
     margin-right: 8px;
 }
@@ -169,10 +169,10 @@
     right: 0;
 }
 .border-1px-black{
-    border: 1px solid #dee2e6;
+    border: 1px solid #a2b1a4;
 }
 .border-1px-black:hover{
-    border: 1px solid black;
+    border: 1px solid #324a45;
 }
 .padding-2-11-2-10{
     padding: 2px 11px 2px 10px;
@@ -215,7 +215,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: white;
+    color: #f8f8fa;
 }
 
 .display-flex{
@@ -338,7 +338,7 @@
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    background-color: rgb(11, 114, 17);
+    background-color: #324a45;
 }
 
 .song-playButton-icon{
@@ -348,7 +348,7 @@
     right: 34%;
     bottom: 34%;
     font-size: 24px;
-    color: aliceblue;
+    color: #f8f8fa;
 }
 
 .slick-slider{
@@ -372,14 +372,14 @@
 }
 
 .color-999 {
-    color: #999;
+    color: #a2b1a4;
 }
 
 .sidebarHeader {
   justify-content: space-between;
   text-decoration: none;
   display: flex;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #a2b1a4;
   align-items: center;
   cursor: pointer;
   height: 30px;
@@ -437,7 +437,7 @@
 
 .border-radius-50{
     border-radius: 50%;
-    border: 1px solid #dee2e6;
+    border: 1px solid #a2b1a4;
 }
 
 .flex-direction-column{
@@ -491,10 +491,10 @@
     padding: 2px 9px 2px 8px;
     height: 22px;
     line-height: 16px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #a2b1a4;
     border-radius: 3px;
-    background-color: #fff;
-    color: #333;
+    background-color: #f8f8fa;
+    color: #324a45;
 }
 
 .btn-follow:hover{
@@ -511,7 +511,7 @@
 }
 
 .sidebar-song:hover{
-    background-color: #dee2e6;
+    background-color: #f8f8fa;
     border-radius: 5px;
     cursor: pointer;
 }

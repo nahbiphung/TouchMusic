@@ -1,22 +1,20 @@
 <app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-100 position-relative"
   *ngIf="!loadingSpinner">
-  <div class="search width-height-100 background-color-white border-radius-10">
-    <div class="row">
-      <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12 color-organe contentProfile">
-        <h1 class="font-weight padding-left-right-15">{{text}}</h1>
-      </div>
+  <div class="search width-height-100">
+    <div class="width-100 color-yellow contentProfile">
+      <span class="font-weight padding-left-right-15">{{text}}</span>
     </div>
   </div>
   <div
     class="content d-flex flex-column background-color-white align-items-start justify-content-start border-radius-10">
-    <div class="song row margin-top-10">
-      <h2 class="font-weight width-100 padding-left-right-15">Songs</h2>
-      <div *ngIf="songData.length !== 0" class="width-100 d-flex justify-content-start">
+    <div class="song margin-top-10 border-bottom">
+      <h2 class="font-weight width-100 color-organe">Songs</h2>
+      <div *ngIf="songData.length !== 0" class="width-100 d-flex justify-content-start flex-wrap">
         <div *ngFor="let item of songData"
           class="songDetail margin-top-10 d-flex flex-column col-lg-6 col-md-6 col-sm-12 col-sx-12">
-          <h5 class="font-weight color-organe hoverUnderline pointer" (click)="gotoSong(item)">{{item.name}}</h5>
-          <div class="d-flex justify-content-between align-items-center border-bottom">
+          <h5 class="font-weight color-dark-blue hoverUnderline pointer" (click)="gotoSong(item)">{{item.name}} - {{item.author}}</h5>
+          <div class="d-flex justify-content-between align-items-center border-bottom color-gray">
             <span class="d-flex" *ngIf="!songService.isPlay"><i
                 class="material-icons logo-size margin-right-left-5 context-menu"
                 (click)="playSong(item)">play_arrow</i></span>
@@ -56,9 +54,9 @@
         </div>
       </div>
     </div>
-    <div class="album row margin-top-10">
-      <h2 class="font-weight width-100 padding-left-right-15">Albums</h2>
-      <div *ngIf="albumData.length !== 0" class="width-100 d-flex justify-content-start">
+    <div class="album margin-top-10 border-bottom">
+      <h2 class="font-weight width-100 color-organe">Albums</h2>
+      <div *ngIf="albumData.length !== 0" class="width-100 d-flex justify-content-start flex-wrap">
         <div *ngFor="let item of albumData"
           class="col-lg-3 col-md-4 col-sm-6 col-sx-12 d-flex flex-column justify-content-center align-items-center margin-top-10">
           <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
@@ -66,7 +64,7 @@
           <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
             class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
           <div class="title-playlist flex-grow-1 margin-top-10">
-            <h5>{{item.name}}</h5>
+            <h5 class="font-weight-400 color-dark-blue">{{item.name}}</h5>
           </div>
         </div>
       </div>
@@ -76,9 +74,9 @@
         </div>
       </div>
     </div>
-    <div class="album row margin-top-10">
-      <h2 class="font-weight width-100 padding-left-right-15">Favorite playlist</h2>
-      <div *ngIf="favoriteData.length !== 0" class="width-100 d-flex justify-content-start">
+    <div class="album margin-top-10 border-bottom">
+      <h2 class="font-weight width-100 color-organe">Favorite playlist</h2>
+      <div *ngIf="favoriteData.length !== 0" class="width-100 d-flex justify-content-start flex-wrap">
         <div *ngFor="let item of favoriteData"
           class="col-lg-3 col-md-4 col-sm-6 col-sx-12 d-flex flex-column justify-content-center align-items-center margin-top-10">
           <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
@@ -86,19 +84,19 @@
           <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
             class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
           <div class="title-playlist flex-grow-1 margin-top-10">
-            <h5>{{item.name}}</h5>
+            <h5 class="font-weight-400 color-dark-blue">{{item.name}}</h5>
           </div>
         </div>
       </div>
-      <div *ngIf="favoriteData.length === 0" class="col-lg-3 col-md-4 col-sm-6 col-sx-12">
-        <div class="title-playlist flex-grow-1 margin-top-10">
-          <h5>There is no album!!!</h5>
+      <div *ngIf="favoriteData.length === 0" class="col-lg-6 col-md-6 col-sm-6 col-sx-12">
+        <div class="title-playlist flex-grow-1 margin-top-10 width-100">
+          <h5>There is no favorite playlist!!!</h5>
         </div>
       </div>
     </div>
-    <div class="video row margin-top-10">
-      <h2 class="font-weight width-100 padding-left-right-15">Videos</h2>
-      <div *ngIf="videoData.length !== 0" class="width-100 d-flex justify-content-start">
+    <div class="video margin-top-10 border-bottom">
+      <h2 class="font-weight width-100 color-organe">Videos</h2>
+      <div *ngIf="videoData.length !== 0" class="width-100 d-flex justify-content-start flex-wrap">
         <div *ngFor="let item of videoData" class="col-lg-3 col-md-4 col-sm-6 col-sx-12 margin-top-10">
           <div *ngIf="item.video" class="d-flex flex-column justify-content-center align-items-center">
             <img *ngIf="item.imageSong" src="{{item.imageSong}}" alt="image" class="img-playlist flex-grow-2"
@@ -106,19 +104,19 @@
             <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
               class="img-playlist flex-grow-2" (click)="openVideo(item)">
             <div class="title-playlist flex-grow-1 margin-top-10">
-              <h5>{{item.name}}</h5>
+              <h5 class="font-weight-400 color-dark-blue">{{item.name}}</h5>
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="videoData.length === 0" class="col-lg-3 col-md-4 col-sm-6 col-sx-12">
-        <div class="title-playlist flex-grow-1 margin-top-10">
+        <div class="title-playlist flex-grow-1 margin-top-10 width-100">
           <h5>There is no Video!!!</h5>
         </div>
       </div>
     </div>
-    <div class="relatedPerformer row margin-top-10">
-      <h2 class="font-weight width-100 padding-left-right-15">Performer</h2>
+    <div class="relatedPerformer margin-top-10">
+      <h2 class="font-weight width-100 color-organe">Performer</h2>
       <div *ngIf="performerData.length !== 0" class="width-100 d-flex justify-content-start">
         <div *ngFor="let item of performerData" class="col-lg-3 col-md-4 col-sm-6 col-sx-12 margin-top-10">
           <div class="performer-image d-flex flex-column justify-content-center align-items-center hoverList pointer"
@@ -129,7 +127,7 @@
           </div>
           <div class="title-playlist d-flex justify-content-center margin-top-10 hoverUnderline pointer"
             (click)="changePerformer(item)">
-            <h5>{{item.name}}</h5>
+            <h5 class="font-weight-400 color-dark-blue">{{item.name}}</h5>
           </div>
         </div>
       </div>
