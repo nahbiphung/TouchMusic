@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { SongService } from '../../services/song.service';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(
     private db: AngularFirestore,
-    public songService: SongService
+    public songService: SongService,
+    public dialog: MatDialog
   ) { }
   slideSongConfig = {
     slidesToShow: 4,
@@ -339,5 +342,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //     });
     //   }
     // });
+  }
+  public openVideo(songVideo: Song) {
+    this.songService.audio.pause();
+    this.isPlay = false;
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '70vw',
+      data: { currentUser: '', data: songVideo, selector: 'D' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.songService.audio.play();
+      this.isPlay = true;
+    });
   }
 }

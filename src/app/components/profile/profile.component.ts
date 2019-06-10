@@ -79,6 +79,10 @@ export class ProfileComponent implements OnInit {
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
         this.userData = res;
+        this.fnameFormControl.setValue(this.userData.firstName);
+        this.lnameFormControl.setValue(this.userData.lastName);
+        this.emailFormControl.setValue(this.userData.email);
+        this.phoneFormControl.setValue(this.userData.phone);
         this.dateFormControl = new FormControl(res.birthday.toDate());
         if (this.isBlock) {
           this.disableFormControl();
@@ -159,16 +163,17 @@ export class ProfileComponent implements OnInit {
   }
 
   private onFileSelected(event: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      height: '78vh',
-      width: '50vw',
-      data: {currentUser: this.currentUserRef, data: event, selector: 'A'}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      console.log('The dialog was closed');
-    });
+    if (event.target.files.length !== 0) {
+      const dialogRef = this.dialog.open(DialogComponent, {
+        height: '78vh',
+        width: '50vw',
+        data: {currentUser: this.currentUserRef, data: event, selector: 'A'}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        console.log('The dialog was closed');
+      });
+    }
   }
 }
 

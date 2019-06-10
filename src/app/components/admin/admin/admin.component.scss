@@ -20,8 +20,20 @@
     padding-top: 10px;
 }
 
+.padding-bottom-5 {
+    padding-bottom: 5px;
+}
+
+.border-top {
+    border-top: solid 1px #a2b1a4;
+}
+
 .center-text {
     text-align: center;
+}
+
+.left-text {
+    text-align: left;
 }
 
 .cursor-pointer{
@@ -36,4 +48,46 @@
 
 .width-180px{
     width: 180px;
+}
+
+.menu-item {
+    font-size: 1.2em;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    transition: 0.2s;
+}
+
+.menu-item :hover {
+    background-color: #a2b1a4;
+    color: #ffd740;
+    transition: 0.2s;
+}
+
+.name {
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.zIndex-5 {
+    z-index: 5;
+}
+
+.zIndex-1 {
+    z-index: 1;
+}
+
+.menu-item-logout {
+    display: flex;
+    align-items: flex-end;
+    font-size: 1.2em;
+    height: 100%;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.menu-item-logout :hover {
+    color: #ffd740;
+    background-color: #a2b1a4;
+    transition: 0.2s;
 }

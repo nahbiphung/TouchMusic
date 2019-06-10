@@ -45,7 +45,7 @@ export class UserComponent implements OnInit {
         for (data of this.listUser) {
           if (data.birthday) {
             if (data.birthday.seconds) {
-              data.birthday = data.birthday.toDate();
+              data.birthday = data.birthday.toDate().toDateString();
             }
           } else {
             // data.birthday = new Date(Date.now());

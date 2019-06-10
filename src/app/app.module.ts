@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -153,7 +154,8 @@ import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-s
     MatTabsModule,
     MatExpansionModule,
     NgbPopoverModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],
