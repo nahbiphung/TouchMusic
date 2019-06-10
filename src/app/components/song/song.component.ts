@@ -91,7 +91,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
     if (this.songService.isPlay) {
       this.isPlay = true;
       const e: any = document.getElementById('video');
-      if (!e.paused) {
+      if (e && !e.paused) {
         e.pause();
       }
     } else {
@@ -279,7 +279,6 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   private addToFavoritePlaylist(song: Song, p: any) {
-    console.log(song);
     p.toggle();
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',

@@ -19,7 +19,7 @@
             <ng-template #popContent>
               <div class="d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
-                  (click)="addToFavoritePlaylist(data, p)">
+                  (click)="addToFavoritePlaylist(data, p)" *ngIf="currentUser">
                   <i class="material-icons">playlist_add</i>
                   <span>Add to favorite</span>
                 </div>
@@ -76,7 +76,7 @@
             <ng-template #popContent>
               <div class="d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
-                  (click)="addToFavoritePlaylist(item, p)">
+                  (click)="addToFavoritePlaylist(item, p)" *ngIf="currentUser">
                   <i class="material-icons">playlist_add</i>
                   <span>Add to favorite</span>
                 </div>
@@ -152,7 +152,7 @@
           </div>
         </div>
       </div>
-      <div class="otherComment width-100" *ngIf="data.comment">
+      <div class="otherComment width-100" *ngIf="data.comment.length == 0">
         There is no comment !!!
       </div>
       <mat-paginator [length]="data.comment.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
