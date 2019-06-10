@@ -102,14 +102,14 @@
               <div ngxSlickItem class="height-265px" *ngFor="let item of songs">
                 <div class="padding-0-5px">
                   <div class="song-back-img">
-                    <img class="song-img" id="{{item.id}}" [routerLink]="[ '/song', item.name, item.id.trim() ]" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <img class="song-img" id="{{item.id}}" [routerLink]="[ '/song', item.name, item.id.trim() ]" src="{{item.imageSong}}" alt="song-img">
                     <div class="song-playButton" (click)="clickPlayPlaylistDetailForUser(item)">
                       <div class="song-playButton-link" *ngIf="!this.songService.isPlay">
                         <i class="fas fa-play song-playButton-icon"></i>
                       </div>
                       <div class="song-playButton-link" *ngIf="this.songService.isPlay">
-                          <i class="fas fa-pause song-playButton-icon"></i>
-                        </div>
+                        <i class="fas fa-pause song-playButton-icon"></i>
+                      </div>
                     </div>
                   </div>
                   <div class="song-context">
@@ -203,83 +203,19 @@
               (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)"
               (beforeChange)="beforeChange($event)">
               <!-- list song -->
-              <div ngxSlickItem class="height-265px">
+              <div ngxSlickItem class="height-265px" *ngFor="let item of songs">
                 <div class="padding-0-5px">
                   <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <img class="song-img" src="{{item.imageSong}}" alt="song-img">
                     <div class="song-playButton">
                       <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
+                        <i class="fas fa-play song-playButton-icon" (click)="openVideo(item)"></i>
                       </div>
                     </div>
                   </div>
                   <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
-                  </div>
-                </div>
-              </div>
-              <div ngxSlickItem class="height-265px">
-                <div class="padding-0-5px">
-                  <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
-                    <div class="song-playButton">
-                      <div class="song-playButton-link">
-                        <i class="fas fa-play song-playButton-icon"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="song-context">
-                    <div class="song-title handal-content color-black">Bua yfsafaf asffa sf asfasf as asfas asfeu</div>
-                    <div class="song-author handal-content color-black">Bich Phuong</div>
+                    <div class="song-title handal-content color-black">{{item.name}}</div>
+                    <div class="song-author handal-content color-black">{{item.author}}</div>
                   </div>
                 </div>
               </div>
@@ -302,7 +238,7 @@
               <div ngxSlickItem class="height-265px" *ngFor="let item of albums">
                 <div class="padding-0-5px">
                   <div class="song-back-img">
-                    <img class="song-img" src="https://picsum.photos/200/300?image=989" alt="song-img">
+                    <img class="song-img" src="{{item.image}}" alt="song-img">
                     <div class="song-playButton" (click)="clickPlayAlbum(item)">
                       <div class="song-playButton-link" *ngIf="!this.songService.isPlay">
                         <i class="fas fa-play song-playButton-icon"></i>
@@ -345,7 +281,7 @@
                   <div class="height-100 width-heigh-50 position-relative">
                     <a href="#" class="width-heigh-50 position-absolute">
                       <img class="position-absolute width-heigh-50 border-radius-50"
-                        src="https://picsum.photos/200/300?random=5" alt="">
+                        src="{{item.photoURL}}" alt="">
                     </a>
                   </div>
                 </div>
@@ -390,7 +326,7 @@
                 <div class="margin-right-10px">
                   <div class="height-100 width-heigh-50 position-relative">
                     <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
+                      <img class="position-absolute width-heigh-50" src="{{item.imageSong}}" alt="">
                     </a>
                   </div>
                 </div>
@@ -434,7 +370,7 @@
                 <div class="margin-right-10px">
                   <div class="height-100 width-heigh-50 position-relative">
                     <a href="#" class="width-heigh-50 position-absolute">
-                      <img class="position-absolute width-heigh-50" src="https://picsum.photos/id/989/200/300" alt="">
+                      <img class="position-absolute width-heigh-50" src="{{item.imageSong}}" alt="">
                     </a>
                   </div>
                 </div>
