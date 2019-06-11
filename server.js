@@ -38,7 +38,6 @@ async function getSongDataNhaccuatui(req, res, link) {
         const $ = cheerio.load(html);
         const boxContentMusicList = $('.box-content-music-list').toArray();
         for (const grandFatherelement of boxContentMusicList) {
-          const viewCount = $(grandFatherelement).children('span').text();
           const avatarSong = $(grandFatherelement).children('.info_song').children('.avatar_song').children('img').attr('src');
           const songHref = $(grandFatherelement).children('.info_song').children('.avatar_song').attr('href');
           let titleSong = $(grandFatherelement).children('.info_song').children('h2').children('.name_song').text();
@@ -58,10 +57,9 @@ async function getSongDataNhaccuatui(req, res, link) {
           song.push({
             avatar: avatarSong,
             name: titleSong,
+            performer: author,
             link: songHref,
             lyric: lyrics,
-            performer: author,
-            view: viewCount
           });
         }
         result(song);
@@ -102,6 +100,42 @@ app.get('/newsongnhaccuatui',async (req, res) => {
     NameSong: listSong
   });
 });
+
+// get numbers of page
+function getNumbers(link) {
+  return new Promise((result, reject) => request(link, (lyrisError, lyricsResponse, html) => {
+    if (!lyrisError && lyricsResponse.statusCode == 200) {
+      if (html) {
+        const $ = cheerio.load(html);
+        const boxContentPagelist = $('.box_pageview').children('.number').last().attr('href');
+        const data = {
+          number: boxContentPagelist.match(/\d+/g).map(Number),
+          pageLink: boxContentPagelist
+        }
+        result(data);
+      }
+    }
+  }))
+}
+
+app.get('/nhaccuatuiPages', async(req, res) => {
+  let listPages = new Array();
+  const number = await getNumbers('https://www.nhaccuatui.com/bai-hat/bai-hat-moi-nhat.html');
+  res.json(number);
+})
+
+app.get('/nhaccuatuiData', async(req, res) => {
+  let listPages = new Array();
+  console.log(req.query.page);
+  let link = '';
+  if(parseInt(req.query.page) === 1){
+    link = 'https://www.nhaccuatui.com/bai-hat/bai-hat-moi-nhat.html';
+  } else {
+    link = 'https://www.nhaccuatui.com/bai-hat/bai-hat-moi-nhat.' + req.query.page + '.html';
+  }
+  const data = await getSongDataNhaccuatui(req, res, link);
+  res.json(data);
+})
 
 const server = http.createServer(app);
 

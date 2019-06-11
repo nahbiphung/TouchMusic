@@ -30,9 +30,9 @@
     </div>
   </div>
 
-
   <div *ngIf="isAvatar">
-    <div class="position-relative width-height-100">
+    <h1 mat-dialog-title>Change Avatar</h1>
+    <div mat-dialog-content class="position-relative width-height-100">
       <img src="{{imagePreview}}" class="imagePreview" alt="Image preview">
     </div>
     <div mat-dialog-actions>
@@ -41,7 +41,6 @@
       <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
     </div>
   </div>
-
 
   <div *ngIf="isAddToFaList">
     <h1 mat-dialog-title>Your Favorite Playlists</h1>

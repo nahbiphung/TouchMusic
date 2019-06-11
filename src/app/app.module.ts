@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -78,6 +79,7 @@ import { SearchComponent } from './components/search/search.component';
 import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
 import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
+import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +111,7 @@ import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-s
     AdminAlbumComponent,
     AdminAlbumDetailsComponent,
     AdminSongDetailsComponent,
+    AdminCrawlingComponent,
   ],
   imports: [
     BrowserModule,
@@ -153,7 +156,8 @@ import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-s
     MatTabsModule,
     MatExpansionModule,
     NgbPopoverModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

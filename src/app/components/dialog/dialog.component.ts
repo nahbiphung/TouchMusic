@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Component({
@@ -28,7 +29,8 @@ export class DialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private db: AngularFirestore) {
+    private db: AngularFirestore,
+    private _snackBar: MatSnackBar) {
     this.haveImage = false;
     this.uploadProgress = 0;
     this.name = '';
@@ -134,6 +136,12 @@ export class DialogComponent implements OnInit {
               }
             }).catch((error) => {
               console.log('error when add collection' + error);
+              if (copyThis.isCreateNewFaList) {
+                copyThis.dialogRef.close(falist);
+                this.resetForm();
+              } else {
+                this.resetForm();
+              }
             });
           });
         }
@@ -158,6 +166,12 @@ export class DialogComponent implements OnInit {
         }
       }).catch((error) => {
         console.log('error when add collection' + error);
+        if (this.isCreateNewFaList) {
+          this.dialogRef.close(falist);
+          this.resetForm();
+        } else {
+          this.resetForm();
+        }
       });
 
     }
@@ -187,6 +201,11 @@ export class DialogComponent implements OnInit {
       function complete() {
         task.snapshot.ref.getDownloadURL().then((res) => {
           if (res) {
+            firebase.auth().currentUser.updateProfile({
+              photoURL: res,
+            }).catch((error) => {
+              console.log(error);
+            });
             copyThis.db.collection('users').doc(copyThis.data.currentUser.id).update({
               photoURL: res
             }).then(() => {
@@ -220,7 +239,16 @@ export class DialogComponent implements OnInit {
         this.loadingSpinner = false;
         this.dialogRef.close();
       });
+    } else {
+      this.openMessage('Bài hát đã trong playlist', 'Đóng');
+      this.loadingSpinner = false;
     }
+  }
+  private openMessage(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      verticalPosition: 'top',
+    });
   }
 
 }

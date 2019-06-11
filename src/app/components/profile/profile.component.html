@@ -25,7 +25,7 @@
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Fisrt name" [formControl]="fnameFormControl" [value]="userData.firstName"
             [errorStateMatcher]="matcher">
-            <mat-error *ngIf="fnameFormControl.hasError('maxLength')">
+            <mat-error *ngIf="fnameFormControl.hasError('max')">
               Fisrt name is too long
             </mat-error>
             <mat-error *ngIf="fnameFormControl.hasError('required')">
@@ -35,7 +35,7 @@
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Last name" [formControl]="lnameFormControl" [value]="userData.lastName"
             [errorStateMatcher]="matcher">
-            <mat-error *ngIf="lnameFormControl.hasError('maxLength')">
+            <mat-error *ngIf="lnameFormControl.hasError('max')">
               Last name is too long
             </mat-error>
             <mat-error *ngIf="lnameFormControl.hasError('required')">

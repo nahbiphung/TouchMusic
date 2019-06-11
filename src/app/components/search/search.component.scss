@@ -16,6 +16,8 @@
   height: auto;
   max-height: 400px;
   align-content: flex-start;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #a2b1a4;
 }
 
 .album {
@@ -23,12 +25,16 @@
   height: auto;
   max-height: 400px;
   align-content: flex-start;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #a2b1a4;
 }
 
 .video {
   width: 100%;
   height: auto;
   align-content: flex-start;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #a2b1a4;
 }
 
 .songDetail {
@@ -72,8 +78,9 @@
 .contentProfile {
   padding-top: 10px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  font-size: 3.5em;
 }
 
 .img-playlist {

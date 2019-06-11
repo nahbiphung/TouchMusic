@@ -1,9 +1,11 @@
 <!-- <div class="create-user">
   <div class="btn-create" (click)="openDialog()">btn create user</div>
 </div> -->
-
+<div class="title color-dark-blue">
+  User
+</div>
 <div>
-  <mat-form-field class="padding-0-10">
+  <mat-form-field class="padding-0-10 my-form-field width-100">
     <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search User" autocomplete="off">
     <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearSearch()">
       <mat-icon>close</mat-icon>
