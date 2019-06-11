@@ -79,6 +79,7 @@ import { SearchComponent } from './components/search/search.component';
 import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
 import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
+import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-s
     AdminAlbumComponent,
     AdminAlbumDetailsComponent,
     AdminSongDetailsComponent,
+    AdminCrawlingComponent,
   ],
   imports: [
     BrowserModule,
