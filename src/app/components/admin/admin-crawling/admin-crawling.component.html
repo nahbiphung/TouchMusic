@@ -3,7 +3,17 @@
 </div>
 <div class="width-100 position-relative">
   <mat-tab-group [color]="'accent'">
-    <mat-tab label="Zing Mp3">Zingmp3</mat-tab>
+    <mat-tab label="Zing Mp3">
+      <div>
+        <button mat-raised-button color="accent" (click)="getNumberZing()">Lấy số lượng</button>
+        <div *ngIf="listZingSong">
+          <p>Tổng số bài hát : {{zingSongCount}}</p>
+        </div>
+      </div>
+      <div *ngIf="listZingSong">
+        <button mat-raised-button color="accent" (click)="getZingTop100(zing10Song)">Lấy Top 100</button>
+      </div>
+    </mat-tab>
     <mat-tab label="Nhaccuatui">
       <div>
         <h2>Lấy số trang</h2>
