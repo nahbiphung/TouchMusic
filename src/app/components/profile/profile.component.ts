@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 import {FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -17,7 +18,14 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class ProfileComponent implements OnInit {
@@ -54,6 +62,12 @@ export class ProfileComponent implements OnInit {
   ]);
 
   private matcher = new MyErrorStateMatcher();
+  // upload song
+  private tableListSongData: MatTableDataSource<any>;
+  private listSongData: Song[];
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'albumId'];
 
 
   constructor(
@@ -72,6 +86,7 @@ export class ProfileComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loadingSpinner = true;
     // get params and user
     const getParams = this.route.snapshot.paramMap.get('uid');
     this.currentUserRef = this.db.collection('users').doc(getParams).ref;
@@ -89,10 +104,15 @@ export class ProfileComponent implements OnInit {
         } else {
           this.enableFormControl();
         }
-        this.loadingSpinner = false;
+        if (this.listSongData) {
+          this.loadingSpinner = false;
+        }
       }
     }, (error) => {
       console.log('error');
+      if (this.listSongData.length !== 0) {
+        this.loadingSpinner = false;
+      }
     });
 
     this.collectionData = this.db.collection('FavoritePlaylist',
@@ -102,6 +122,25 @@ export class ProfileComponent implements OnInit {
           this.faPlaylist = res;
         }
       });
+
+    // get Song Data created by user
+    this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
+    this.collectionData.valueChanges().subscribe((res) => {
+        if (res) {
+          this.listSongData = res;
+          this.tableListSongData = new MatTableDataSource(this.listSongData);
+          this.tableListSongData.sort = this.sort;
+          this.tableListSongData.paginator = this.paginator;
+        }
+        if (this.userData) {
+          this.loadingSpinner = false;
+        }
+    }, (error) => {
+      console.log('Get song data error ' + error);
+      if (this.userData) {
+        this.loadingSpinner = false;
+      }
+    });
   }
 
   private createNewFaPlaylist() {
@@ -174,6 +213,26 @@ export class ProfileComponent implements OnInit {
         console.log('The dialog was closed');
       });
     }
+  }
+
+  public onClickCreate() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: {currentUser: this.currentUserRef, selector: 'UPLOAD_SONG'}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
+  }
+
+  public onClickEdit(data: Song) {
+
+  }
+
+  public onDelete(data: Song) {
+
   }
 }
 

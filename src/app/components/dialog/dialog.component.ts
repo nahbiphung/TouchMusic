@@ -1,10 +1,17 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, ErrorStateMatcher } from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -26,6 +33,35 @@ export class DialogComponent implements OnInit {
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
   public loadingSpinner: boolean;
+  private isUploadSong: boolean;
+
+  // upload song
+  private matcher = new MyErrorStateMatcher();
+  private listPerformerData: Performer[];
+  private listCountryData: Country[];
+  private listSongTypeData: SongType[];
+  private imageSong: any;
+  private previewImageSong: any;
+  private imageVideo: any;
+  private previewImageVideo: any;
+  private songFile: any;
+  private videoFile: any;
+  private songNameFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private authorFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private performerFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private lyricFormControl: FormControl = new FormControl('', [
+    Validators.maxLength(500),
+  ]);
+
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -40,6 +76,11 @@ export class DialogComponent implements OnInit {
     this.isAddToFaList = false;
     this.panelOpenState = true;
     this.loadingSpinner = true;
+    this.isUploadSong = false;
+    // upload song
+    this.listPerformerData = [];
+    this.listCountryData = [];
+    this.listSongTypeData = [];
   }
 
   onNoClick(): void {
@@ -72,26 +113,88 @@ export class DialogComponent implements OnInit {
         this.isVideo = true;
         this.loadingSpinner = false;
         break;
+      case 'UPLOAD_SONG':
+        this.isUploadSong = true;
+        this.collectionData = this.db.collection('Performer');
+        this.collectionData.valueChanges().subscribe((res) => {
+          if (res) {
+            this.listPerformerData = res;
+            this.loadingSpinner = false;
+          }
+        });
+        this.collectionData = this.db.collection('Country');
+        this.collectionData.valueChanges().subscribe((res) => {
+          if (res) {
+            this.listCountryData = res;
+            this.loadingSpinner = false;
+          }
+        });
+        this.collectionData = this.db.collection('SongType');
+        this.collectionData.valueChanges().subscribe((res) => {
+          if (res) {
+            this.listSongTypeData = res;
+            this.loadingSpinner = false;
+          }
+        });
+        break;
       default:
         this.loadingSpinner = false;
         break;
     }
   }
 
-  private onFileSelected(event: any) {
-    this.loadImage = event.target.files[0];
-    if (this.loadImage) {
-      this.haveImage = true;
-      const copyThis = this;
-      const previewImage = new FileReader();
-      previewImage.onload = (e: any) => {
-        copyThis.imagePreview = e.currentTarget.result;
-      };
-      previewImage.readAsDataURL(this.loadImage);
-
-    } else {
-      this.haveImage = false;
+  private onFileSelected(event: any, flag?: string) {
+    switch (flag) {
+      case 'songFile':
+        this.songFile = event.target.files[0];
+        // do something
+        break;
+      case 'songImage':
+        // do something
+        this.imageSong = event.target.files[0];
+        if (this.imageSong) {
+          this.haveImage = true;
+          const copyThis = this;
+          const previewImage = new FileReader();
+          previewImage.onload = (e: any) => {
+            copyThis.previewImageSong = e.currentTarget.result;
+          };
+          previewImage.readAsDataURL(this.imageSong);
+        }
+        break;
+      case 'videoFile':
+        // do something
+        this.videoFile = event.target.files[0];
+        break;
+      case 'videoImage':
+        // do something
+        this.imageVideo = event.target.files[0];
+        if (this.imageVideo) {
+          this.haveImage = true;
+          const copyThis = this;
+          const previewImage = new FileReader();
+          previewImage.onload = (e: any) => {
+            copyThis.previewImageVideo = e.currentTarget.result;
+          };
+          previewImage.readAsDataURL(this.imageVideo);
+        }
+        break;
+      default:
+        this.loadImage = event.target.files[0];
+        if (this.loadImage) {
+          this.haveImage = true;
+          const copyThis = this;
+          const previewImage = new FileReader();
+          previewImage.onload = (e: any) => {
+            copyThis.imagePreview = e.currentTarget.result;
+          };
+          previewImage.readAsDataURL(this.loadImage);
+        } else {
+          this.haveImage = false;
+        }
+        break;
     }
+    
   }
 
   private createNewPlaylist() {

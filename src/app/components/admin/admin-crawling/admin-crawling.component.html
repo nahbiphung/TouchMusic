@@ -32,7 +32,9 @@
 
               <ng-container matColumnDef="performer">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
+                <mat-cell *matCellDef="let element" class="d-flex flex-column aligns-item-start">
+                  <div *ngFor="let item of element.performer">{{item.name}}</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="link">
@@ -64,7 +66,7 @@
                 [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
               </mat-footer-row>
             </mat-table>
-            <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+            <mat-paginator class="position-relative" [length]="tableData.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
     </mat-tab>

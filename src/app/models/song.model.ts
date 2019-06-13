@@ -9,6 +9,7 @@ interface Song {
     userId: string;
     albumId: string;
     countryId: string;
+    lyric: string;
     view: number;
     like: number;
     comment: [Comment];
@@ -64,5 +65,6 @@ interface Performer {
     birthday: string;
     country: string;
     user: string;
+    image: string;
 }
 

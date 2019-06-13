@@ -1,27 +1,45 @@
 .loadImageName {
-    width: 100%;
-    overflow: hidden;
+  width: 100%;
+  overflow: hidden;
 }
 
 .containerPreview {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .imagePreview {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .labelPreviewImage {
-    width: 100%;
-    overflow: scroll;
+  width: 100%;
+  overflow: scroll;
 }
 
 .img-playlist {
-    width: 10em;
-    height: 10em;
-    object-fit: contain;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-  }
+  width: 10em;
+  height: 10em;
+  object-fit: contain;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+}
+
+.example-option-img {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.size-100px {
+  max-height: 100px;
+}
+
+.size-height-100px {
+  height: 100px;
+  max-height: 200px;
+}
+
+.width-45-percent {
+  width: 45%;
+}
