@@ -1,18 +1,20 @@
 interface Song {
     id: string;
-    author: string;
+    author: Array<any>;
     name: string;
-    performerId: string;
+    performerId: Array<any>;
     mp3Url: string;
+    imageSong: string;
     video: string;
-    songTypeId: string;
+    imageVideo: string;
+    songType: string;
     userId: string;
     albumId: string;
-    countryId: string;
+    country: string;
     lyric: string;
     view: number;
     like: number;
-    comment: [Comment];
+    comment: Array<Comment>;
 }
 
 interface Album {

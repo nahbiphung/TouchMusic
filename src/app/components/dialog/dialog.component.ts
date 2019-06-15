@@ -2,9 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, ErrorStateMatcher } from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
+import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { SongComponent } from '../song/song.component';
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,6 +50,10 @@ export class DialogComponent implements OnInit {
   private previewImageVideo: any;
   private songFile: any;
   private videoFile: any;
+  private countrySelected: string;
+  private songTypeSelected: string;
+  private uploadTask: AngularFireUploadTask;
+  private snapshot: Observable<any>;
   private songNameFormControl: FormControl = new FormControl('', [
     Validators.maxLength(30),
     Validators.required,
@@ -66,7 +74,8 @@ export class DialogComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private db: AngularFirestore,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private storage: AngularFireStorage) {
     this.haveImage = false;
     this.uploadProgress = 0;
     this.name = '';
@@ -194,7 +203,6 @@ export class DialogComponent implements OnInit {
         }
         break;
     }
-    
   }
 
   private createNewPlaylist() {
@@ -354,6 +362,68 @@ export class DialogComponent implements OnInit {
     });
   }
 
+  private uploadNewSong() {
+    // cần data của những field sau
+    // this.authorFormControl -- author
+    // this.songNameFormControl -- name
+    // this.lyricFormControl -- lyric
+    // this.performerFormControl -- performerId
+    // this.songFile -- mp3Url
+    // this.imageSong -- imageSong
+    // this.videoFile -- video
+    // this.imageVideo -- imageVideo
+    // this.countrySelected -- country
+    // this.songTypeSelected -- songType
+    if (this.validateSong()) {
+      const newData: Song = {
+        id: '',
+        like: 0,
+        view: 0,
+        comment: [],
+        albumId: '',
+        userId: this.data.currentUser,
+        name: this.songNameFormControl.value,
+        author: [this.authorFormControl.value],
+        lyric: this.lyricFormControl.value !== '' ? this.lyricFormControl.value : '',
+        performerId: [this.performerFormControl.value],
+        mp3Url: '',
+        imageSong: '',
+        video: '',
+        imageVideo: '',
+        country: this.countrySelected ? this.countrySelected : '',
+        songType: this.songTypeSelected ? this.songTypeSelected : ''
+      };
+      this.db.collection('userUploadSong').add(newData).then((res) => {
+        if (res) {
+          this.db.collection('userUploadSong').doc(res.id).update({id: res.id});
+          this.uploadImageandFile(res.id);
+        }
+      }).catch((error) => {
+        console.log('Song upload Error ' + error);
+      })
+    }
+  }
+
+  private uploadImageandFile(songId: any) {
+    const imageSongStorageRef = this.storage.ref('images/' + this.imageSong.name);
+    // const imageVideoStorageRef = this.storage.ref('images/' + this.imageVideo.name);
+    // upload image file 
+    this.uploadTask = this.storage.upload('images/' + this.imageSong.name, this.imageSong);
+    this.snapshot = this.uploadTask.snapshotChanges().pipe(tap(),
+      finalize(async () => {
+        const downloadUrl =  await imageSongStorageRef.getDownloadURL().toPromise();
+        this.db.collection('userUploadSong').doc(songId).update({imageSong: downloadUrl});
+      }),
+    );
+  }
+
+  private validateSong(): boolean {
+    if(this.songNameFormControl.value === '' || this.performerFormControl.value === '' ||
+    this.authorFormControl.value === '' || !this.songFile || !this.imageSong) {
+      return false;
+    }
+    return true;
+  }
 }
 
 export class FavoriteList {

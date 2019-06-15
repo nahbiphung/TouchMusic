@@ -109,8 +109,8 @@
 </div>
 
 <div *ngIf="isUploadSong">
-  <h1>Upload Song</h1>
-  <div>
+  <h1 mat-dialog-title>Upload Song</h1>
+  <div mat-dialog-content>
     <mat-form-field class="width-100 my-form-field">
       <input matInput placeholder="Name" [formControl]="songNameFormControl" [errorStateMatcher]="matcher">
       <mat-error *ngIf="songNameFormControl.hasError('max')">
@@ -157,7 +157,7 @@
     <div class="d-flex justify-content-between flex-wrap">
       <mat-form-field class="my-form-field width-45-percent">
         <mat-label>Country</mat-label>
-        <mat-select>
+        <mat-select [(value)]="countrySelected">
           <mat-option *ngFor="let country of listCountryData" [value]="country.name">
             {{country.name}}
           </mat-option>
@@ -166,7 +166,7 @@
   
       <mat-form-field class="my-form-field width-45-percent">
         <mat-label>Song Type</mat-label>
-        <mat-select>
+        <mat-select [(value)]="songTypeSelected">
           <mat-option *ngFor="let songtype of listSongTypeData" [value]="songtype.name">
             {{songtype.name}}
           </mat-option>
@@ -193,7 +193,7 @@
       </button>
     </div>
 
-    <div class="width-100">
+    <div class="width-100"> 
       <input type="file" (change)="onFileSelected($event, 'songImage')" accept="image/*" class="display-none" #openMP3ImageFile>
       <span>Choose Image Song: </span>
       <button mat-mini-fab class="my-form-field margin-5">
@@ -202,7 +202,7 @@
       <div class="labelPreviewImage" *ngIf="imageSong">
         <span class="loadImageName color-yellow">{{imageSong.name}}</span>
       </div>
-      <div class="position-relative">
+      <div class="position-relative" *ngIf="imageSong">
         <img src="{{previewImageSong}}" class="size-100px" alt="preview">
       </div>
     </div>
@@ -227,10 +227,14 @@
       <div class="labelPreviewImage" *ngIf="imageVideo">
         <span class="loadImageName color-yellow">{{imageVideo.name}}</span>
       </div>
-      <div class="position-relative">
+      <div class="position-relative" *ngIf="imageVideo">
         <img src="{{previewImageVideo}}" class="size-100px" alt="preview">
       </div>
     </div>
   </div>
-
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button cdkFocusInitial (click)="uploadNewSong()">Upload</button>
+    <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
+  </div>
 </div>
