@@ -4,7 +4,7 @@
 <div class="width-100 position-relative">
   <mat-tab-group [color]="'accent'">
     <mat-tab label="Zing Mp3">
-      <div>
+      <div *ngIf="!checkZingData">
         <h2>Lấy số lượng bài hát</h2>
         <button mat-raised-button color="accent" (click)="getNumberZing()">Lấy số lượng</button>
         <div *ngIf="listZingSong">
@@ -12,10 +12,11 @@
           <p>Độ dài của bài hát: {{listZingSong.length}}</p>
         </div>
       </div>
-      <div *ngIf="listZingSong">
+      <div *ngIf="listZingSong && !checkZingData">
         <button mat-raised-button color="accent" (click)="getZingTop100(zing10Song)">Lấy Top 100</button>
         <p *ngIf="waitForLoadZingData">Đang xữ lý dư liệu</p>
-        <div>
+        <button mat-raised-button color="accent" (click)="saveZingIntoFirebase()" *ngIf="finishZingData">Lưu dữ liệu vào Firebase</button>
+        <div *ngIf="tableZingData">
             <mat-table mat-table class="position-relative" [dataSource]='tableZingData' matSort class="width-100">
 
               <ng-container matColumnDef="name">
@@ -41,7 +42,7 @@
 
               <ng-container matColumnDef="lyric">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
-                <mat-cell *matCellDef="let element">tt</mat-cell>
+                <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="loading">
@@ -59,89 +60,22 @@
               <mat-header-row *matHeaderRowDef="displayZingColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayZingColumns;"></mat-row>
               <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': displayZingColumns!=null}"></mat-footer-row>
-              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(displayZingColumns!=null && displayZingColumns.data.length==0)}">
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(displayZingColumns!=null && tableZingData.data.length==0)}">
               </mat-footer-row>
             </mat-table>
-            <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+            <mat-paginator class="position-relative" [length]="arrSong.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
-    </mat-tab>
-    <mat-tab label="Nhaccuatui">
-      <div *ngIf="!checkNCTData">
-        <h2>Lấy số trang</h2>
-        <button mat-raised-button color="accent" (click)="getNumberofPages()">Lấy số trang</button>
-        <div *ngIf="numbersOfNhaccuatui">
-            <span>{{numbersOfNhaccuatui.number[0]}}</span>
-            <span>{{numbersOfNhaccuatui.pageLink}}</span>
-        </div>
-      </div>
-      <div *ngIf="numbersOfNhaccuatui">
-        <h2>Cào dữ liệu</h2>
-        <button mat-raised-button color="accent" (click)="getDataofPages(numbersOfNhaccuatui.number[0])">Bắt đầu</button>
-        <p *ngIf="waitForLoadNCTData">Đang xữ lý dư liệu</p>
-        <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
-        <div *ngIf="tableData">
-            <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
-
-              <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="avatar">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Avatar </mat-header-cell>
-                <mat-cell *matCellDef="let element"><img src="{{element.avatar}}" alt="{{element.name}} image">
-                </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="performer">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="link">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.link}}</mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="lyric">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
-                <mat-cell *matCellDef="let element">tt</mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="loading">
-                <mat-footer-cell *matFooterCellDef>
-                  Loading data....
-                </mat-footer-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="noData">
-                <mat-footer-cell *matFooterCellDef>
-                  No Data....
-                </mat-footer-cell>
-              </ng-container>
-
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableData != null}"></mat-footer-row>
-              <mat-footer-row *matFooterRowDef="['noData']"
-                [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
-              </mat-footer-row>
-            </mat-table>
-            <mat-paginator class="position-relative" [length]="tableData.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-        </div>
-      </div>
-
-      <div *ngIf="checkNCTData">
-        <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
+      <div *ngIf="checkZingData">
+        <mat-table mat-table class="position-relative" [dataSource]='tableDataZingFinish' matSort class="width-100">
 
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.songName}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="avatar">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Avatar </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
             <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.songName}} image">
             </mat-cell>
           </ng-container>
@@ -158,7 +92,124 @@
 
           <ng-container matColumnDef="lyric">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
-            <mat-cell *matCellDef="let element">tt</mat-cell>
+            <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyricSong}}</p></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef>
+              Loading data....
+            </mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef>
+              No Data....
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayZingColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayZingColumns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableDataZingFinish != null}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']"
+            [ngClass]="{'hide': !(tableDataZingFinish != null && tableDataZingFinish.data.length == 0)}">
+          </mat-footer-row>
+        </mat-table>
+        <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+      </div>
+    </mat-tab>
+    <mat-tab label="Nhaccuatui">
+      <div *ngIf="!checkNCTData">
+        <h2>Lấy số trang</h2>
+        <button mat-raised-button color="accent" (click)="getNumberofPages()">Lấy số trang</button>
+        <div *ngIf="numbersOfNhaccuatui">
+            <span>{{numbersOfNhaccuatui.number[0]}}</span>
+            <span>{{numbersOfNhaccuatui.pageLink}}</span>
+        </div>
+      </div>
+      <div *ngIf="numbersOfNhaccuatui && !checkNCTData">
+        <h2>Cào dữ liệu</h2>
+        <button mat-raised-button color="accent" (click)="getDataofPages(numbersOfNhaccuatui.number[0])">Bắt đầu</button>
+        <p *ngIf="waitForLoadNCTData">Đang xữ lý dư liệu</p>
+        <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
+        <div *ngIf="tableData">
+          <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
+
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="avatar">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+              <mat-cell *matCellDef="let element"><img src="{{element.avatar}}" alt="{{element.name}} image">
+              </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="performer">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="link">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.link}}</mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="lyric">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+              <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef>
+                Loading data....
+              </mat-footer-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef>
+                No Data....
+              </mat-footer-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableData != null}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+              [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
+            </mat-footer-row>
+          </mat-table>
+          <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+
+      <div *ngIf="checkNCTData">
+        <mat-table mat-table class="position-relative" [dataSource]='tableDataNCTFinish' matSort class="width-100">
+
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.songName}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="avatar">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+            <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.songName}} image">
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="performer">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="link">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.linkSong}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="lyric">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+            <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyricSong}}</p></mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="loading">
@@ -174,13 +225,13 @@
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableData != null}"></mat-footer-row>
+          <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableDataNCTFinish != null}"></mat-footer-row>
           <mat-footer-row *matFooterRowDef="['noData']"
-            [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
+            [ngClass]="{'hide': !(tableDataNCTFinish != null && listNTC.length == 0)}">
           </mat-footer-row>
         </mat-table>
-        <mat-paginator class="position-relative" [length]="listNTC.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-tab>
     <mat-tab label="Chiasenhac">Chiasenhac</mat-tab>

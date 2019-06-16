@@ -23,6 +23,8 @@ export class AdminCrawlingComponent implements OnInit {
   public getNCT: AngularFirestoreCollection<any>;
   public checkNCTData = false;
   public listNTC = [];
+  public tableDataNCTFinish: MatTableDataSource<any>;
+  public arrNCT10 = [];
   // Zingmp3
   public listZingSong: [];
   public zingSongCount = 0;
@@ -31,6 +33,12 @@ export class AdminCrawlingComponent implements OnInit {
   public finishZingData = false;
   public tableZingData: MatTableDataSource<any>;
   public displayZingColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric'];
+  public arrSong = [];
+  public getZing: AngularFirestoreCollection<any>;
+  public checkZingData = false;
+  public listZing = [];
+  public arrZing10 = [];
+  public tableDataZingFinish: MatTableDataSource<any>;
 
   constructor(private http: HttpClient,
               private afs: AngularFirestore
@@ -39,10 +47,12 @@ export class AdminCrawlingComponent implements OnInit {
   }
 
   ngOnInit() {
+    // nhaccuatui
+
     this.getNCT = this.afs.collection('CrawlingNCT');
     // check data NCT
     this.getNCT.valueChanges().subscribe(res => {
-      if (res) {
+      if (res.length !== 0) {
         this.checkNCTData = true;
       }
     });
@@ -54,9 +64,38 @@ export class AdminCrawlingComponent implements OnInit {
           ...item.payload.doc.data()
         } as CrawlingWebNhaccuatui;
       });
-      this.tableData = new MatTableDataSource(this.listNTC);
-      this.tableData.sort = this.sort;
-      this.tableData.paginator = this.paginator;
+      for (let i = 0; i <= 9; i++) {
+        this.arrNCT10[i] = this.listNTC[i];
+      }
+      this.tableDataNCTFinish = new MatTableDataSource(this.arrNCT10);
+      this.tableDataNCTFinish.sort = this.sort;
+      this.tableDataNCTFinish.paginator = this.paginator;
+    });
+
+    // zingmp3
+
+    this.getZing = this.afs.collection('CrawlingZing');
+
+    this.getZing.valueChanges().subscribe(res => {
+      if (res.length !== 0) {
+        this.checkZingData = true;
+      }
+    });
+
+    this.getZing.snapshotChanges().subscribe(arr => {
+      this.listZing = arr.map(item => {
+        return {
+          $key: item.payload.doc.id,
+          ...item.payload.doc.data()
+        };
+      });
+
+      for (let i = 0; i <= 9; i++) {
+        this.arrZing10[i] = this.listZing[i];
+      }
+      this.tableDataZingFinish = new MatTableDataSource(this.arrZing10);
+      this.tableDataZingFinish.sort = this.sort;
+      this.tableDataZingFinish.paginator = this.paginator;
     });
   }
   // nhacccuatui
@@ -92,13 +131,14 @@ export class AdminCrawlingComponent implements OnInit {
   }
 
   saveIntoFirebase() {
-    for (const i of this.data) {
+    this.checkNCTData = true;
+    for (let i = 0; i <= 99; i++) {
       this.afs.collection('CrawlingNCT').add({
-        songName: i.name,
-        imageSong: i.avatar,
-        performer: i.performer,
-        linkSong: i.link,
-        lyricSong: i.lyric
+        songName: this.data[i].name,
+        imageSong: this.data[i].avatar,
+        performer: this.data[i].performer,
+        linkSong: this.data[i].link,
+        lyricSong: this.data[i].lyric
       });
     }
   }
@@ -124,35 +164,43 @@ export class AdminCrawlingComponent implements OnInit {
 
   getZingTop100(numberSong: number) {
     this.waitForLoadZingData = true;
-    // const arrSong = [];
     const t = async () => {
       for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
             this.http.get('http://localhost:3002/zingTop100?song=' + i).subscribe((res: any) => {
               if (res) {
                 for (const item of res) {
-                  // arrSong.push(item);
-                  this.afs.collection('CrawlingZing').add({
-                    songName: item.name,
-                    imageSong: item.avatar,
-                    performer: item.performer,
-                    linkSong: item.link,
-                    lyricSong: item.lyric
-                  });
+                  this.arrSong.push(item);
                 }
                 // console.log(arrSong);
                 result(res);
               }
         }));
+        this.tableZingData = new MatTableDataSource(this.arrSong);
+        this.tableZingData.sort = this.sort;
+        this.tableZingData.paginator = this.paginator;
       }
       this.waitForLoadZingData = false;
-      // this.tableZingData = new MatTableDataSource(arrSong);
-      // this.tableZingData.sort = this.sort;
-      // this.tableZingData.paginator = this.paginator;
+      this.finishZingData = true;
     };
     t();
   }
+
+  saveZingIntoFirebase() {
+    this.checkZingData = true;
+    for (const i of this.arrSong) {
+      this.afs.collection('CrawlingZing').add({
+        songName: i.title,
+        imageSong: i.imgsrc,
+        performer: i.artist,
+        linkSong: i.song,
+        lyricSong: i.lyric
+      });
+    }
+  }
+
 }
+
 
 export interface CrawlingWebNhaccuatui {
   avatar: string;
