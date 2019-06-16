@@ -18,6 +18,11 @@
       <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Author </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.authorName}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="imageSong">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
       <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.name}} image"> </mat-cell>
@@ -40,12 +45,12 @@
 
     <ng-container matColumnDef="country">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Country </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.countryName}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.country}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="songtype">
       <mat-header-cell *matHeaderCellDef mat-sort-header> SongType </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.songTypeName}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.songType}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="performer">
