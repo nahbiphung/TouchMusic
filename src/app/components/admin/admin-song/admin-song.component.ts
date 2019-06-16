@@ -20,7 +20,8 @@ export class AdminSongComponent implements OnInit {
   getSongType: AngularFirestoreCollection<any>;
   private listSong: Song[];
   private listdata: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'imageSong', 'mp3Url', 'album', 'video', 'country', 'songtype', 'performer', 'user', 'option'];
+  // tslint:disable-next-line:max-line-length
+  displayedColumns: string[] = ['name', 'author', 'imageSong', 'mp3Url', 'album', 'video', 'country', 'songtype', 'performer', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private searchValue: string;
@@ -37,58 +38,65 @@ export class AdminSongComponent implements OnInit {
     this.getUser.valueChanges().subscribe(resUser => {
       this.getPerformer = this.afs.collection('Performer');
       this.getPerformer.valueChanges().subscribe(resPerformer => {
-        this.getCountry = this.afs.collection('Country');
-        this.getCountry.valueChanges().subscribe(resCountry => {
-          this.getAlbum = this.afs.collection('Album');
-          this.getAlbum.valueChanges().subscribe(resAlbum => {
-            this.getSongType = this.afs.collection('SongType');
-            this.getSongType.valueChanges().subscribe(resSongType => {
-              this.getSong = this.afs.collection('Song');
-              this.getSong.snapshotChanges().subscribe(arr => {
-                this.listSong = arr.map(item => {
-                  return {
-                    $key: item.payload.doc.id,
-                    ...item.payload.doc.data()
-                  } as Song;
-                });
-                if (this.listSong) {
-                  let data: any;
-                  for (data of this.listSong) {
-                    if (data.performerId.id) {
-                      const dataPerformer: any[] = resPerformer.filter(e => e.id === data.performerId.id);
-                      data.performerName = dataPerformer[0].name;
-                    }
-                    if (data.countryId.id) {
-                      const dataCountry: any[] = resCountry.filter(e => e.id === data.countryId.id);
-                      data.countryName = dataCountry[0].name;
-                    }
-                    if (data.albumId.id) {
-                      const dataAlbum: any[] = resAlbum.filter(e => e.id === data.albumId.id);
-                      data.albumName = dataAlbum[0].name;
-                    }
-                    if (data.userId.id) {
-                      const dataUser: any[] = resUser.filter(e => e.uid === data.userId.id);
-                      data.userName = dataUser[0].displayName;
-                    }
-                    if (data.songTypeId.id) {
-                      const dataSongType: any[] = resSongType.filter(e => e.id === data.songTypeId.id);
-                      data.songTypeName = dataSongType[0].name;
-                    }
+        this.getAlbum = this.afs.collection('Album');
+        this.getAlbum.valueChanges().subscribe(resAlbum => {
+          this.getSong = this.afs.collection('Song');
+          this.getSong.snapshotChanges().subscribe(arr => {
+            this.listSong = arr.map(item => {
+              return {
+                $key: item.payload.doc.id,
+                ...item.payload.doc.data()
+              } as Song;
+            });
+            if (this.listSong) {
+              let data: any;
+              for (data of this.listSong) {
+                if (data.author) {
+                  const arrAuthor = [];
+                  for (const auth of data.author) {
+                    const dataAuthor: any[] = resPerformer.filter(e => e.id === auth.id);
+                    // console.log(dataPerformer);
+                    arrAuthor.push(dataAuthor[0].name);
+                  }
+                  if (arrAuthor.length >= 2) {
+                    data.authorName = arrAuthor[0] + ', ' + arrAuthor[1];
+                  } else if (arrAuthor.length === 1) {
+                    data.authorName = arrAuthor[0];
                   }
                 }
-                this.listdata = new MatTableDataSource(this.listSong);
-                this.listdata.sort = this.sort;
-                this.listdata.paginator = this.paginator;
-                this.listdata.filterPredicate = (data, filter) => {
-                  return data.name.toLowerCase().indexOf(filter) !== -1
-                  || data.albumName.toLowerCase().indexOf(filter) !== -1
-                  || data.countryName.toLowerCase().indexOf(filter) !== -1
-                  || data.performerName.toLowerCase().indexOf(filter) !== -1
-                  || data.songTypeName.toLowerCase().indexOf(filter) !== -1
-                  || data.userName.toLowerCase().indexOf(filter) !== -1;
-                };
-              });
-            });
+                if (data.performerId) {
+                  // const dataPerformer: any[] = resPerformer.filter(e => e.id === data.performerId.id);
+                  const arrPer = [];
+                  for (const per of data.performerId) {
+                    const dataPerformer: any[] = resPerformer.filter(e => e.id === per.id);
+                    // console.log(dataPerformer);
+                    arrPer.push(dataPerformer[0].name);
+                  }
+                  if (arrPer.length >= 2) {
+                    data.performerName = arrPer[0] + ', ' + arrPer[1];
+                  } else if (arrPer.length === 1) {
+                    data.performerName = arrPer[0];
+                  }
+                }
+                if (data.albumId.id) {
+                  const dataAlbum: any[] = resAlbum.filter(e => e.id === data.albumId.id);
+                  data.albumName = dataAlbum[0].name;
+                }
+                if (data.userId.id) {
+                  const dataUser: any[] = resUser.filter(e => e.uid === data.userId.id);
+                  data.userName = dataUser[0].displayName;
+                }
+              }
+            }
+            this.listdata = new MatTableDataSource(this.listSong);
+            this.listdata.sort = this.sort;
+            this.listdata.paginator = this.paginator;
+            this.listdata.filterPredicate = (data, filter) => {
+              return data.name.toLowerCase().indexOf(filter) !== -1
+              || data.albumName.toLowerCase().indexOf(filter) !== -1
+              || data.performerName.toLowerCase().indexOf(filter) !== -1
+              || data.userName.toLowerCase().indexOf(filter) !== -1;
+            };
           });
         });
       });
