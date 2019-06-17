@@ -37,6 +37,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatMenuModule} from '@angular/material/menu';
 
 // Angular Bootstrap
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -159,7 +161,9 @@ import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-
     NgbPopoverModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatMenuModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

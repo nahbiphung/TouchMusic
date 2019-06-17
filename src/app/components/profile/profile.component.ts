@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 import {FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import * as firebase from 'firebase';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -73,7 +74,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private db: AngularFirestore,
     private route: ActivatedRoute,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private router: Router) {
     this.loadingSpinner = true;
     this.isBlock = true;
     // tslint:disable-next-line:max-line-length
@@ -83,13 +85,16 @@ export class ProfileComponent implements OnInit {
       min: new Date(1790, 0, 1),
       max: new Date(),
     };
+    this.listSongData = [];
    }
 
   ngOnInit() {
     this.loadingSpinner = true;
     // get params and user
     const getParams = this.route.snapshot.paramMap.get('uid');
+    this.getCurrentUser(getParams);
     this.currentUserRef = this.db.collection('users').doc(getParams).ref;
+    
     this.documentData = this.db.collection('users').doc(getParams);
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
@@ -127,10 +132,14 @@ export class ProfileComponent implements OnInit {
     this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
         if (res) {
-          this.listSongData = res;
-          this.tableListSongData = new MatTableDataSource(this.listSongData);
-          this.tableListSongData.sort = this.sort;
-          this.tableListSongData.paginator = this.paginator;
+          if (this.listSongData.length === 0) {
+            this.listSongData = res;
+          } else {
+            this.listSongData = this.listSongData.concat(res);
+            this.tableListSongData = new MatTableDataSource(this.listSongData);
+            this.tableListSongData.sort = this.sort;
+            this.tableListSongData.paginator = this.paginator;
+          }
         }
         if (this.userData) {
           this.loadingSpinner = false;
@@ -139,6 +148,33 @@ export class ProfileComponent implements OnInit {
       console.log('Get song data error ' + error);
       if (this.userData) {
         this.loadingSpinner = false;
+      }
+    });
+
+    // get song Data create by user but have not checked by admin yet
+    this.collectionData = this.db.collection('userUploadSong', query => query.where('userId', '==', this.currentUserRef));
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        if (this.listSongData.length === 0) {
+          this.listSongData = res;
+        } else {
+          this.listSongData = this.listSongData.concat(res);
+          this.tableListSongData = new MatTableDataSource(this.listSongData);
+          this.tableListSongData.sort = this.sort;
+          this.tableListSongData.paginator = this.paginator;
+        }
+      }
+    })
+  }
+
+  private getCurrentUser(currentLogin: any) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (user.uid !== currentLogin) {
+          this.router.navigate(['/welcome']);
+        }
+      } else {
+        this.router.navigate(['/welcome']);
       }
     });
   }

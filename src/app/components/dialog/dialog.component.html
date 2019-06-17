@@ -107,8 +107,7 @@
     <source src="{{data.data.video}}" type="video/mp4">
   </video>
 </div>
-
-<div *ngIf="isUploadSong">
+<div *ngIf="isUploadSong && !loadingSpinner">
   <h1 mat-dialog-title>Upload Song</h1>
   <div mat-dialog-content>
     <mat-form-field class="width-100 my-form-field">
@@ -122,14 +121,32 @@
     </mat-form-field>
 
     <mat-form-field class="width-100 my-form-field">
-      <input matInput placeholder="Author" [formControl]="authorFormControl" [matAutocomplete]="authorauto"
-        [errorStateMatcher]="matcher">
-      <mat-autocomplete #authorauto="matAutocomplete">
-        <mat-option *ngFor="let author of listPerformerData" [value]="author.name">
+      <mat-chip-list #chipListauth aria-label="Author selection">
+        <mat-chip *ngFor="let item of authors" 
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(item, true)">
+          <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
+          <span>{{item.name}}</span>
+          <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Author" #authorInput
+          [formControl]="authorFormControl" 
+          [matAutocomplete]="authorauto"
+          [matChipInputFor]="chipListauth"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, true)"
+          [errorStateMatcher]="matcher">
+      </mat-chip-list>
+      
+      <mat-autocomplete #authorauto="matAutocomplete" (optionSelected)="selected($event, true)">
+        <mat-option *ngFor="let author of listAuthorDataFiltered | async" [value]="author">
           <img class="example-option-img" aria-hidden [src]="author.image" height="25">
           <span>{{author.name}}</span>
         </mat-option>
       </mat-autocomplete>
+
       <mat-error *ngIf="authorFormControl.hasError('max')">
         Author name is too long
       </mat-error>
@@ -139,10 +156,27 @@
     </mat-form-field>
 
     <mat-form-field class="width-100 my-form-field">
-      <input matInput placeholder="Performer" [formControl]="performerFormControl" [matAutocomplete]="performerauto"
-       [errorStateMatcher]="matcher">
-      <mat-autocomplete #performerauto="matAutocomplete">
-        <mat-option *ngFor="let performer of listPerformerData" [value]="performer.name">
+      <mat-chip-list #chipListper aria-label="Author selection">
+        <mat-chip *ngFor="let item of performers" 
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(item, false)">
+          <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
+          <span>{{item.name}}</span>
+          <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Performer" #performerInput
+          [formControl]="performerFormControl"
+          [matAutocomplete]="performerauto"
+          [matChipInputFor]="chipListper"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, false)"
+          [errorStateMatcher]="matcher">
+      </mat-chip-list>
+      
+      <mat-autocomplete #performerauto="matAutocomplete" (optionSelected)="selected($event, false)">
+        <mat-option *ngFor="let performer of listPerformerDataFiltered | async" [value]="performer">
           <img class="example-option-img" aria-hidden [src]="performer.image" height="25">
           <span>{{performer.name}}</span>
         </mat-option>
@@ -154,6 +188,7 @@
         Performer name is <strong>required</strong>
       </mat-error>
     </mat-form-field>
+
     <div class="d-flex justify-content-between flex-wrap">
       <mat-form-field class="my-form-field width-45-percent">
         <mat-label>Country</mat-label>
@@ -188,23 +223,23 @@
       <div class="labelPreviewImage" *ngIf="songFile">
         <span class="loadImageName color-yellow">{{songFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5">
-        <mat-icon class="material-icons color-dark-blue" (click)="openMP3File.click()">attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
     </div>
 
     <div class="width-100"> 
       <input type="file" (change)="onFileSelected($event, 'songImage')" accept="image/*" class="display-none" #openMP3ImageFile>
       <span>Choose Image Song: </span>
-      <button mat-mini-fab class="my-form-field margin-5">
-        <mat-icon class="material-icons color-dark-blue" (click)="openMP3ImageFile.click()">attach_file</mat-icon>
-      </button>
       <div class="labelPreviewImage" *ngIf="imageSong">
         <span class="loadImageName color-yellow">{{imageSong.name}}</span>
-      </div>
+            </div>
       <div class="position-relative" *ngIf="imageSong">
         <img src="{{previewImageSong}}" class="size-100px" alt="preview">
       </div>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      </button>
     </div>
 
     <div class="width-100">
@@ -213,16 +248,16 @@
       <div class="labelPreviewImage" *ngIf="videoFile">
         <span class="loadImageName color-yellow">{{videoFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5">
-        <mat-icon class="material-icons color-dark-blue" (click)="openMP4File.click()">attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
     </div>
 
     <div class="width-100">
       <input type="file" (change)="onFileSelected($event, 'videoImage')" accept="image/*" class="display-none" #openMP4ImageFile>
       <span>Choose Image Video: </span>
-      <button mat-mini-fab class="my-form-field margin-5">
-        <mat-icon class="material-icons color-dark-blue" (click)="openMP4ImageFile.click()">attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
       <div class="labelPreviewImage" *ngIf="imageVideo">
         <span class="loadImageName color-yellow">{{imageVideo.name}}</span>
@@ -235,6 +270,5 @@
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
     <button mat-button cdkFocusInitial (click)="uploadNewSong()">Upload</button>
-    <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
   </div>
 </div>

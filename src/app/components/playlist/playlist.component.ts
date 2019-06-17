@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { SongService } from 'src/app/services/song.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
+import * as firebase from 'firebase';
+import { UserDetailsComponent } from '../admin/user-details/user-details.component';
 
 @Component({
   selector: 'app-playlist',
@@ -17,6 +19,7 @@ export class PlaylistComponent implements OnInit {
   imageDocumentData: AngularFirestoreDocument<any>;
   public loadingSpinner: boolean;
   private avatar: any[];
+  private verifyUser: boolean;
   private playlistSong = [];
   private country: Country;
   private albumInfo: Album;
@@ -35,10 +38,10 @@ export class PlaylistComponent implements OnInit {
     this.isAlbum = false;
     this.isFavorite = false;
     this.isCountry = false;
+    this.verifyUser = false;
    }
 
   ngOnInit() {
-
     this.imageColectionData = this.db.collection('imagesForView');
     this.imageColectionData.valueChanges().subscribe((res) => {
       if (res) {
@@ -64,6 +67,7 @@ export class PlaylistComponent implements OnInit {
         this.db.doc(this.favoritePlaylist.userId.path).valueChanges().subscribe((userData: User) => {
           if (userData) {
             this.userData = userData;
+            this.verifyUserAuthenicate(userData);
             this.isFavorite = true;
           }
         });
@@ -118,6 +122,16 @@ export class PlaylistComponent implements OnInit {
         console.log(error);
       });
     }
+  }
+
+  private verifyUserAuthenicate(userData: any) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (user.uid === userData.uid) {
+          this.verifyUser = true;
+        }
+      }
+    });
   }
 
   private onClickSong(data: any) {

@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, ErrorStateMatcher } from '@angular/material';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatDialogRef, MAT_DIALOG_DATA, ErrorStateMatcher, MatChipInputEvent, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
@@ -8,7 +9,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { SongComponent } from '../song/song.component';
 import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap, startWith, map } from 'rxjs/operators';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -42,6 +43,9 @@ export class DialogComponent implements OnInit {
   // upload song
   private matcher = new MyErrorStateMatcher();
   private listPerformerData: Performer[];
+  private listPerformerDataFiltered: Observable<Performer[]>;
+  private listAuthorData: Performer[];
+  private listAuthorDataFiltered: Observable<Performer[]>;
   private listCountryData: Country[];
   private listSongTypeData: SongType[];
   private imageSong: any;
@@ -54,6 +58,19 @@ export class DialogComponent implements OnInit {
   private songTypeSelected: string;
   private uploadTask: AngularFireUploadTask;
   private snapshot: Observable<any>;
+  private separatorKeysCodes: number[] = [ENTER, COMMA];
+  @ViewChild('authorInput') authorInput: ElementRef<HTMLInputElement>;
+  @ViewChild('authorauto') authormatAutocomplete: MatAutocomplete;
+  @ViewChild('performerInput') performerInput: ElementRef<HTMLInputElement>;
+  @ViewChild('performerauto') performermatAutocomplete: MatAutocomplete;
+
+  private uploadProgressFileSong: number;
+  private uploadProgressImageSong: number;
+  private uploadProgressFileVideo: number;
+  private uploadProgressImageVideo: number;
+
+  private authors: any[];
+  private performers: any[];
   private songNameFormControl: FormControl = new FormControl('', [
     Validators.maxLength(30),
     Validators.required,
@@ -88,8 +105,17 @@ export class DialogComponent implements OnInit {
     this.isUploadSong = false;
     // upload song
     this.listPerformerData = [];
+    this.listAuthorData = [];
     this.listCountryData = [];
     this.listSongTypeData = [];
+    this.authors = [];
+    this.performers = [];
+    this.listAuthorDataFiltered = this.authorFormControl.valueChanges.pipe(
+      startWith(null),
+      map((per: string | null) => per ? this._filter(per, true) : this.listAuthorData.slice()));
+    this.listPerformerDataFiltered = this.performerFormControl.valueChanges.pipe(
+      startWith(null),
+      map((per: string | null) => per ? this._filter(per, false) : this.listPerformerData.slice()));
   }
 
   onNoClick(): void {
@@ -128,6 +154,7 @@ export class DialogComponent implements OnInit {
         this.collectionData.valueChanges().subscribe((res) => {
           if (res) {
             this.listPerformerData = res;
+            this.listAuthorData = res;
             this.loadingSpinner = false;
           }
         });
@@ -363,18 +390,8 @@ export class DialogComponent implements OnInit {
   }
 
   private uploadNewSong() {
-    // cần data của những field sau
-    // this.authorFormControl -- author
-    // this.songNameFormControl -- name
-    // this.lyricFormControl -- lyric
-    // this.performerFormControl -- performerId
-    // this.songFile -- mp3Url
-    // this.imageSong -- imageSong
-    // this.videoFile -- video
-    // this.imageVideo -- imageVideo
-    // this.countrySelected -- country
-    // this.songTypeSelected -- songType
     if (this.validateSong()) {
+      this.loadingSpinner = true;
       const newData: Song = {
         id: '',
         like: 0,
@@ -383,9 +400,9 @@ export class DialogComponent implements OnInit {
         albumId: '',
         userId: this.data.currentUser,
         name: this.songNameFormControl.value,
-        author: [this.authorFormControl.value],
+        author: this.authors,
         lyric: this.lyricFormControl.value !== '' ? this.lyricFormControl.value : '',
-        performerId: [this.performerFormControl.value],
+        performerId: this.performers,
         mp3Url: '',
         imageSong: '',
         video: '',
@@ -397,32 +414,126 @@ export class DialogComponent implements OnInit {
         if (res) {
           this.db.collection('userUploadSong').doc(res.id).update({id: res.id});
           this.uploadImageandFile(res.id);
+          this.loadingSpinner = false;
+          this.dialogRef.close();
         }
       }).catch((error) => {
         console.log('Song upload Error ' + error);
-      })
+      });
     }
   }
 
   private uploadImageandFile(songId: any) {
-    const imageSongStorageRef = this.storage.ref('images/' + this.imageSong.name);
-    // const imageVideoStorageRef = this.storage.ref('images/' + this.imageVideo.name);
-    // upload image file 
-    this.uploadTask = this.storage.upload('images/' + this.imageSong.name, this.imageSong);
-    this.snapshot = this.uploadTask.snapshotChanges().pipe(tap(),
-      finalize(async () => {
+    if (this.imageSong) {
+      const imageSongStorageRef = this.storage.ref('images/' + this.imageSong.name);
+      this.storage.upload('images/' + this.imageSong.name, this.imageSong)
+        .percentageChanges().subscribe(res => this.uploadProgressImageSong = res);
+      this.storage.upload('images/' + this.imageSong.name, this.imageSong).then(async (res) => {
         const downloadUrl =  await imageSongStorageRef.getDownloadURL().toPromise();
         this.db.collection('userUploadSong').doc(songId).update({imageSong: downloadUrl});
-      }),
-    );
+      });
+    }
+
+    if (this.imageVideo) {
+      const imageVideoStorageRef = this.storage.ref('images/' + this.imageVideo.name);
+      this.storage.upload('images/' + this.imageVideo.name, this.imageVideo).then(async (res) => {
+        const downloadUrl =  await imageVideoStorageRef.getDownloadURL().toPromise();
+        this.db.collection('userUploadSong').doc(songId).update({imageVideo: downloadUrl});
+      });
+    }
+
+    if (this.songFile) {
+      const audioFileStorageRef = this.storage.ref('music/' + this.songFile.name);
+      this.storage.upload('music/' + this.songFile.name, this.songFile)
+        .percentageChanges().subscribe(res => this.uploadProgressFileSong = res);
+      this.storage.upload('music/' + this.songFile.name, this.songFile).then(async (res) => {
+        const downloadUrl =  await audioFileStorageRef.getDownloadURL().toPromise();
+        this.db.collection('userUploadSong').doc(songId).update({mp3Url: downloadUrl});
+      });
+    }
+
+    if (this.videoFile) {
+      const videoFileStorageRef = this.storage.ref('video/' + this.videoFile.name);
+      this.storage.upload('video/' + this.videoFile.name, this.videoFile).then(async (res) => {
+        const downloadUrl =  await videoFileStorageRef.getDownloadURL().toPromise();
+        this.db.collection('userUploadSong').doc(songId).update({video: downloadUrl});
+      });
+    }
   }
 
   private validateSong(): boolean {
-    if(this.songNameFormControl.value === '' || this.performerFormControl.value === '' ||
+    if (this.songNameFormControl.value === '' || this.performerFormControl.value === '' ||
     this.authorFormControl.value === '' || !this.songFile || !this.imageSong) {
       return false;
     }
     return true;
+  }
+
+  private remove(performer: Performer, isAuthor: boolean) {
+    if (isAuthor) {
+      this.authors = this.authors.filter(auth => auth.name !== performer.name);
+      this.listAuthorData.push(performer);
+    } else {
+      this.performers = this.performers.filter(per => per.name !== performer.name);
+      this.listPerformerData.push(performer);
+    }
+  }
+
+  private add(event: MatChipInputEvent, isAuthor: boolean) {
+    if (isAuthor) {
+      if (!this.authormatAutocomplete.isOpen) {
+        const input = event.input;
+        const value = event.value;
+        if ((value || '').trim()) {
+          this.authors.push({
+            name: value.trim(),
+          });
+        }
+        // Reset the input value
+        if (input) {
+          input.value = '';
+        }
+        this.authorFormControl.setValue(null);
+      }
+    } else {
+      if (!this.performermatAutocomplete.isOpen) {
+        const input = event.input;
+        const value = event.value;
+        if ((value || '').trim()) {
+          this.performers.push({
+            name: value.trim(),
+          });
+        }
+        // Reset the input value
+        if (input) {
+          input.value = '';
+        }
+        this.performerFormControl.setValue(null);
+      }
+    }
+  }
+
+  private selected(event: MatAutocompleteSelectedEvent, isAuthor: boolean) {
+    if (isAuthor) {
+      this.authors.push(event.option.value);
+      this.listAuthorData = this.listAuthorData.filter(auth => auth.id !== event.option.value.id);
+      this.authorInput.nativeElement.value = '';
+      this.authorFormControl.setValue(null);
+    } else {
+      this.performers.push(event.option.value);
+      this.listPerformerData = this.listPerformerData.filter(per => per.id !== event.option.value.id);
+      this.performerInput.nativeElement.value = '';
+      this.performerFormControl.setValue(null);
+    }
+  }
+
+  private _filter(value: any, isAuthor: boolean): Performer[] {
+    const filterValue = value.name ? value.name.toLowerCase() : value.toLowerCase();
+    if (isAuthor) {
+      return this.listAuthorData.filter(per => per.name.toLowerCase().indexOf(filterValue) === 0);
+    } else {
+      return this.listPerformerData.filter(per => per.name.toLowerCase().indexOf(filterValue) === 0);
+    }
   }
 }
 
