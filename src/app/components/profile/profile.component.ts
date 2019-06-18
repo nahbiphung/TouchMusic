@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
-import {FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import * as firebase from 'firebase';
 
@@ -22,8 +22,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./profile.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
       max: new Date(),
     };
     this.listSongData = [];
-   }
+  }
 
   ngOnInit() {
     this.loadingSpinner = true;
@@ -94,7 +94,6 @@ export class ProfileComponent implements OnInit {
     const getParams = this.route.snapshot.paramMap.get('uid');
     this.getCurrentUser(getParams);
     this.currentUserRef = this.db.collection('users').doc(getParams).ref;
-    
     this.documentData = this.db.collection('users').doc(getParams);
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
@@ -123,27 +122,27 @@ export class ProfileComponent implements OnInit {
     this.collectionData = this.db.collection('FavoritePlaylist',
       query => query.where('userId', '==', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
-        if (res) {
-          this.faPlaylist = res;
-        }
-      });
+      if (res) {
+        this.faPlaylist = res;
+      }
+    });
 
     // get Song Data created by user
     this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
-        if (res) {
-          if (this.listSongData.length === 0) {
-            this.listSongData = res;
-          } else {
-            this.listSongData = this.listSongData.concat(res);
-            this.tableListSongData = new MatTableDataSource(this.listSongData);
-            this.tableListSongData.sort = this.sort;
-            this.tableListSongData.paginator = this.paginator;
-          }
+      if (res) {
+        if (this.listSongData.length === 0) {
+          this.listSongData = res;
+        } else {
+          this.listSongData = this.listSongData.concat(res);
+          this.tableListSongData = new MatTableDataSource(this.listSongData);
+          this.tableListSongData.sort = this.sort;
+          this.tableListSongData.paginator = this.paginator;
         }
-        if (this.userData) {
-          this.loadingSpinner = false;
-        }
+      }
+      if (this.userData) {
+        this.loadingSpinner = false;
+      }
     }, (error) => {
       console.log('Get song data error ' + error);
       if (this.userData) {
@@ -164,7 +163,7 @@ export class ProfileComponent implements OnInit {
           this.tableListSongData.paginator = this.paginator;
         }
       }
-    })
+    });
   }
 
   private getCurrentUser(currentLogin: any) {
@@ -183,7 +182,7 @@ export class ProfileComponent implements OnInit {
     // chỉ cần name và image
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '30vw',
-      data: {currentUser: this.currentUserRef, selector: 'B'}
+      data: { currentUser: this.currentUserRef, selector: 'B' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -242,7 +241,7 @@ export class ProfileComponent implements OnInit {
       const dialogRef = this.dialog.open(DialogComponent, {
         height: '78vh',
         width: '50vw',
-        data: {currentUser: this.currentUserRef, data: event, selector: 'A'}
+        data: { currentUser: this.currentUserRef, data: event, selector: 'A' }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log(result);
@@ -255,7 +254,7 @@ export class ProfileComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '50vw',
-      data: {currentUser: this.currentUserRef, selector: 'UPLOAD_SONG'}
+      data: { currentUser: this.currentUserRef, selector: 'UPLOAD_SONG' }
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);

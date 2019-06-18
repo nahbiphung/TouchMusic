@@ -1,6 +1,14 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { MatDialogRef, MAT_DIALOG_DATA, ErrorStateMatcher, MatChipInputEvent, MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatDialogRef,
+  MAT_DIALOG_DATA,
+  ErrorStateMatcher,
+  MatChipInputEvent,
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatTableDataSource,
+  MatSort,
+  MatPaginator} from '@angular/material';
 import { DialogData } from '../profile/profile.component';
 import * as firebase from 'firebase';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
@@ -34,12 +42,18 @@ export class DialogComponent implements OnInit {
   private isAvatar: boolean;
   private isCreateNewFaList: boolean;
   private isAddToFaList: boolean;
+  private isEditFaPlaylist: boolean;
   public isVideo: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
   public loadingSpinner: boolean;
   private isUploadSong: boolean;
 
+  // edit favorite playlist
+  private favoritePlaylistNameFCtrl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
   // upload song
   private matcher = new MyErrorStateMatcher();
   private listPerformerData: Performer[];
@@ -103,6 +117,7 @@ export class DialogComponent implements OnInit {
     this.panelOpenState = true;
     this.loadingSpinner = true;
     this.isUploadSong = false;
+    this.isEditFaPlaylist = false;
     // upload song
     this.listPerformerData = [];
     this.listAuthorData = [];
@@ -173,6 +188,11 @@ export class DialogComponent implements OnInit {
           }
         });
         break;
+      case 'EDIT_FAPLAYLIST':
+        this.isEditFaPlaylist = true;
+        this.imagePreview = this.data.data.image;
+        this.loadingSpinner = false;
+        break;
       default:
         this.loadingSpinner = false;
         break;
@@ -199,11 +219,9 @@ export class DialogComponent implements OnInit {
         }
         break;
       case 'videoFile':
-        // do something
         this.videoFile = event.target.files[0];
         break;
       case 'videoImage':
-        // do something
         this.imageVideo = event.target.files[0];
         if (this.imageVideo) {
           this.haveImage = true;
@@ -213,6 +231,18 @@ export class DialogComponent implements OnInit {
             copyThis.previewImageVideo = e.currentTarget.result;
           };
           previewImage.readAsDataURL(this.imageVideo);
+        }
+        break;
+      case 'editFaImage':
+        // do something
+        if (event.target.files[0]) {
+          this.data.data.image = event.target.files[0];
+          const copyThis = this;
+          const previewImage = new FileReader();
+          previewImage.onload = (e: any) => {
+            copyThis.imagePreview = e.currentTarget.result;
+          };
+          previewImage.readAsDataURL(this.data.data.image);
         }
         break;
       default:
@@ -534,6 +564,10 @@ export class DialogComponent implements OnInit {
     } else {
       return this.listPerformerData.filter(per => per.name.toLowerCase().indexOf(filterValue) === 0);
     }
+  }
+
+  private onRemoveSong(song: any) {
+    this.data.data.details = this.data.data.details.filter(s => s.id !== song.id);
   }
 }
 

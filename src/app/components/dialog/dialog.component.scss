@@ -4,7 +4,7 @@
 }
 
 .containerPreview {
-  width: 100%;
+  width: 50vw;
   height: 100%;
 }
 
@@ -42,4 +42,20 @@
 
 .width-45-percent {
   width: 45%;
+}
+
+.iconFormat {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  border-radius: 50%;
+  color: #dd8f36;
+}
+
+.iconFormat:hover {
+  color: #324a45;
+  background-color: #dd8f36;
 }

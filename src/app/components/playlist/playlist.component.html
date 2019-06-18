@@ -42,7 +42,7 @@
                 <i class="material-icons margin-right-10 context-menu">remove_red_eye</i>
                 <div>122.000</div>
             </div>
-            <div class="display-flex" *ngIf="verifyUser">
+            <div class="display-flex" *ngIf="verifyUser && isFavorite">
                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
@@ -64,10 +64,14 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
         <div class="playlist">
           <h3 class="margin-top-20 color-organe font-weight-bold">Playlist</h3>
-            <div class="listSong display-flex width-height-100 display-column">
+            <div class="listSong display-flex width-height-100 display-column" *ngIf="playlistSong">
               <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)">
                 <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.name, item.id.trim() ]">{{item.name}}</div>
-                <div class="songAuthor width-200px display-flex-center">{{item.author}}</div>
+                <div class="songAuthor width-200px display-flex-center">
+                  <div *ngFor="let authors of item.author">
+                    {{authors.name}} 
+                  </div>
+                </div>
                 <div class="songDuration width-200px display-flex-end">00:00</div>
               </div>
             </div>
