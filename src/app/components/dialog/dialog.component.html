@@ -4,8 +4,17 @@
     <h1 mat-dialog-title>Add new Favorite Playlist</h1>
     <div mat-dialog-content>
       <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Playlist Name" [(ngModel)]="name">
+        <input matInput placeholder="Playlist Name" 
+          [formControl]="favoritePlaylistNameFCtrl" 
+          [errorStateMatcher]="matcher" 
+          [(ngModel)]="name">
       </mat-form-field>
+      <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('max')">
+        Favorite playlist name is too long
+      </mat-error>
+      <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('required')">
+        Favorite playlist Song name is <strong>required</strong>
+      </mat-error>
     </div>
     <div mat-dialog-content class="d-flex justify-content-between align-items-center">
       <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
@@ -21,7 +30,6 @@
       <div class="containerPreview position-relative">
         <img src="{{imagePreview}}" class="imagePreview" alt="preview">
       </div>
-
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="resetForm()">Reset</button>
@@ -102,9 +110,223 @@
     </div>
   </div>
 </div>
-
 <div *ngIf="isVideo">
   <video width="100%" poster="data.data.imageVideo" controls>
     <source src="{{data.data.video}}" type="video/mp4">
   </video>
+</div>
+<div *ngIf="isUploadSong && !loadingSpinner">
+  <h1 mat-dialog-title>Upload Song</h1>
+  <div mat-dialog-content>
+    <mat-form-field class="width-100 my-form-field">
+      <input matInput placeholder="Name" [formControl]="songNameFormControl" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="songNameFormControl.hasError('max')">
+        Song name is too long
+      </mat-error>
+      <mat-error *ngIf="songNameFormControl.hasError('required')">
+        Song name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="width-100 my-form-field">
+      <mat-chip-list #chipListauth aria-label="Author selection">
+        <mat-chip *ngFor="let item of authors" 
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(item, true)">
+          <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
+          <span>{{item.name}}</span>
+          <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Author" #authorInput
+          [formControl]="authorFormControl" 
+          [matAutocomplete]="authorauto"
+          [matChipInputFor]="chipListauth"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, true)"
+          [errorStateMatcher]="matcher">
+      </mat-chip-list>
+      
+      <mat-autocomplete #authorauto="matAutocomplete" (optionSelected)="selected($event, true)">
+        <mat-option *ngFor="let author of listAuthorDataFiltered | async" [value]="author">
+          <img class="example-option-img" aria-hidden [src]="author.image" height="25">
+          <span>{{author.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="authorFormControl.hasError('max')">
+        Author name is too long
+      </mat-error>
+      <mat-error *ngIf="authorFormControl.hasError('required')">
+        Author name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="width-100 my-form-field">
+      <mat-chip-list #chipListper aria-label="Author selection">
+        <mat-chip *ngFor="let item of performers" 
+          [selectable]="true" 
+          [removable]="true" 
+          (removed)="remove(item, false)">
+          <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
+          <span>{{item.name}}</span>
+          <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Performer" #performerInput
+          [formControl]="performerFormControl"
+          [matAutocomplete]="performerauto"
+          [matChipInputFor]="chipListper"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, false)"
+          [errorStateMatcher]="matcher">
+      </mat-chip-list>
+      
+      <mat-autocomplete #performerauto="matAutocomplete" (optionSelected)="selected($event, false)">
+        <mat-option *ngFor="let performer of listPerformerDataFiltered | async" [value]="performer">
+          <img class="example-option-img" aria-hidden [src]="performer.image" height="25">
+          <span>{{performer.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="performerFormControl.hasError('max')">
+        Performer name is too long
+      </mat-error>
+      <mat-error *ngIf="performerFormControl.hasError('required')">
+        Performer name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <div class="d-flex justify-content-between flex-wrap">
+      <mat-form-field class="my-form-field width-45-percent">
+        <mat-label>Country</mat-label>
+        <mat-select [(value)]="countrySelected">
+          <mat-option *ngFor="let country of listCountryData" [value]="country.name">
+            {{country.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field class="my-form-field width-45-percent">
+        <mat-label>Song Type</mat-label>
+        <mat-select [(value)]="songTypeSelected">
+          <mat-option *ngFor="let songtype of listSongTypeData" [value]="songtype.name">
+            {{songtype.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+
+    <mat-form-field class="width-100 my-form-field">
+      <textarea  matInput placeholder="Lyric" [formControl]="lyricFormControl" [errorStateMatcher]="matcher" class="size-height-100px"></textarea>
+      <mat-error *ngIf="lyricFormControl.hasError('max')">
+        Lyric content contain too many character
+      </mat-error>
+    </mat-form-field>
+
+    <div class="width-100">
+      <input type="file" (change)="onFileSelected($event, 'songFile')" accept="audio/*" class="display-none" #openMP3File>
+      <span>Choose Song: </span>
+      <div class="labelPreviewImage" *ngIf="songFile">
+        <span class="loadImageName color-yellow">{{songFile.name}}</span>
+      </div>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      </button>
+    </div>
+
+    <div class="width-100"> 
+      <input type="file" (change)="onFileSelected($event, 'songImage')" accept="image/*" class="display-none" #openMP3ImageFile>
+      <span>Choose Image Song: </span>
+      <div class="labelPreviewImage" *ngIf="imageSong">
+        <span class="loadImageName color-yellow">{{imageSong.name}}</span>
+            </div>
+      <div class="position-relative" *ngIf="imageSong">
+        <img src="{{previewImageSong}}" class="size-100px" alt="preview">
+      </div>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      </button>
+    </div>
+
+    <div class="width-100">
+      <input type="file" (change)="onFileSelected($event, 'videoFile')" accept="video/*" class="display-none" #openMP4File>
+      <span>Choose Video: </span>
+      <div class="labelPreviewImage" *ngIf="videoFile">
+        <span class="loadImageName color-yellow">{{videoFile.name}}</span>
+      </div>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      </button>
+    </div>
+
+    <div class="width-100">
+      <input type="file" (change)="onFileSelected($event, 'videoImage')" accept="image/*" class="display-none" #openMP4ImageFile>
+      <span>Choose Image Video: </span>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()">
+        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      </button>
+      <div class="labelPreviewImage" *ngIf="imageVideo">
+        <span class="loadImageName color-yellow">{{imageVideo.name}}</span>
+      </div>
+      <div class="position-relative" *ngIf="imageVideo">
+        <img src="{{previewImageVideo}}" class="size-100px" alt="preview">
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button cdkFocusInitial (click)="uploadNewSong()">Upload</button>
+  </div>
+</div>
+<div *ngIf="isEditFaPlaylist">
+  <h1 mat-dialog-title>Edit Favorite Playlist</h1>
+  <mat-tab-group mat-dialog-content color="accent" class="width-100">
+    <mat-tab label="Name & Image">
+      <div mat-dialog-content>
+        <mat-form-field class="width-100 my-form-field">
+          <input matInput placeholder="Playlist Name"
+            [(ngModel)]="data.data.name"
+            [formControl]="favoritePlaylistNameFCtrl" 
+            [errorStateMatcher]="matcher">
+        </mat-form-field>
+        <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('max')">
+          Favorite playlist name is too long
+        </mat-error>
+        <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('required')">
+          Favorite playlist Song name is <strong>required</strong>
+        </mat-error>
+      </div>
+      <div mat-dialog-content class="d-flex justify-content-between align-items-center">
+        <input type="file" (change)="onFileSelected($event, 'editFaImage')" accept="image/*" class="display-none" #openFile>
+        <span>Choose Image: </span>
+        <button mat-mini-fab class="my-form-field margin-5">
+          <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
+        </button>
+      </div>
+      <div mat-dialog-content *ngIf="imagePreview">
+        <div class="containerPreview position-relative">
+          <img src="{{imagePreview}}" class="imagePreview" alt="preview">
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Song">
+      <div mat-dialog-content *ngIf="data.data.details">
+        <div *ngFor="let item of data.data.details" class="d-flex justify-content-between align-items-center">
+          <div>{{item.name}}</div>
+          <div>{{item.author}}</div>
+          <div>
+            <button mat-icon-button color='warn' (click)="onRemoveSong(item)">
+              <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+        <mat-paginator class="position-relative" [length]="data.data.details.length" [pageSize]="5"
+            [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  
+  
 </div>

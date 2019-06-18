@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { SongService } from 'src/app/services/song.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute } from '@angular/router';
+import * as firebase from 'firebase';
+import { UserDetailsComponent } from '../admin/user-details/user-details.component';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-playlist',
@@ -17,6 +21,7 @@ export class PlaylistComponent implements OnInit {
   imageDocumentData: AngularFirestoreDocument<any>;
   public loadingSpinner: boolean;
   private avatar: any[];
+  private verifyUser: boolean;
   private playlistSong = [];
   private country: Country;
   private albumInfo: Album;
@@ -28,17 +33,21 @@ export class PlaylistComponent implements OnInit {
   private isCountry: boolean;
   private userData: User;
   private performer: Performer;
-  constructor(private db: AngularFirestore, public songService: SongService, private route: ActivatedRoute) {
+  constructor(
+    private db: AngularFirestore,
+    public songService: SongService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog) {
     this.loadingSpinner = true;
     this.isPlay = true;
     this.videoSong = false;
     this.isAlbum = false;
     this.isFavorite = false;
     this.isCountry = false;
+    this.verifyUser = false;
    }
 
   ngOnInit() {
-
     this.imageColectionData = this.db.collection('imagesForView');
     this.imageColectionData.valueChanges().subscribe((res) => {
       if (res) {
@@ -56,14 +65,42 @@ export class PlaylistComponent implements OnInit {
     const getParams = this.route.snapshot.paramMap.get('id');
     if (getDetectRoute === 'favoritePlaylist') {
       this.documentData = this.db.collection('FavoritePlaylist').doc(getParams);
-      this.documentData.valueChanges().subscribe((res: FavoriteList) => {
+      this.documentData.valueChanges().subscribe(async (res: FavoriteList) => {
         if (res) {
-          this.playlistSong = res.details;
+          // this.playlistSong = res.details;
+          if (res.details.length > 0) {
+            res.details.forEach((s) => {
+              this.documentData = this.db.collection('Song').doc(s);
+              this.documentData.valueChanges().subscribe(async (song) => {
+                const listAuthor = [];
+                if (song.author.length > 0) {
+                  let i = 0;
+                  while (i < song.author.length) {
+                    this.documentData = this.db.collection('Performer').doc(song.author[i].id);
+                    const t = await this.documentData.valueChanges().subscribe(auth => {
+                      listAuthor.push({
+                        id: auth.id,
+                        name: auth.name,
+                      });
+                    });
+                    i++;
+                  }
+                }
+                this.playlistSong.push({
+                  id: song.id,
+                  name: song.name,
+                  author: listAuthor,
+                  mp3Url: song.mp3Url
+                });
+              });
+            });
+          }
           this.favoritePlaylist = res;
         }
         this.db.doc(this.favoritePlaylist.userId.path).valueChanges().subscribe((userData: User) => {
           if (userData) {
             this.userData = userData;
+            this.verifyUserAuthenicate(userData);
             this.isFavorite = true;
           }
         });
@@ -120,6 +157,33 @@ export class PlaylistComponent implements OnInit {
     }
   }
 
+  private verifyUserAuthenicate(userData: any) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (user.uid === userData.uid) {
+          this.verifyUser = true;
+        }
+      }
+    });
+  }
+
+  private editPlaylist() {
+    const faPlaylist = {
+      name : this.favoritePlaylist.name,
+      image: this.favoritePlaylist.image,
+      details: this.playlistSong
+    };
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: {data: faPlaylist, selector: 'EDIT_FAPLAYLIST' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
+  }
+
   private onClickSong(data: any) {
     this.songService.playSong(data);
     this.songService.audio.src = data.mp3Url;
@@ -143,6 +207,11 @@ export class PlaylistComponent implements OnInit {
     this.isPlay = !this.isPlay;
     this.songService.PlayOrPause();
   }
+}
 
-
+export interface SongForPlaylist {
+  name: string;
+  author: [{
+    name: string;
+  }];
 }

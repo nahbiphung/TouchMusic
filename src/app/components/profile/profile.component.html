@@ -1,14 +1,14 @@
 <app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
-<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-height-100" 
+<section class="padding-bottom-nav-player padding-top-nav background-color-dark-blue width-height-100"
   *ngIf="!loadingSpinner">
   <div class="profile width-height-100 background-color-white border-radius-10">
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
         <div class="avatar position-relative">
-            <div class="position-absolute pointer">
-              <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
-              <mat-icon class="material-icons color-organe" (click)="openFile.click()">camera</mat-icon>
-            </div>
+          <div class="position-absolute pointer">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
+            <mat-icon class="material-icons color-organe" (click)="openFile.click()">camera</mat-icon>
+          </div>
           <img src="{{userData.photoURL}}" alt="avartar" class="img-avatar">
         </div>
       </div>
@@ -24,7 +24,7 @@
         <div class="content-details width-height-100">
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Fisrt name" [formControl]="fnameFormControl" [value]="userData.firstName"
-            [errorStateMatcher]="matcher">
+              [errorStateMatcher]="matcher">
             <mat-error *ngIf="fnameFormControl.hasError('max')">
               Fisrt name is too long
             </mat-error>
@@ -34,7 +34,7 @@
           </mat-form-field>
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Last name" [formControl]="lnameFormControl" [value]="userData.lastName"
-            [errorStateMatcher]="matcher">
+              [errorStateMatcher]="matcher">
             <mat-error *ngIf="lnameFormControl.hasError('max')">
               Last name is too long
             </mat-error>
@@ -44,7 +44,7 @@
           </mat-form-field>
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Email" [value]="userData.email" [formControl]="emailFormControl"
-             [errorStateMatcher]="matcher">
+              [errorStateMatcher]="matcher">
             <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
               Please enter a valid email address
             </mat-error>
@@ -54,7 +54,7 @@
           </mat-form-field>
           <mat-form-field class="width-100 my-form-field">
             <input matInput placeholder="Phone" [value]="userData.phone" [formControl]="phoneFormControl"
-            [errorStateMatcher]="matcher">
+              [errorStateMatcher]="matcher">
             <mat-error *ngIf="phoneFormControl.hasError('pattern')">
               Please enter a valid phone number
             </mat-error>
@@ -63,8 +63,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field class="width-100 my-form-field">
-            <input matInput placeholder="Birthday" [min]="lengthDate.min" [max]="lengthDate.max" [matDatepicker]="picker" [formControl]="dateFormControl"
-            [errorStateMatcher]="matcher">
+            <input matInput placeholder="Birthday" [min]="lengthDate.min" [max]="lengthDate.max"
+              [matDatepicker]="picker" [formControl]="dateFormControl" [errorStateMatcher]="matcher">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="dateFormControl.hasError('required')">
@@ -72,33 +72,134 @@
             </mat-error>
           </mat-form-field>
           <div class="d-flex justify-content-center align-items-center">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock" (click)="allowEdit()" mdbWavesEffect>Edit</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="updateProfile()" mdbWavesEffect>Submit</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="cancel()" mdbWavesEffect>Cancel</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isBlock"
+              (click)="allowEdit()" mdbWavesEffect>Edit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock"
+              (click)="updateProfile()" mdbWavesEffect>Submit</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isBlock" (click)="cancel()"
+              mdbWavesEffect>Cancel</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 favoritePlaylist width-height-100 background-color-white border-radius-10">
-      <div class="row padding-20">
-        <h1 class="font-weight color-organe text-align-center">Favorite Playlist</h1>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
-          <div *ngFor="let item of faPlaylist" class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
-            d-flex flex-column justify-content-center align-items-center margin-top-10">
-            
-            <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
-            <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image" class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
-            <div class="title-playlist flex-grow-1 margin-top-10">
-              <h5>{{item.name}}</h5>
+    <div
+      class="col-lg-9 col-md-8 col-sm-12 col-xs-12 favoritePlaylist width-height-100 background-color-white border-radius-10">
+      <mat-tab-group color="accent">
+        <mat-tab label="Favorite Playlist">
+          <div class="row padding-20">
+            <h1 class="font-weight color-organe text-align-center">Favorite Playlist</h1>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex flex-wrap">
+              <div *ngFor="let item of faPlaylist" class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+                d-flex flex-column justify-content-center align-items-center margin-top-10">
+
+                <img *ngIf="item.image" src="{{item.image}}" alt="image" class="img-playlist flex-grow-2"
+                  [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+                <img *ngIf="item.image === ''" src="../../../assets/images/musical-note.png" alt="image"
+                  class="img-playlist flex-grow-2" [routerLink]="['/playlist/favoritePlaylist', item.id.trim()]">
+                <div class="title-playlist flex-grow-1 margin-top-10">
+                  <h5>{{item.name}}</h5>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
+                d-flex justify-content-center align-items-start margin-top-10">
+                <mat-icon class="create-playlist" (click)="createNewFaPlaylist()">library_add</mat-icon>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
-            d-flex justify-content-center align-items-start margin-top-10">
-            <img src="{{imageData}}" alt="image" class="create-playlist pointer" (click)="createNewFaPlaylist()">
+        </mat-tab>
+        <mat-tab label="Your Song">
+          <h1 class="font-weight color-organe text-align-center">Your Song</h1>
+          <div *ngIf="tableListSongData">
+            <table mat-table multiTemplateDataRows class="position-relative" [dataSource]='tableListSongData' matSort
+              class="width-100">
+              <!-- Đây là phần các cột -->
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <div *ngIf="column !== 'imageSong'">
+                  <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                </div>
+                <div *ngIf="column === 'imageSong'">
+                  <td mat-cell *matCellDef="let element">
+                    <img src="{{element.imageSong}}" class="image-size-100px" alt="{{element.name}} image">
+                  </td>
+                </div>
+              </ng-container>
+
+              <!-- Đây là phần mở rộng khi click vào các row -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                  <div class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div>
+                      <button mat-icon-button (click)="onClickEdit(element)">
+                        <mat-icon class="mat-18 iconFormat">create</mat-icon>
+                      </button>
+                      <button mat-icon-button color='warn' (click)="onDelete(element)">
+                        <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
+                      </button>
+                    </div>
+                    <div class="example-element-description">
+                      {{element.lyric}}
+                      <span class="example-element-description-attribution"> -- Xem thêm </span>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+              <!-- <ng-container matColumnDef="option">
+                  <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
+                  <mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="onClickEdit(element)">
+                      <mat-icon class="mat-18">launch</mat-icon>
+                    </button>
+                    <button mat-icon-button color='warn' (click)="onDelete(element)">
+                      <mat-icon class="mat-18">delete_outline</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container> -->
+              <!-- <ng-container matColumnDef="loading">
+                  <mat-footer-cell *matFooterCellDef>
+                    Loading data....
+                  </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                  <mat-footer-cell *matFooterCellDef>
+                    No Data....
+                  </mat-footer-cell>
+                </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableListSongData!=null}"></mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(tableListSongData!=null && tableListSongData.data.length==0)}">
+                </mat-footer-row> -->
+            </table>
+            <div class="create-user position-absolute">
+              <button mat-icon-button (click)="onClickCreate()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <mat-paginator class="position-relative" [length]="tableListSongData.length" [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
           </div>
-        </div>
-      </div>
+          <div *ngIf="!tableListSongData">
+            You have not upload any song, upload now!
+            <div class="create-user position-absolute">
+              <button mat-icon-button (click)="onClickCreate()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
     </div>
   </div>
-  
+
 </section>

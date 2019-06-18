@@ -20,11 +20,6 @@ interface FavoriteList {
     image: string;
     name: string;
     userId: string;
-    details: [{
-        author: string;
-        id: string;
-        mp3Url: string;
-        name: string;
-    }];
+    details: [];
 }
 

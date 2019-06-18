@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
-import {FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+import * as firebase from 'firebase';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -17,7 +19,14 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class ProfileComponent implements OnInit {
@@ -54,12 +63,19 @@ export class ProfileComponent implements OnInit {
   ]);
 
   private matcher = new MyErrorStateMatcher();
+  // upload song
+  private tableListSongData: MatTableDataSource<any>;
+  private listSongData: Song[];
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'albumId'];
 
 
   constructor(
     private db: AngularFirestore,
     private route: ActivatedRoute,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private router: Router) {
     this.loadingSpinner = true;
     this.isBlock = true;
     // tslint:disable-next-line:max-line-length
@@ -69,11 +85,14 @@ export class ProfileComponent implements OnInit {
       min: new Date(1790, 0, 1),
       max: new Date(),
     };
-   }
+    this.listSongData = [];
+  }
 
   ngOnInit() {
+    this.loadingSpinner = true;
     // get params and user
     const getParams = this.route.snapshot.paramMap.get('uid');
+    this.getCurrentUser(getParams);
     this.currentUserRef = this.db.collection('users').doc(getParams).ref;
     this.documentData = this.db.collection('users').doc(getParams);
     this.documentData.valueChanges().subscribe((res) => {
@@ -89,26 +108,81 @@ export class ProfileComponent implements OnInit {
         } else {
           this.enableFormControl();
         }
-        this.loadingSpinner = false;
+        if (this.listSongData) {
+          this.loadingSpinner = false;
+        }
       }
     }, (error) => {
       console.log('error');
+      if (this.listSongData.length !== 0) {
+        this.loadingSpinner = false;
+      }
     });
 
     this.collectionData = this.db.collection('FavoritePlaylist',
       query => query.where('userId', '==', this.currentUserRef));
     this.collectionData.valueChanges().subscribe((res) => {
-        if (res) {
-          this.faPlaylist = res;
+      if (res) {
+        this.faPlaylist = res;
+      }
+    });
+
+    // get Song Data created by user
+    this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        if (this.listSongData.length === 0) {
+          this.listSongData = res;
+        } else {
+          this.listSongData = this.listSongData.concat(res);
+          this.tableListSongData = new MatTableDataSource(this.listSongData);
+          this.tableListSongData.sort = this.sort;
+          this.tableListSongData.paginator = this.paginator;
         }
-      });
+      }
+      if (this.userData) {
+        this.loadingSpinner = false;
+      }
+    }, (error) => {
+      console.log('Get song data error ' + error);
+      if (this.userData) {
+        this.loadingSpinner = false;
+      }
+    });
+
+    // get song Data create by user but have not checked by admin yet
+    this.collectionData = this.db.collection('userUploadSong', query => query.where('userId', '==', this.currentUserRef));
+    this.collectionData.valueChanges().subscribe((res) => {
+      if (res) {
+        if (this.listSongData.length === 0) {
+          this.listSongData = res;
+        } else {
+          this.listSongData = this.listSongData.concat(res);
+          this.tableListSongData = new MatTableDataSource(this.listSongData);
+          this.tableListSongData.sort = this.sort;
+          this.tableListSongData.paginator = this.paginator;
+        }
+      }
+    });
+  }
+
+  private getCurrentUser(currentLogin: any) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (user.uid !== currentLogin) {
+          this.router.navigate(['/welcome']);
+        }
+      } else {
+        this.router.navigate(['/welcome']);
+      }
+    });
   }
 
   private createNewFaPlaylist() {
     // chỉ cần name và image
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '30vw',
-      data: {currentUser: this.currentUserRef, selector: 'B'}
+      data: { currentUser: this.currentUserRef, selector: 'B' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -167,13 +241,33 @@ export class ProfileComponent implements OnInit {
       const dialogRef = this.dialog.open(DialogComponent, {
         height: '78vh',
         width: '50vw',
-        data: {currentUser: this.currentUserRef, data: event, selector: 'A'}
+        data: { currentUser: this.currentUserRef, data: event, selector: 'A' }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log(result);
         console.log('The dialog was closed');
       });
     }
+  }
+
+  public onClickCreate() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: { currentUser: this.currentUserRef, selector: 'UPLOAD_SONG' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
+  }
+
+  public onClickEdit(data: Song) {
+
+  }
+
+  public onDelete(data: Song) {
+
   }
 }
 
