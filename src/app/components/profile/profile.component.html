@@ -107,8 +107,8 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Your Song">
-          <h1 class="font-weight color-organe text-align-center">Your Song</h1>
+        <mat-tab label="Song checked">
+          <h1 class="font-weight color-organe text-align-center">Song checked</h1>
           <div *ngIf="tableListSongData">
             <table mat-table multiTemplateDataRows class="position-relative" [dataSource]='tableListSongData' matSort
               class="width-100">
@@ -116,7 +116,80 @@
               <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
                 <th mat-header-cell *matHeaderCellDef> {{column}} </th>
                 <div *ngIf="column !== 'imageSong'">
-                  <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                  <div *ngIf="column === 'performerId' || column === 'author'">
+                    <td mat-cell *matCellDef="let element">
+                      <div *ngFor="let item of element[column]"> {{item.name}} </div>
+                    </td>
+                  </div>
+                  <div *ngIf="column !== 'performerId' && column !== 'author'">
+                    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                  </div>
+                </div>
+                <div *ngIf="column === 'imageSong'">
+                  <td mat-cell *matCellDef="let element">
+                    <img src="{{element.imageSong}}" class="image-size-100px" alt="{{element.name}} image">
+                  </td>
+                </div>
+              </ng-container>
+
+              <!-- Đây là phần mở rộng khi click vào các row -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                  <div class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div>
+                      <button mat-icon-button color='warn' (click)="onDelete(element)">
+                        <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
+                      </button>
+                    </div>
+                    <div class="example-element-description">
+                      {{element.lyric}}
+                      <span class="example-element-description-attribution"> -- Xem thêm </span>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+            <div class="create-user position-absolute">
+              <button mat-icon-button (click)="onClickCreate()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <mat-paginator #paginatorCheck class="position-relative" [length]="listSongData.length" [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          </div>
+          <div *ngIf="!tableListSongData">
+            You have not upload any song, upload now!
+            <div class="create-user position-absolute">
+              <button mat-icon-button (click)="onClickCreate()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Song uncheck">
+          <h1 class="font-weight color-organe text-align-center">Song checked</h1>
+          <div *ngIf="tableListSongDataUncheck">
+            <table mat-table multiTemplateDataRows class="position-relative" [dataSource]='tableListSongDataUncheck' matSort
+              class="width-100">
+              <!-- Đây là phần các cột -->
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <div *ngIf="column !== 'imageSong'">
+                  <div *ngIf="column === 'performerId' || column === 'author'">
+                    <td mat-cell *matCellDef="let element">
+                      <div *ngFor="let item of element[column]"> {{item.name}} </div>
+                    </td>
+                  </div>
+                  <div *ngIf="column !== 'performerId' && column !== 'author'">
+                    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                  </div>
                 </div>
                 <div *ngIf="column === 'imageSong'">
                   <td mat-cell *matCellDef="let element">
@@ -151,44 +224,16 @@
                 (click)="expandedElement = expandedElement === element ? null : element">
               </tr>
               <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-
-              <!-- <ng-container matColumnDef="option">
-                  <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    <button mat-icon-button (click)="onClickEdit(element)">
-                      <mat-icon class="mat-18">launch</mat-icon>
-                    </button>
-                    <button mat-icon-button color='warn' (click)="onDelete(element)">
-                      <mat-icon class="mat-18">delete_outline</mat-icon>
-                    </button>
-                  </mat-cell>
-                </ng-container> -->
-              <!-- <ng-container matColumnDef="loading">
-                  <mat-footer-cell *matFooterCellDef>
-                    Loading data....
-                  </mat-footer-cell>
-                </ng-container>
-                <ng-container matColumnDef="noData">
-                  <mat-footer-cell *matFooterCellDef>
-                    No Data....
-                  </mat-footer-cell>
-                </ng-container>
-            
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': tableListSongData!=null}"></mat-footer-row>
-                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(tableListSongData!=null && tableListSongData.data.length==0)}">
-                </mat-footer-row> -->
             </table>
             <div class="create-user position-absolute">
               <button mat-icon-button (click)="onClickCreate()">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
-            <mat-paginator class="position-relative" [length]="tableListSongData.length" [pageSize]="5"
+            <mat-paginator #paginatorUncheck class="position-relative" [length]="listSongDataUncheck.length" [pageSize]="5"
               [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
           </div>
-          <div *ngIf="!tableListSongData">
+          <div *ngIf="!tableListSongDataUncheck">
             You have not upload any song, upload now!
             <div class="create-user position-absolute">
               <button mat-icon-button (click)="onClickCreate()">

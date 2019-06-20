@@ -65,9 +65,11 @@ export class ProfileComponent implements OnInit {
   private matcher = new MyErrorStateMatcher();
   // upload song
   private tableListSongData: MatTableDataSource<any>;
-  private listSongData: Song[];
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  private tableListSongDataUncheck: MatTableDataSource<any>;
+  private listSongData: any[];
+  private listSongDataUncheck: any[];
+  @ViewChild('paginatorUncheck') paginatorUncheck: MatPaginator;
+  @ViewChild('paginatorCheck') paginatorCheck: MatPaginator;
   displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'albumId'];
 
 
@@ -127,41 +129,98 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    // get Song Data created by user
-    this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
-    this.collectionData.valueChanges().subscribe((res) => {
-      if (res) {
-        if (this.listSongData.length === 0) {
-          this.listSongData = res;
-        } else {
-          this.listSongData = this.listSongData.concat(res);
-          this.tableListSongData = new MatTableDataSource(this.listSongData);
-          this.tableListSongData.sort = this.sort;
-          this.tableListSongData.paginator = this.paginator;
-        }
-      }
-      if (this.userData) {
-        this.loadingSpinner = false;
-      }
-    }, (error) => {
-      console.log('Get song data error ' + error);
-      if (this.userData) {
-        this.loadingSpinner = false;
-      }
-    });
+    this.collectionData = this.db.collection('Performer');
+    this.collectionData.valueChanges().subscribe(async (performer: Performer[]) => {
+      if (performer) {
+        this.listSongData = [];
+        // get Song Data created by user
+        this.collectionData = this.db.collection('Song', query => query.where('userId', '==', this.currentUserRef));
+        await this.collectionData.valueChanges().subscribe((song) => {
+          if (song) {
+            song.forEach((s) => {
+              let listauthor = [];
+              let listperformer = [];
+              if (s.author.length > 0) {
+                s.author.forEach(element => {
+                  listauthor = listauthor.concat(performer.filter(p => p.id === element.id));
+                });
+              }
+              if (s.performerId.length > 0) {
+                s.performerId.forEach(element => {
+                  listperformer = listperformer.concat(performer.filter(p => p.id === element.id));
+                });
+              }
+              this.listSongData.push({
+                id: s.id,
+                name: s.name,
+                imageSong: s.imageSong,
+                performerId: listperformer,
+                author: listauthor,
+                albumId: s.albumId.id,
+                country: s.country,
+                songType: s.songType,
+                mp3Url: s.mp3Url,
+                video: s.video,
+                imageVideo: s.imageVideo,
+                lyric: s.lyric
+              });
+            });
+            this.tableListSongData = new MatTableDataSource(this.listSongData);
+            this.tableListSongData.paginator = this.paginatorCheck;
+          }
+          if (this.userData) {
+            this.loadingSpinner = false;
+          }
+        }, (error) => {
+          console.log('Get song data error ' + error);
+          if (this.userData) {
+            this.loadingSpinner = false;
+          }
+        });
 
-    // get song Data create by user but have not checked by admin yet
-    this.collectionData = this.db.collection('userUploadSong', query => query.where('userId', '==', this.currentUserRef));
-    this.collectionData.valueChanges().subscribe((res) => {
-      if (res) {
-        if (this.listSongData.length === 0) {
-          this.listSongData = res;
-        } else {
-          this.listSongData = this.listSongData.concat(res);
-          this.tableListSongData = new MatTableDataSource(this.listSongData);
-          this.tableListSongData.sort = this.sort;
-          this.tableListSongData.paginator = this.paginator;
-        }
+        // get song Data create by user but have not checked by admin yet
+        this.collectionData = this.db.collection('userUploadSong', query => query.where('userId', '==', this.currentUserRef));
+        await this.collectionData.valueChanges().subscribe((song) => {
+          this.listSongDataUncheck = [];
+          if (song) {
+            song.forEach((s) => {
+              let listauthor = [];
+              let listperformer = [];
+              if (s.author.length > 0) {
+                s.author.forEach(element => {
+                  listauthor = listauthor.concat(performer.filter(p => p.id === element.id));
+                  if (!element.id) {
+                    listauthor.push({name: element});
+                  }
+                });
+              }
+              if (s.performerId.length > 0) {
+                s.performerId.forEach(element => {
+                  listperformer = listperformer.concat(performer.filter(p => p.id === element.id));
+                  if (!element.id) {
+                    listperformer.push({name: element});
+                  }
+                });
+              }
+              this.listSongDataUncheck.push({
+                id: s.id,
+                name: s.name,
+                imageSong: s.imageSong,
+                performerId: listperformer,
+                author: listauthor,
+                albumId: s.albumId.id,
+                country: s.country,
+                songType: s.songType,
+                mp3Url: s.mp3Url,
+                video: s.video,
+                imageVideo: s.imageVideo,
+                lyric: s.lyric
+              });
+            });
+            this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);
+            this.tableListSongDataUncheck.paginator = this.paginatorUncheck;
+          }
+        });
       }
     });
   }
@@ -262,8 +321,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  public onClickEdit(data: Song) {
-
+  public onClickEdit(song: Song) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: { currentUser: this.currentUserRef, data: song , selector: 'UPLOAD_SONG' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
+    });
   }
 
   public onDelete(data: Song) {

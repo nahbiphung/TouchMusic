@@ -45,6 +45,7 @@ export class PlaylistComponent implements OnInit {
     this.isFavorite = false;
     this.isCountry = false;
     this.verifyUser = false;
+    this.playlistSong = [];
    }
 
   ngOnInit() {
@@ -67,7 +68,7 @@ export class PlaylistComponent implements OnInit {
       this.documentData = this.db.collection('FavoritePlaylist').doc(getParams);
       this.documentData.valueChanges().subscribe(async (res: FavoriteList) => {
         if (res) {
-          // this.playlistSong = res.details;
+          this.playlistSong = [];
           if (res.details.length > 0) {
             res.details.forEach((s) => {
               this.documentData = this.db.collection('Song').doc(s);
@@ -111,22 +112,40 @@ export class PlaylistComponent implements OnInit {
     } else if (getDetectRoute === 'album') {
       // get album info
       this.documentData = this.db.collection('Album').doc(getParams);
-      this.documentData.valueChanges().subscribe((res: Album) => {
+      this.documentData.valueChanges().subscribe(async (res: Album) => {
         if (res) {
           this.albumInfo = res;
         }
-        this.db.doc(res.performerId).valueChanges().subscribe((performer: Performer) => {
+        await this.db.doc(res.performerId).valueChanges().subscribe((performer: Performer) => {
           if (performer) {
             this.performer = performer;
+            this.isAlbum = true;
           }
         });
       });
       // get song in album
       this.collectionData = this.db.collection('Song',
-        que => que.where('albumId', '==', getParams));
-      this.collectionData.valueChanges().subscribe((res: Song[]) => {
-        if (res) {
-          this.playlistSong = res;
+        que => que.where('albumId', '==', this.documentData.ref));
+      this.collectionData.valueChanges().subscribe((song: Song[]) => {
+        if (song) {
+          this.db.collection('Performer').valueChanges().subscribe((author: Performer[]) => {
+            if (author) {
+              song.forEach(s => {
+                let listauthor = [];
+                if (s.author.length > 0) {
+                  s.author.forEach(a => {
+                    listauthor = listauthor.concat(author.filter(auth => auth.id === a.id));
+                  });
+                }
+                this.playlistSong.push({
+                  id: s.id,
+                  name: s.name,
+                  author: listauthor,
+                  mp3Url: s.mp3Url,
+                });
+              });
+            }
+          });
         }
       }, (error) => {
         console.log('error');
@@ -143,10 +162,29 @@ export class PlaylistComponent implements OnInit {
         const refCountry = this.db.collection('Country').doc(this.country.id).ref;
         // get song in country
         this.collectionData = this.db.collection('Song',
-          que => que.where('countryId', '==', refCountry));
-        this.collectionData.valueChanges().subscribe((res: Song[]) => {
-          if (res) {
-            this.playlistSong = res;
+          que => que.where('country', '==', res[0].name));
+        this.collectionData.valueChanges().subscribe((song: Song[]) => {
+          if (song) {
+            this.db.collection('Performer', query => query.where('countryId', '==', refCountry))
+              .valueChanges().subscribe((listAuth: Performer[]) => {
+              if (listAuth) {
+                song.forEach((s) => {
+                  let listauthor = [];
+                  if (s.author.length > 0) {
+                    s.author.forEach((ea: any) => {
+                      listauthor = listauthor.concat(listAuth.filter(a => a.id === ea.id));
+                    });
+                  }
+                  this.playlistSong.push({
+                    id: s.id,
+                    name: s.name,
+                    author: listauthor,
+                    mp3Url: s.mp3Url
+                  });
+                });
+              }
+            });
+
           }
         }, (error) => {
           console.log('error');
@@ -169,6 +207,7 @@ export class PlaylistComponent implements OnInit {
 
   private editPlaylist() {
     const faPlaylist = {
+      id: this.favoritePlaylist.id,
       name : this.favoritePlaylist.name,
       image: this.favoritePlaylist.image,
       details: this.playlistSong
@@ -206,6 +245,16 @@ export class PlaylistComponent implements OnInit {
     this.songService.playlistSong = this.playlistSong;
     this.isPlay = !this.isPlay;
     this.songService.PlayOrPause();
+  }
+
+  private addToPlaylist(data: any) {
+    this.songService.playlistSong.push(data);
+  }
+
+  private addToFavoritePlaylist(data: any) {
+    this.db.collection('Song').doc(data.id).update({
+      like: firebase.firestore.FieldValue.increment(1)
+    });
   }
 }
 

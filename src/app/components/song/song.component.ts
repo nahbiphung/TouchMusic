@@ -75,7 +75,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
         if (this.data.video) {
           this.videoSong = true;
         }
-        this.colectionData = this.db.collection('Song', query => query.where('countryId', '==', this.data.countryId));
+        this.colectionData = this.db.collection('Song', query => query.where('country', '==', this.data.country));
         this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
           if (relateRes) {
             this.relatedSong = relateRes.filter(e => e.name !== this.data.name);

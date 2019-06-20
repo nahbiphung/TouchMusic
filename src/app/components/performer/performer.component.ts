@@ -18,7 +18,7 @@ export class PerformerComponent implements OnInit {
   private data: Performer;
   private performerData: Performer[];
   public loadingSpinner: boolean;
-  private songData: Song[];
+  private songData: Playlist[];
   private albumData: Album[];
   private videoData: any[];
   private currentUserRef: any;
@@ -46,13 +46,41 @@ export class PerformerComponent implements OnInit {
     this.documentData.snapshotChanges().subscribe((res: any) => {
       if (res) {
         this.collectionData = this.db.collection('Song', query =>
-          query.where('performerId', '==', res.payload.ref));
+          query.where('performerId', 'array-contains', res.payload.ref));
         this.collectionData.valueChanges().subscribe((songRes: Song[]) => {
           if (songRes) {
-            this.songData = songRes;
+            this.songData = [];
             this.videoData = songRes.filter(e => e.video !== '');
+            this.db.collection('Performer').valueChanges().subscribe((performer: Performer[]) => {
+              if (performer) {
+                songRes.forEach(s => {
+                  let listAuthor = [];
+                  if (s.author.length > 0) {
+                    s.author.forEach(p => {
+                      listAuthor = listAuthor.concat(performer.filter(per => per.id === p.id));
+                    });
+                  }
+                  this.songData.push({
+                    id: s.id,
+                    name: s.name,
+                    author: listAuthor,
+                    mp3Url: s.mp3Url,
+                    like: s.like,
+                    view: s.view,
+                  });
+                });
+              }
+            })
           }
         });
+        // this.collectionData = this.db.collection('Song', query =>
+        //   query.where('author', 'array-contains', res.payload.ref));
+        // this.collectionData.valueChanges().subscribe((songRes: Song[]) => {
+        //   if (songRes) {
+        //     this.songData = songRes;
+        //     this.videoData = songRes.filter(e => e.video !== '');
+        //   }
+        // });
         this.collectionData = this.db.collection('Album', query =>
           query.where('performerId', '==', res.payload.ref));
         this.collectionData.valueChanges().subscribe((albumRes: Album[]) => {
@@ -164,4 +192,13 @@ export interface DialogData {
   currentUser: any;
   data: any;
   selector: string;
+}
+
+export interface Playlist {
+  id: string;
+  name: string;
+  author: Array<any>;
+  mp3Url: string;
+  view: number;
+  like: number;
 }
