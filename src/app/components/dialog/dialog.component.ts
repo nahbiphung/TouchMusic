@@ -43,6 +43,7 @@ export class DialogComponent implements OnInit {
   private isCreateNewFaList: boolean;
   private isAddToFaList: boolean;
   private isEditFaPlaylist: boolean;
+  private isEditSongUpload: boolean;
   public isVideo: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
@@ -54,6 +55,7 @@ export class DialogComponent implements OnInit {
     Validators.maxLength(30),
     Validators.required,
   ]);
+  private showImage: any;
   // upload song
   private matcher = new MyErrorStateMatcher();
   private listPerformerData: Performer[];
@@ -62,6 +64,7 @@ export class DialogComponent implements OnInit {
   private listAuthorDataFiltered: Observable<Performer[]>;
   private listCountryData: Country[];
   private listSongTypeData: SongType[];
+  private tempListPerformerData: Performer[];
   private imageSong: any;
   private previewImageSong: any;
   private imageVideo: any;
@@ -77,11 +80,6 @@ export class DialogComponent implements OnInit {
   @ViewChild('authorauto') authormatAutocomplete: MatAutocomplete;
   @ViewChild('performerInput') performerInput: ElementRef<HTMLInputElement>;
   @ViewChild('performerauto') performermatAutocomplete: MatAutocomplete;
-
-  private uploadProgressFileSong: number;
-  private uploadProgressImageSong: number;
-  private uploadProgressFileVideo: number;
-  private uploadProgressImageVideo: number;
 
   private authors: any[];
   private performers: any[];
@@ -118,6 +116,7 @@ export class DialogComponent implements OnInit {
     this.loadingSpinner = true;
     this.isUploadSong = false;
     this.isEditFaPlaylist = false;
+    this.isEditSongUpload = false;
     // upload song
     this.listPerformerData = [];
     this.listAuthorData = [];
@@ -164,12 +163,29 @@ export class DialogComponent implements OnInit {
         this.loadingSpinner = false;
         break;
       case 'UPLOAD_SONG':
-        this.isUploadSong = true;
+        if (this.data.data) {
+          this.isEditSongUpload = true;
+          this.songNameFormControl.setValue(this.data.data.name);
+          this.data.data.performerId.forEach(element => {
+            this.performers.push(element);
+          });
+          this.data.data.author.forEach(element => {
+            this.authors.push(element);
+          });
+          this.countrySelected = this.data.data.country;
+          this.songTypeSelected = this.data.data.songType;
+          this.lyricFormControl.setValue(this.data.data.lyric);
+          this.previewImageSong = this.data.data.imageSong;
+          this.previewImageVideo = this.data.data.imageVideo;
+        } else {
+          this.isUploadSong = true;
+        }
         this.collectionData = this.db.collection('Performer');
         this.collectionData.valueChanges().subscribe((res) => {
           if (res) {
             this.listPerformerData = res;
             this.listAuthorData = res;
+            this.tempListPerformerData = res;
             this.loadingSpinner = false;
           }
         });
@@ -191,6 +207,7 @@ export class DialogComponent implements OnInit {
       case 'EDIT_FAPLAYLIST':
         this.isEditFaPlaylist = true;
         this.imagePreview = this.data.data.image;
+        this.showImage = this.data.data.image;
         this.loadingSpinner = false;
         break;
       default:
@@ -236,13 +253,13 @@ export class DialogComponent implements OnInit {
       case 'editFaImage':
         // do something
         if (event.target.files[0]) {
-          this.data.data.image = event.target.files[0];
-          const copyThis = this;
+          this.showImage = event.target.files[0];
+          // const copyThis = this;
           const previewImage = new FileReader();
           previewImage.onload = (e: any) => {
-            copyThis.imagePreview = e.currentTarget.result;
+            this.imagePreview = e.currentTarget.result;
           };
-          previewImage.readAsDataURL(this.data.data.image);
+          previewImage.readAsDataURL(event.target.files[0]);
         }
         break;
       default:
@@ -419,6 +436,22 @@ export class DialogComponent implements OnInit {
     });
   }
 
+  private changeToRef(dataRef: any[]): Array<any> {
+    const changeAuthorRef = [];
+    dataRef.forEach(la => {
+      if (!la.id) {
+        changeAuthorRef.push(la.name);
+      } else {
+        this.tempListPerformerData.forEach((a) => {
+          if (la.name === a.name) {
+            changeAuthorRef.push(this.db.collection('Performer').doc(a.id).ref);
+          }
+        });
+      }
+    });
+    return changeAuthorRef;
+  }
+
   private uploadNewSong() {
     if (this.validateSong()) {
       this.loadingSpinner = true;
@@ -430,9 +463,9 @@ export class DialogComponent implements OnInit {
         albumId: '',
         userId: this.data.currentUser,
         name: this.songNameFormControl.value,
-        author: this.authors,
+        author: this.changeToRef(this.authors),
         lyric: this.lyricFormControl.value !== '' ? this.lyricFormControl.value : '',
-        performerId: this.performers,
+        performerId: this.changeToRef(this.performers),
         mp3Url: '',
         imageSong: '',
         video: '',
@@ -453,41 +486,54 @@ export class DialogComponent implements OnInit {
     }
   }
 
+  private createImageSong(songId: any) {
+    const imageSongStorageRef = this.storage.ref('images/' + this.imageSong.name);
+    this.storage.upload('images/' + this.imageSong.name, this.imageSong).then((res) => {
+      imageSongStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ imageSong: url })
+      );
+    });
+  }
+  private createImageVideo(songId: any) {
+    const imageVideoStorageRef = this.storage.ref('images/' + this.imageVideo.name);
+    this.storage.upload('images/' + this.imageVideo.name, this.imageVideo).then((res) => {
+      imageVideoStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ imageVideo: url })
+      );
+    });
+  }
+  private createFileSong(songId: any) {
+    const audioFileStorageRef = this.storage.ref('music/' + this.songFile.name);
+    this.storage.upload('music/' + this.songFile.name, this.songFile).then((res) => {
+      audioFileStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ mp3Url: url })
+      );
+    });
+  }
+  private createFileVideo(songId: any) {
+    const videoFileStorageRef = this.storage.ref('video/' + this.videoFile.name);
+    this.storage.upload('video/' + this.videoFile.name, this.videoFile).then((res) => {
+      videoFileStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ video: url })
+      );
+    });
+  }
+
   private uploadImageandFile(songId: any) {
     if (this.imageSong) {
-      const imageSongStorageRef = this.storage.ref('images/' + this.imageSong.name);
-      this.storage.upload('images/' + this.imageSong.name, this.imageSong)
-        .percentageChanges().subscribe(res => this.uploadProgressImageSong = res);
-      this.storage.upload('images/' + this.imageSong.name, this.imageSong).then(async (res) => {
-        const downloadUrl =  await imageSongStorageRef.getDownloadURL().toPromise();
-        this.db.collection('userUploadSong').doc(songId).update({imageSong: downloadUrl});
-      });
+      this.createImageSong(songId);
     }
 
     if (this.imageVideo) {
-      const imageVideoStorageRef = this.storage.ref('images/' + this.imageVideo.name);
-      this.storage.upload('images/' + this.imageVideo.name, this.imageVideo).then(async (res) => {
-        const downloadUrl =  await imageVideoStorageRef.getDownloadURL().toPromise();
-        this.db.collection('userUploadSong').doc(songId).update({imageVideo: downloadUrl});
-      });
+      this.createImageVideo(songId);
     }
 
     if (this.songFile) {
-      const audioFileStorageRef = this.storage.ref('music/' + this.songFile.name);
-      this.storage.upload('music/' + this.songFile.name, this.songFile)
-        .percentageChanges().subscribe(res => this.uploadProgressFileSong = res);
-      this.storage.upload('music/' + this.songFile.name, this.songFile).then(async (res) => {
-        const downloadUrl =  await audioFileStorageRef.getDownloadURL().toPromise();
-        this.db.collection('userUploadSong').doc(songId).update({mp3Url: downloadUrl});
-      });
+      this.createFileSong(songId);
     }
 
     if (this.videoFile) {
-      const videoFileStorageRef = this.storage.ref('video/' + this.videoFile.name);
-      this.storage.upload('video/' + this.videoFile.name, this.videoFile).then(async (res) => {
-        const downloadUrl =  await videoFileStorageRef.getDownloadURL().toPromise();
-        this.db.collection('userUploadSong').doc(songId).update({video: downloadUrl});
-      });
+      this.createImageVideo(songId);
     }
   }
 
@@ -568,6 +614,124 @@ export class DialogComponent implements OnInit {
 
   private onRemoveSong(song: any) {
     this.data.data.details = this.data.data.details.filter(s => s.id !== song.id);
+  }
+
+  private cancelEdit() {
+    this.imagePreview = '';
+    this.onNoClick();
+  }
+
+  private onEditFaPlaylist() {
+    const detachSongId = [];
+    this.data.data.details.forEach((element) => {
+      detachSongId.push(element.id);
+    });
+    if (this.data.data.image !== this.imagePreview) {
+      const detachNameImage = this.data.data.image.match(/images%2F(.*?)?.alt/i)[1];
+      const imageRef = this.storage.ref('images/' + detachNameImage);
+      this.storage.upload('images/' + detachNameImage, this.showImage).then(async (res) => {
+        const downloadUrl =  await imageRef.getDownloadURL().toPromise();
+        this.db.collection('FavoritePlaylist').doc(this.data.data.id).update({image: downloadUrl});
+      });
+    }
+    this.db.collection('FavoritePlaylist').doc(this.data.data.id).update({
+      name: this.data.data.name,
+      details: detachSongId,
+    }).then((res) => {
+      console.log('sửa thành công');
+      this.dialogRef.close();
+    });
+  }
+
+  private editUploadSong() {
+    if (this.data.data.id) {
+      this.loadingSpinner = true;
+      const updateData = {
+        albumId: '',
+        userId: this.data.currentUser,
+        name: this.songNameFormControl.value,
+        author: this.changeToRef(this.authors),
+        lyric: this.lyricFormControl.value !== '' ? this.lyricFormControl.value : '',
+        performerId: this.changeToRef(this.performers),
+        country: this.countrySelected ? this.countrySelected : '',
+        songType: this.songTypeSelected ? this.songTypeSelected : ''
+      }
+      this.db.collection('userUploadSong').doc(this.data.data.id).update(updateData).then(() => {
+        this.loadingSpinner = false;
+        this.dialogRef.close();
+      });
+      this.updateImageandFile(this.data.data.id);
+    }
+  }
+
+
+  private updateImageSong(songId: any) {
+    const detachImageName = this.data.data.imageSong.match(/images%2F(.*?)?.alt/i);
+    const imageSongStorageRef = this.storage.ref('images/' + detachImageName[1]);
+    this.storage.upload('images/' + detachImageName[1], this.imageSong).then((res) => {
+      imageSongStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ imageSong: url })
+      );
+    });
+  }
+  private updateImageVideo(songId: any) {
+    const detachImageName = this.data.data.imageVideo.match(/images%2F(.*?)?.alt/i);
+    const imageVideoStorageRef = this.storage.ref('images/' + detachImageName[1]);
+    this.storage.upload('images/' + detachImageName[1], this.imageVideo).then((res) => {
+      imageVideoStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ imageVideo: url })
+      );
+    });
+  }
+  private updateFileSong(songId: any) {
+    const detachMusicName = this.songFile.match(/music%2F(.*?)?.alt/i);
+    const musicFileStorageRef = this.storage.ref('music/' + detachMusicName[1]);
+    this.storage.upload('music/' + detachMusicName[1], this.songFile).then((res) => {
+      musicFileStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ mp3Url: url })
+      );
+    });
+  }
+  private updateFileVideo(songId: any) {
+    const detachVideoName = this.videoFile.match(/video%2F(.*?)?.alt/i);
+    const videoFileStorageRef = this.storage.ref('video/' + detachVideoName[1]);
+    this.storage.upload('video/' + detachVideoName[1], this.videoFile).then((res) => {
+      videoFileStorageRef.getDownloadURL().subscribe(url =>
+        this.db.collection('userUploadSong').doc(songId).update({ video: url })
+      );
+    });
+  }
+
+  private updateImageandFile(songId: any) {
+    // check file change
+    if (this.data.data.imageSong !== this.previewImageSong) {
+      if (!this.data.data.imageSong) {
+        this.createImageSong(songId);
+      } else {
+        this.updateImageSong(songId);
+      }
+    }
+    if (this.data.data.imageVideo !== this.previewImageVideo) {
+      if (!this.data.data.imageVideo) {
+        this.createImageVideo(songId);
+      } else {
+        this.updateImageVideo(songId);
+      }
+    }
+    if (this.songFile) {
+      if (this.data.data.mp3Url) {
+        this.updateFileSong(songId);
+      } else {
+        this.createFileSong(songId);
+      }
+    }
+    if (this.videoFile) {
+      if (this.data.data.video) {
+        this.updateFileVideo(songId);
+      } else {
+        this.createFileVideo(songId);
+      }
+    }
   }
 }
 
