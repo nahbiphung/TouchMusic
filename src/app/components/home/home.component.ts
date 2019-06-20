@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   colectionSongs: AngularFirestoreCollection<any>;
   colectionUsers: AngularFirestoreCollection<any>;
   colectionPlaylist: AngularFirestoreCollection<any>;
+  getPerformer: AngularFirestoreCollection<any>;
   documentAlbum: AngularFirestoreDocument<any>;
 
   public topPlaylist = [];
@@ -80,25 +81,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // get song in Albums
-    this.colectionPlaylist = this.db.collection('Song', ref =>
-      ref.where('albumId', '==', this.db.collection('Album').doc('fA8q7u7sfN7Lf6aLAxrq').ref));
-    this.colectionPlaylist.valueChanges().subscribe((res) => {
-      if (res) {
-        this.playlistForUser = res;
-      }
-    }, (error) => {
-      console.log(error);
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      this.colectionPlaylist = this.db.collection('Song', ref =>
+        ref.where('albumId', '==', this.db.collection('Album').doc('fA8q7u7sfN7Lf6aLAxrq').ref));
+      this.colectionPlaylist.valueChanges().subscribe((res) => {
+        if (res) {
+          this.playlistForUser = res;
+          for (const data of this.playlistForUser) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
     });
 
-    this.colectionPlaylist = this.db.collection('Song', ref =>
-      ref.where('albumId', '==', this.db.collection('Album').doc('euhbPdWw3WUXWVdJZkjp').ref));
-    this.colectionPlaylist.valueChanges().subscribe((res) => {
-      if (res) {
-        this.topPlaylist = res;
-      }
-    }, (error) => {
-      console.log(error);
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      this.colectionPlaylist = this.db.collection('Song', ref =>
+        ref.where('albumId', '==', this.db.collection('Album').doc('euhbPdWw3WUXWVdJZkjp').ref));
+      this.colectionPlaylist.valueChanges().subscribe((res) => {
+        if (res) {
+          this.topPlaylist = res;
+          for (const data of this.topPlaylist) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
     });
+
     // colectionAlbums
     this.colectionAlbums = this.db.collection('Album');
     this.colectionAlbums.valueChanges().subscribe((res) => {
@@ -108,14 +140,30 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }, (error) => {
       console.log(error);
     });
+
     // colectionSongs
-    this.colectionSongs = this.db.collection('Song');
-    this.colectionSongs.valueChanges().subscribe((res) => {
-      if (res) {
-        this.songs = res;
-      }
-    }, (error) => {
-      console.log(error);
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      this.colectionSongs = this.db.collection('Song');
+      this.colectionSongs.valueChanges().subscribe((res) => {
+        if (res) {
+          this.songs = res;
+          for (const data of this.songs) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
     });
     // colectionUser
     this.colectionUsers = this.db.collection('users', ref => ref.orderBy('email').limit(3));
@@ -130,24 +178,53 @@ export class HomeComponent implements OnInit, AfterViewInit {
       console.log(error);
     });
     // Song like
-    this.colectionSongs = this.db.collection('Song', ref => ref.orderBy('name').limit(3));
-    this.colectionSongs.valueChanges().subscribe((res) => {
-      if (res) {
-        this.likeSongs = res;
-      }
-    }, (error) => {
-      console.log(error);
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      this.colectionSongs = this.db.collection('Song', ref => ref.orderBy('name').limit(3));
+      this.colectionSongs.valueChanges().subscribe((res) => {
+        if (res) {
+          this.likeSongs = res;
+          for (const data of this.likeSongs) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
     });
     // History song
-    this.colectionSongs = this.db.collection('Song', ref => ref.limit(3));
-    this.colectionSongs.valueChanges().subscribe((res) => {
-      if (res) {
-        this.historySongs = res;
-      }
-    }, (error) => {
-      console.log(error);
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      this.colectionSongs = this.db.collection('Song', ref => ref.limit(3));
+      this.colectionSongs.valueChanges().subscribe((res) => {
+        if (res) {
+          this.historySongs = res;
+          for (const data of this.historySongs) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
     });
-
 
   }
 
@@ -311,23 +388,51 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   clickPlayAlbum(data: Album) {
-    const a = this.db.collection('Song', ref => ref.where('albumId', '==', this.db.collection('Album').doc(data.id).ref));
-    a.valueChanges().subscribe((res) => {
-      if (res) {
-        if (this.songService.playlistSong.length !== 0) {
-          if (this.songService.playlistSong[0].albumId.id !== data.id) {
-            this.songService.audio.pause();
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      const a = this.db.collection('Song', ref => ref.where('albumId', '==', this.db.collection('Album').doc(data.id).ref));
+      a.valueChanges().subscribe((res) => {
+        if (res) {
+          if (this.songService.playlistSong.length !== 0) {
+            if (this.songService.playlistSong[0].albumId.id !== data.id) {
+              this.songService.playlistSong = res;
+              for (const dataAlbum of this.songService.playlistSong) {
+                const arrAuthor = [];
+                for (const auth of dataAlbum.performerId) {
+                  const authorName = resPerformer.filter(e => e.id === auth.id);
+                  arrAuthor.push(authorName[0].name);
+                }
+                if (arrAuthor.length >= 2) {
+                  dataAlbum.author = arrAuthor[0] + ', ' + arrAuthor[1];
+                } else if (arrAuthor.length === 1) {
+                  dataAlbum.author = arrAuthor[0];
+                }
+              }
+              this.songService.audio.pause();
+              this.songService.audio.src = this.songService.playlistSong[0].mp3Url;
+              this.songService.audio.name = this.songService.playlistSong[0].name;
+              this.songService.audio.author = this.songService.playlistSong[0].author;
+              this.songService.isPlay = false;
+              this.songService.PlayOrPause();
+            }
+          } else {
             this.songService.playlistSong = res;
-            this.songService.audio.src = this.songService.playlistSong[0].mp3Url;
-            this.songService.audio.name = this.songService.playlistSong[0].name;
-            this.songService.audio.author = this.songService.playlistSong[0].author;
-            this.songService.isPlay = false;
+            for (const dataAlbum of this.songService.playlistSong) {
+              const arrAuthor = [];
+              for (const auth of dataAlbum.performerId) {
+                const authorName = resPerformer.filter(e => e.id === auth.id);
+                arrAuthor.push(authorName[0].name);
+              }
+              if (arrAuthor.length >= 2) {
+                dataAlbum.author = arrAuthor[0] + ', ' + arrAuthor[1];
+              } else if (arrAuthor.length === 1) {
+                dataAlbum.author = arrAuthor[0];
+              }
+            }
+            this.songService.PlayOrPause();
           }
-        } else {
-          this.songService.playlistSong = res;
         }
-        this.songService.PlayOrPause();
-      }
+      });
     });
 
     // this.db.collection('Album').add({
@@ -345,7 +450,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   public openVideo(songVideo: Song) {
     this.songService.audio.pause();
-    this.isPlay = false;
+    this.songService.isPlay = false;
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '70vw',
       data: { currentUser: '', data: songVideo, selector: 'D' }
@@ -353,7 +458,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.songService.audio.play();
-      this.isPlay = true;
+      this.songService.isPlay = true;
     });
   }
 }
