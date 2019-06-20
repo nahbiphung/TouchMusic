@@ -11,6 +11,7 @@ import { ErrorStateMatcher } from '@angular/material';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { filter } from 'rxjs/operators';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,6 +31,7 @@ export class WelcomeComponent implements OnInit {
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
   public song: Observable<any[]>;
+  getPerformer: AngularFirestoreCollection<any>;
 
   private imageSources: (string | IImage)[];
   private imageTypeMusic: object;
@@ -93,17 +95,31 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    // get playlist song
-    this.collectionData = this.db.collection('Song');
-    this.collectionData.valueChanges().subscribe((res) => {
-      if (res) {
-        this.playlistSong = res;
-        this.songService.playlistSongForWelcome = this.playlistSong;
-      }
-    }, (err) => {
-      console.log('error');
+    this.getPerformer = this.db.collection('Performer');
+    this.getPerformer.valueChanges().subscribe(resPerformer => {
+      // get playlist song
+      this.collectionData = this.db.collection('Song');
+      this.collectionData.valueChanges().subscribe((res) => {
+        if (res) {
+          this.playlistSong = res;
+          for (const data of this.playlistSong) {
+            const arrAuthor = [];
+            for (const auth of data.author) {
+              const authorName = resPerformer.filter(e => e.id === auth.id);
+              arrAuthor.push(authorName[0].name);
+            }
+            if (arrAuthor.length >= 2) {
+              data.author = arrAuthor[0] + ', ' + arrAuthor[1];
+            } else if (arrAuthor.length === 1) {
+              data.author = arrAuthor[0];
+            }
+          }
+          this.songService.playlistSongForWelcome = this.playlistSong;
+        }
+      }, (err) => {
+        console.log('error');
+      });
     });
-
     // get song types
     this.collectionData = this.db.collection('Country');
     this.collectionData.valueChanges().subscribe((res) => {
