@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   private favoriteData: FavoriteList[];
   private performerData: Performer[];
   public loadingSpinner: boolean;
-  private songData: Song[];
+  private songData: Playlist[];
   private albumData: Album[];
   private videoData: any[];
   private currentUserRef: any;
@@ -44,12 +44,30 @@ export class SearchComponent implements OnInit {
       }
     });
     this.collectionData = this.db.collection('Song', query => query.where('name', '==', getParams));
-    this.collectionData.valueChanges().subscribe((res: Song[]) => {
-      if (res) {
-        this.songData = res;
-        this.videoData = res.filter(e => e.video !== '');
-        console.log('song ' + res);
-        console.log('video' + res);
+    this.collectionData.valueChanges().subscribe((song: Song[]) => {
+      if (song) {
+        this.songData = [];
+        this.videoData = song.filter(e => e.video !== '');
+        this.db.collection('Performer').valueChanges().subscribe((performer: Performer[]) => {
+          if (performer) {
+            song.forEach(s => {
+              let listAuthor = [];
+              if (s.author.length > 0) {
+                s.author.forEach(p => {
+                  listAuthor = listAuthor.concat(performer.filter(per => per.id === p.id));
+                });
+              }
+              this.songData.push({
+                id: s.id,
+                name: s.name,
+                author: listAuthor,
+                mp3Url: s.mp3Url,
+                like: s.like,
+                view: s.view,
+              });
+            });
+          }
+        });
       }
     });
     this.collectionData = this.db.collection('Album', query => query.where('name', '==', getParams));
@@ -163,4 +181,13 @@ export interface DialogData {
   currentUser: any;
   data: any;
   selector: string;
+}
+
+export interface Playlist {
+  id: string;
+  name: string;
+  author: Array<any>;
+  mp3Url: string;
+  view: number;
+  like: number;
 }
