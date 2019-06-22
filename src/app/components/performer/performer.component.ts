@@ -182,7 +182,11 @@ export class PerformerComponent implements OnInit {
       this.songService.playlistSong.push(data);
       this.songService.audio.src = data.mp3Url;
       this.songService.audio.name = data.name;
-      this.songService.audio.author = data.author;
+      let authors = '';
+      data.author.forEach(child => {
+        authors = authors + child.name + ' ';
+      });
+      this.songService.audio.author = authors;
     }
     this.songService.PlayOrPause();
   }

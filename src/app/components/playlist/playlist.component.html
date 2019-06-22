@@ -65,7 +65,7 @@
         <div class="playlist">
           <h3 class="margin-top-20 color-organe font-weight-bold">Playlist</h3>
             <div class="listSong display-flex width-height-100 display-column" *ngIf="playlistSong">
-              <div class="song" *ngFor="let item of playlistSong" (click)="onClickSong(item)">
+              <div class="song" *ngFor="let item of playlistSong">
                 <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.name, item.id.trim() ]">{{item.name}}</div>
                 <div class="songAuthor width-200px display-flex-center">
                   <div *ngFor="let authors of item.author">
@@ -73,10 +73,9 @@
                   </div>
                 </div>
                 <div class="songDuration width-200px display-flex-end">
-                  <mat-icon class="likeSong()">favorite_border</mat-icon>
-                  <button mat-icon-button [matMenuTriggerFor]="menuSong">
-                      <mat-icon >more_vert</mat-icon>
-                  </button>
+                  <mat-icon (click)="likeSong()">favorite_border</mat-icon>
+                  <mat-icon (click)="onClickSong(item)">play_arrow</mat-icon>
+                  <mat-icon [matMenuTriggerFor]="menuSong">more_vert</mat-icon>
                   <mat-menu #menuSong="matMenu">
                     <button mat-menu-item (click)="addToFavoritePlaylist(item)">
                       <mat-icon>playlist_add</mat-icon>

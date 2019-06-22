@@ -61,27 +61,45 @@ export class SongComponent implements OnInit, AfterContentChecked {
     this.documentData = this.db.collection('Song').doc(param);
     this.documentData.valueChanges().subscribe((res) => {
       if (res) {
-        this.data = res;
-        if (this.data.comment.length !== 0) {
-          this.data.comment.forEach(e => {
-            e.stringPostDate = e.postDate.toDate().toLocaleString();
-            if (e.subComment.length !== 0) {
-              e.subComment.forEach(element => {
-                element.stringPostDate = element.postDate.toDate().toLocaleString();
+        this.db.collection('Performer').valueChanges().subscribe((auth: Performer[]) => {
+          if (auth) {
+            let authors = [];
+            res.author.forEach(element => {
+              authors = authors.concat(auth.filter(a => a.id === element.id));
+            });
+            this.data = res;
+            this.data.author = authors;
+            // this.data = res;
+            if (this.data.comment.length !== 0) {
+              this.data.comment.forEach(e => {
+                e.stringPostDate = e.postDate.toDate().toLocaleString();
+                if (e.subComment.length !== 0) {
+                  e.subComment.forEach(element => {
+                    element.stringPostDate = element.postDate.toDate().toLocaleString();
+                  });
+                }
               });
             }
-          });
-        }
-        if (this.data.video) {
-          this.videoSong = true;
-        }
-        this.colectionData = this.db.collection('Song', query => query.where('country', '==', this.data.country));
-        this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
-          if (relateRes) {
-            this.relatedSong = relateRes.filter(e => e.name !== this.data.name);
+            if (this.data.video) {
+              this.videoSong = true;
+            }
+            this.colectionData = this.db.collection('Song', query => query.where('country', '==', this.data.country));
+            this.colectionData.valueChanges().subscribe((relateRes: Song[]) => {
+              if (relateRes) {
+                this.relatedSong = relateRes.filter(e => e.name !== this.data.name);
+                this.relatedSong.forEach(song => {
+                  let authorsRelated = [];
+                  song.author.forEach(element => {
+                    authorsRelated = authorsRelated.concat(auth.filter(a => a.id === element.id));
+                  });
+                  song.author = authorsRelated;
+                });
+              }
+            });
+            this.loadingSpinner = false;
           }
         });
-        this.loadingSpinner = false;
+        
       }
     });
     this.getCurrentUser();
@@ -133,7 +151,7 @@ export class SongComponent implements OnInit, AfterContentChecked {
   }
 
   private changePerformer(song: any) {
-    this.router.navigate(['/performer/' + song.performerId.id]);
+    this.router.navigate(['/performer/' + song.id]);
 
   }
 
@@ -154,7 +172,11 @@ export class SongComponent implements OnInit, AfterContentChecked {
       this.songService.playlistSong.push(this.data);
       this.songService.audio.src = this.data.mp3Url;
       this.songService.audio.name = this.data.name;
-      this.songService.audio.author = this.data.author;
+      let authors = '';
+      this.data.author.forEach(element => {
+        authors = authors + element.name + ' ';
+      });
+      this.songService.audio.author = authors;
     }
     this.isPlay = !this.isPlay;
     console.log('click' + this.isPlay);
