@@ -227,7 +227,11 @@ export class PlaylistComponent implements OnInit {
     this.songService.playSong(data);
     this.songService.audio.src = data.mp3Url;
     this.songService.audio.name = data.name;
-    this.songService.audio.author = data.author;
+    let authors = '';
+    data.author.forEach(element => {
+      authors = authors + element.name + ' ';
+    });
+    this.songService.audio.author = authors;
     this.songService.audio.load();
     this.songService.isPlay = true;
     this.songService.PlayOrPause();
@@ -242,7 +246,20 @@ export class PlaylistComponent implements OnInit {
   }
 
   private selectedAction() {
-    this.songService.playlistSong = this.playlistSong;
+    const newPlaylist =[];
+    this.playlistSong.forEach(element => {
+      let authors = '';
+      element.author.forEach(child => {
+        authors = authors + child.name + ' ';
+      });
+      newPlaylist.push({
+        id: element.id,
+        name: element.name,
+        author: authors,
+        mp3Url: element.mp3Url
+      });
+    });
+    this.songService.playlistSong = newPlaylist;
     this.isPlay = !this.isPlay;
     this.songService.PlayOrPause();
   }
