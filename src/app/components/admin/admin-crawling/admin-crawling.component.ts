@@ -101,7 +101,7 @@ export class AdminCrawlingComponent implements OnInit {
   // nhacccuatui
 
   getNumberofPages() {
-    return this.http.get('http://localhost:3001/nhaccuatuiPages').subscribe((res: any) => {
+    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiPages').subscribe((res: any) => {
       if (res) {
         this.numbersOfNhaccuatui = res;
       }
@@ -113,7 +113,7 @@ export class AdminCrawlingComponent implements OnInit {
     const t = async () => {
       for (let index = 1; index <= numberPage; index++) {
         const dataPerPage: any = await new Promise((result) =>
-          this.http.get('http://localhost:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
+          this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + index).subscribe((res: any) => {
             if (res) {
               result(res);
             }
@@ -143,7 +143,7 @@ export class AdminCrawlingComponent implements OnInit {
     }
   }
   private getDataAPI(numberPage: number) {
-    return this.http.get('http://localhost:3001/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
+    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
       if (res) {
         // this.data = this.data.concat(res);
         // console.log(this.data);

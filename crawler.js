@@ -74,7 +74,7 @@ app.get('/zingTop100', async(req,res) => {
         switch (req.query.song) {
             case '1':
                 console.log('case 1 running');
-                for(let i = 1; i <= 10; i++){
+                for(let i = 1; i <= 5; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -118,7 +118,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 1; i <= 10; i++){
+                for(let i = 1; i <= 5; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -128,7 +128,7 @@ app.get('/zingTop100', async(req,res) => {
             
             case '2':
                 console.log('case 2 running');
-                for(let i = 11; i <= 20; i++){
+                for(let i = 11; i <= 15; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -172,7 +172,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 11; i <= 20; i++){
+                for(let i = 11; i <= 15; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -182,7 +182,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '3':
                 console.log('case 3 running');
-                for(let i = 21; i <= 30; i++){
+                for(let i = 21; i <= 25; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -226,7 +226,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 21; i <= 30; i++){
+                for(let i = 21; i <= 25; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -236,7 +236,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '4':
                 console.log('case 4 running');
-                for(let i = 31; i <= 40; i++){
+                for(let i = 31; i <= 35; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -280,7 +280,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 31; i <= 40; i++){
+                for(let i = 31; i <= 35; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -290,7 +290,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '5':
                 console.log('case 5 running');
-                for(let i = 41; i <= 50; i++){
+                for(let i = 41; i <= 45; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -334,7 +334,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 41; i <= 50; i++){
+                for(let i = 41; i <= 45; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -344,7 +344,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '6':
                 console.log('case 6 running');
-                for(let i = 51; i <= 60; i++){
+                for(let i = 51; i <= 55; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -388,7 +388,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 51; i <= 60; i++){
+                for(let i = 51; i <= 55; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -398,7 +398,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '7':
                 console.log('case 7 running');
-                for(let i = 61; i <= 70; i++){
+                for(let i = 61; i <= 65; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -442,7 +442,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 61; i <= 70; i++){
+                for(let i = 61; i <= 65; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -452,7 +452,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '8':
                 console.log('case 8 running');
-                for(let i = 71; i <= 80; i++){
+                for(let i = 71; i <= 75; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -496,7 +496,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 71; i <= 80; i++){
+                for(let i = 71; i <= 75; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -506,7 +506,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '9':
                 console.log('case 9 running');
-                for(let i = 81; i <= 90; i++){
+                for(let i = 81; i <= 85; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -550,7 +550,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 81; i <= 90; i++){
+                for(let i = 81; i <= 85; i++){
                     arrData.push(listSongTop[i]);
                 }
 
@@ -560,7 +560,7 @@ app.get('/zingTop100', async(req,res) => {
 
             case '10':
                 console.log('case 10 running');
-                for(let i = 91; i <= 100; i++){
+                for(let i = 91; i <= 95; i++){
                     console.log(i);
                     await page.goto(listSongTop[i].song);
         
@@ -604,7 +604,7 @@ app.get('/zingTop100', async(req,res) => {
                     }
                 }
 
-                for(let i = 91; i <= 100; i++){
+                for(let i = 91; i <= 95; i++){
                     arrData.push(listSongTop[i]);
                 }
 
