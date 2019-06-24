@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
   private listSongDataUncheck: any[];
   @ViewChild('paginatorUncheck') paginatorUncheck: MatPaginator;
   @ViewChild('paginatorCheck') paginatorCheck: MatPaginator;
-  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'albumId'];
+  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'status'];
 
 
   constructor(
@@ -214,7 +214,8 @@ export class ProfileComponent implements OnInit {
                 mp3Url: s.mp3Url,
                 video: s.video,
                 imageVideo: s.imageVideo,
-                lyric: s.lyric
+                lyric: s.lyric,
+                status: s.status
               });
             });
             this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);

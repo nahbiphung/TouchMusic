@@ -1,0 +1,118 @@
+<div class="title color-dark-blue">
+  Checking Song Upload
+</div>
+<div>
+  <mat-form-field class="padding-0-10 my-form-field width-100">
+    <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search Album" autocomplete="off">
+    <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div>
+  <mat-table mat-table class="position-relative" [dataSource]='listdata' matSort class="width-100">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="imageSong">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+      <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" class="image-size-100px"
+          alt="{{element.name}} image"></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Author </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngFor="let item of element.author">
+          {{item.name}}
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="performerId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div *ngFor="let item of element.performerId">
+          {{item.name}}
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> User </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.user}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="option">
+      <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="onAccept(element)">
+          <mat-icon class="mat-18">assignment_turned_in</mat-icon>
+        </button>
+        <button mat-icon-button color='warn' (click)="onReject(element)">
+          <mat-icon class="mat-18">assignment_late</mat-icon>
+        </button>
+        <button mat-icon-button color='warn' (click)="onCheckFileMp3(element)">
+          <mat-icon class="mat-18">play_circle_outline</mat-icon>
+        </button>
+        <button mat-icon-button color='warn' (click)="onCheckFileMp4(element)">
+          <mat-icon class="mat-18">airplay</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef>
+        Loading data....
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef>
+        No Data....
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': listdata!=null}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(listdata!=null && listdata.data.length==0)}">
+    </mat-footer-row>
+  </mat-table>
+  <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons></mat-paginator>
+
+</div>
+<nav class="navbar position-bottom navbar-expand-lg navbar-dark bg-dark height-nav-player">
+  <div class="container displayCenter">
+
+    <div class="group-btn-player group-button">
+      <div *ngIf="!isPlay">
+        <i class="material-icons font-button pointer" (click)="onSelectPlayOrPauseSong()">play_arrow</i>
+      </div>
+      <div *ngIf="isPlay">
+        <i class="material-icons font-button pointer" (click)="onSelectPlayOrPauseSong()">pause_circle_outline</i>
+      </div>
+    </div>
+    <p id="curTime-nav" class="color-white margin-0-5 context-menu">00:00</p>
+
+    <div class="position-relative displayCenter">
+      <mat-slider class="width-30vw pointer" [max]="100" [min]="0" [(ngModel)]="duration"
+        (input)="moveCurrentTime($event)" id="progressBar">
+      </mat-slider>
+    </div>
+
+    <p id="durTime-nav" class="color-white margin-0-5 context-menu">00:00</p>
+    <div class="player-display-song" *ngIf="audio">
+      <h6 class="color-white">{{audio.name}}</h6>
+    </div>
+    <div class="player-icon volume-icon">
+      <div class="volume">
+        <mat-slider vertical min="0" max="1" step="0.1" value="1" (input)="moveCurrentVolume($event)"></mat-slider>
+      </div>
+      <i class="material-icons pointer">volume_up</i>
+    </div>
+  </div>
+</nav>

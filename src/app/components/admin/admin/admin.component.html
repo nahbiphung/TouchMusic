@@ -36,12 +36,16 @@
       <div class="left-text menu-item padding-bottom-5"><a
           class="width-100 font-weight-400 margin-right-left-20 padding-left-right-10 border-bottom color-dark-blue"
           [routerLink]="[ './crawling' ]">Crawling</a></div>
+      <div class="left-text menu-item padding-bottom-5"><a
+            class="width-100 font-weight-400 margin-right-left-20 padding-left-right-10 border-bottom color-dark-blue"
+            [routerLink]="[ './checkuploadsong' ]">User upload</a></div>
     </div>
   </mat-sidenav>
 
   <!-- Body -->
   <mat-sidenav-content>
     <div class="padding-10"><i class="fas fa-bars" (click)="sidenav.toggle()"></i></div>
-    <router-outlet></router-outlet>
+    <router-outlet>
+    </router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

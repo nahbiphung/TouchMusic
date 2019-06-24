@@ -83,6 +83,7 @@ import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.
 import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
+import { AdminCheckUploadSongComponent } from './components/admin/admin-check-upload-song/admin-check-upload-song.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-
     AdminAlbumDetailsComponent,
     AdminSongDetailsComponent,
     AdminCrawlingComponent,
+    AdminCheckUploadSongComponent,
   ],
   imports: [
     BrowserModule,
@@ -163,7 +165,7 @@ import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-
     MatSnackBarModule,
     MatAutocompleteModule,
     MatChipsModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

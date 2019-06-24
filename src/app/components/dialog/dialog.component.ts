@@ -455,7 +455,7 @@ export class DialogComponent implements OnInit {
   private uploadNewSong() {
     if (this.validateSong()) {
       this.loadingSpinner = true;
-      const newData: Song = {
+      const newData = {
         id: '',
         like: 0,
         view: 0,
@@ -471,7 +471,8 @@ export class DialogComponent implements OnInit {
         video: '',
         imageVideo: '',
         country: this.countrySelected ? this.countrySelected : '',
-        songType: this.songTypeSelected ? this.songTypeSelected : ''
+        songType: this.songTypeSelected ? this.songTypeSelected : '',
+        status: 'waiting',
       };
       this.db.collection('userUploadSong').add(newData).then((res) => {
         if (res) {
@@ -533,7 +534,7 @@ export class DialogComponent implements OnInit {
     }
 
     if (this.videoFile) {
-      this.createImageVideo(songId);
+      this.createFileVideo(songId);
     }
   }
 
