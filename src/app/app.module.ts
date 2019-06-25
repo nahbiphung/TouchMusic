@@ -39,6 +39,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // Angular Bootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -164,6 +165,7 @@ import { AdminCheckUploadSongComponent } from './components/admin/admin-check-up
     MatAutocompleteModule,
     MatChipsModule,
     MatMenuModule,
+    MatTooltipModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

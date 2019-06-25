@@ -18,7 +18,7 @@
           <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()"
             mdbWavesEffect>Pause</button>
           <div>
-            <mat-icon [matMenuTriggerFor]="menuSong" class="context-menu onhoverIcon">more_horiz</mat-icon>
+            <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_horiz</mat-icon>
             <mat-menu #menuSong="matMenu">
               <button mat-menu-item (click)="addToFavoritePlaylist(data, p)"  *ngIf="currentUser">
                 <mat-icon>playlist_add</mat-icon>
@@ -70,7 +70,7 @@
             <span class="hoverUnderline" *ngFor="let authors of item.author" (click)="changePerformer(authors)">{{authors.name}}</span>
           </div>
           <div class="context-menu">
-            <mat-icon [matMenuTriggerFor]="menuSong" class="context-menu onhoverIcon">more_vert</mat-icon>
+            <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_vert</mat-icon>
             <mat-menu #menuSong="matMenu">
               <button mat-menu-item (click)="addToFavoritePlaylist(data, p)"  *ngIf="currentUser">
                 <mat-icon>playlist_add</mat-icon>

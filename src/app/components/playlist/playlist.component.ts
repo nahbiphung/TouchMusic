@@ -26,7 +26,7 @@ export class PlaylistComponent implements OnInit {
   private country: Country;
   private albumInfo: Album;
   private favoritePlaylist: any;
-  private isPlay: boolean;
+
   private videoSong: boolean;
   private isAlbum: boolean;
   private isFavorite: boolean;
@@ -39,7 +39,6 @@ export class PlaylistComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog) {
     this.loadingSpinner = true;
-    this.isPlay = true;
     this.videoSong = false;
     this.isAlbum = false;
     this.isFavorite = false;
@@ -238,7 +237,19 @@ export class PlaylistComponent implements OnInit {
   }
 
   private addAllToPlaylist() {
-    this.songService.playlistSong = this.playlistSong;
+    const formatPlaylist = [];
+    this.playlistSong.forEach(s => {
+      let formatAuthor = '';
+      const newSong = s;
+      newSong.author.forEach(element => {
+        formatAuthor = formatAuthor + ' ' + element.name;
+      });
+      newSong['author'] = formatAuthor;
+      formatPlaylist.push(newSong);
+    });
+
+    this.songService.playlistSong = formatPlaylist;
+    this.songService.PlayOrPause();
   }
 
   private drop(event: CdkDragDrop<string[]>) {
@@ -260,7 +271,6 @@ export class PlaylistComponent implements OnInit {
       });
     });
     this.songService.playlistSong = newPlaylist;
-    this.isPlay = !this.isPlay;
     this.songService.PlayOrPause();
   }
 

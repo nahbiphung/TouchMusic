@@ -7,7 +7,7 @@
         <div class="avatar position-relative">
           <div class="position-absolute pointer">
             <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
-            <mat-icon class="material-icons color-organe" (click)="openFile.click()">camera</mat-icon>
+            <mat-icon class="material-icons color-organe" (click)="openFile.click()" matTooltip="Edit Image">camera</mat-icon>
           </div>
           <img src="{{userData.photoURL}}" alt="avartar" class="img-avatar">
         </div>
@@ -103,7 +103,7 @@
               </div>
               <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 
                 d-flex justify-content-center align-items-start margin-top-10">
-                <mat-icon class="create-playlist" (click)="createNewFaPlaylist()">library_add</mat-icon>
+                <mat-icon class="create-playlist" (click)="createNewFaPlaylist()" matTooltip="Create Playlist">library_add</mat-icon>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@
                   <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                     <div>
-                      <button mat-icon-button color='warn' (click)="onDelete(element, true)">
+                      <button mat-icon-button color='warn' (click)="onDelete(element, true)" matTooltip="Delete">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
@@ -158,7 +158,7 @@
               <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
             </table>
             <div class="create-user position-absolute">
-              <button mat-icon-button (click)="onClickCreate()">
+              <button mat-icon-button (click)="onClickCreate()" matTooltip="Add">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
@@ -168,7 +168,7 @@
           <div *ngIf="!tableListSongData">
             You have not upload any song, upload now!
             <div class="create-user position-absolute">
-              <button mat-icon-button (click)="onClickCreate()">
+              <button mat-icon-button (click)="onClickCreate()" matTooltip="Add">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
@@ -205,10 +205,10 @@
                   <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                     <div>
-                      <button mat-icon-button (click)="onClickEdit(element)">
+                      <button mat-icon-button (click)="onClickEdit(element)" matTooltip="Create">
                         <mat-icon class="mat-18 iconFormat">create</mat-icon>
                       </button>
-                      <button mat-icon-button color='warn' (click)="onDelete(element, false)">
+                      <button mat-icon-button color='warn' (click)="onDelete(element, false)" matTooltip="Delete">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
@@ -227,7 +227,7 @@
               <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
             </table>
             <div class="create-user position-absolute">
-              <button mat-icon-button (click)="onClickCreate()">
+              <button mat-icon-button (click)="onClickCreate()" matTooltip="Add">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
@@ -237,7 +237,7 @@
           <div *ngIf="!tableListSongDataUncheck">
             You have not upload any song, upload now!
             <div class="create-user position-absolute">
-              <button mat-icon-button (click)="onClickCreate()">
+              <button mat-icon-button (click)="onClickCreate()" matTooltip="Add">
                 <mat-icon>add</mat-icon>
               </button>
             </div>

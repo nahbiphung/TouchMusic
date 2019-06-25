@@ -24,7 +24,7 @@
                 class="material-icons logo-size margin-right-left-5 context-menu"
                 (click)="playSong(item)">pause</i></span>
             <span class="d-flex">
-              <mat-icon [matMenuTriggerFor]="menuSong" class="context-menu onhoverIcon">more_horiz</mat-icon>
+              <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_horiz</mat-icon>
               <mat-menu #menuSong="matMenu">
                 <button mat-menu-item (click)="addToFavoritePlaylist(item)" *ngIf="currentUser">
                   <mat-icon>playlist_add</mat-icon>

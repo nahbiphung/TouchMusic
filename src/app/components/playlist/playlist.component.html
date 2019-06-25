@@ -31,8 +31,8 @@
         </div>
         
         <div class="songOption display-flex-spaceAround">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="selectedAction()" mdbWavesEffect>Play</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!isPlay" (click)="selectedAction()" mdbWavesEffect>Pause</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!songService.isPlay" (click)="selectedAction()" mdbWavesEffect>Play</button>
+            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="songService.isPlay" (click)="selectedAction()" mdbWavesEffect>Pause</button>
             <i class="material-icons pointer" (click)="addAllToPlaylist()">playlist_play</i>
             <div class="display-flex" *ngIf="(isAlbum || isFavorite)">
                 <i class="material-icons margin-right-10 context-menu">favorite_border</i>
@@ -43,7 +43,7 @@
                 <div>{{albumInfo.view}}</div>
             </div>
             <div class="display-flex" *ngIf="verifyUser && isFavorite">
-                <button mat-icon-button [matMenuTriggerFor]="menuEditPlaylist">
+                <button mat-icon-button [matMenuTriggerFor]="menuEditPlaylist" matTooltip="More">
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menuEditPlaylist="matMenu">
@@ -73,9 +73,9 @@
                   </div>
                 </div>
                 <div class="songDuration width-200px display-flex-end">
-                  <mat-icon (click)="likeSong()">favorite_border</mat-icon>
-                  <mat-icon (click)="onClickSong(item)">play_arrow</mat-icon>
-                  <mat-icon [matMenuTriggerFor]="menuSong">more_vert</mat-icon>
+                  <mat-icon (click)="likeSong()" matTooltip="Like">favorite_border</mat-icon>
+                  <mat-icon (click)="onClickSong(item)" matTooltip="Play">play_arrow</mat-icon>
+                  <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More">more_vert</mat-icon>
                   <mat-menu #menuSong="matMenu">
                     <button mat-menu-item (click)="addToFavoritePlaylist(item)">
                       <mat-icon>playlist_add</mat-icon>

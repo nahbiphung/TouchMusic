@@ -19,7 +19,7 @@
     <div mat-dialog-content class="d-flex justify-content-between align-items-center">
       <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
       <span>Choose Image: </span>
-      <button mat-mini-fab class="my-form-field margin-5">
+      <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
         <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
       </button>
     </div>
@@ -67,7 +67,7 @@
           <div mat-dialog-content class="d-flex justify-content-between align-items-center">
             <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
             <span>Choose Image: </span>
-            <button mat-mini-fab class="my-form-field margin-5">
+            <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
               <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
             </button>
           </div>
@@ -231,7 +231,7 @@
       <div class="labelPreviewImage" *ngIf="songFile">
         <span class="loadImageName color-yellow">{{songFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()">
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()" matTooltip="Attach Mp3 File">
         <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
     </div>
@@ -245,7 +245,7 @@
       <div class="position-relative" *ngIf="imageSong || isEditSongUpload">
         <img src="{{previewImageSong}}" class="size-100px" alt="preview">
       </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()">
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()" matTooltip="Attach Image">
         <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
     </div>
@@ -256,7 +256,7 @@
       <div class="labelPreviewImage" *ngIf="videoFile">
         <span class="loadImageName color-yellow">{{videoFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()">
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()" matTooltip="Attach Video File">
         <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
     </div>
@@ -264,7 +264,7 @@
     <div class="width-100">
       <input type="file" (change)="onFileSelected($event, 'videoImage')" accept="image/*" class="display-none" #openMP4ImageFile>
       <span>Choose Image Video: </span>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()">
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()" matTooltip="Attach Image">
         <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
       </button>
       <div class="labelPreviewImage" *ngIf="imageVideo">
@@ -302,7 +302,7 @@
       <div mat-dialog-content class="d-flex justify-content-between align-items-center">
         <input type="file" (change)="onFileSelected($event, 'editFaImage')" accept="image/*" class="display-none" #openFile>
         <span>Choose Image: </span>
-        <button mat-mini-fab class="my-form-field margin-5">
+        <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
           <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
         </button>
       </div>
@@ -320,7 +320,7 @@
             <div>{{author.name}} </div>
           </div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-sx-12">
-            <button mat-icon-button color='warn' (click)="onRemoveSong(item)">
+            <button mat-icon-button color='warn' (click)="onRemoveSong(item)" matTooltip="Attach Image">
               <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
             </button>
           </div>

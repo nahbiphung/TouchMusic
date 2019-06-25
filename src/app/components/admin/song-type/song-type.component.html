@@ -22,10 +22,10 @@
     <ng-container matColumnDef="option">
       <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onClickEdit(element)">
+        <button mat-icon-button matTooltip="Edit" (click)="onClickEdit(element)">
           <mat-icon class="mat-18">launch</mat-icon>
         </button>
-        <button mat-icon-button color='warn' (click)="onDelete(element)">
+        <button mat-icon-button matTooltip="Delete" color='warn' (click)="onDelete(element)">
           <mat-icon class="mat-18">delete_outline</mat-icon>
         </button>
       </mat-cell>
@@ -48,7 +48,7 @@
     </mat-footer-row>
   </mat-table>
   <div class="create-user position-absolute">
-    <button mat-icon-button (click)="onClickCreate()">
+    <button mat-icon-button (click)="onClickCreate()" matTooltip="Add">
       <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
     </button>
   </div>
