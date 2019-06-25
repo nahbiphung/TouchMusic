@@ -35,7 +35,7 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
     this.isPlay = false;
     this.audio = new Audio();
     this.loadingSpinner = true;
-   }
+  }
 
   ngOnInit() {
     this.collectionData = this.db.collection('Performer');

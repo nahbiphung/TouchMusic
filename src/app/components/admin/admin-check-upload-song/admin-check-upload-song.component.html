@@ -57,10 +57,12 @@
         <button mat-icon-button color='warn' matTooltip="Reject Song" (click)="onReject(element)">
           <mat-icon class="mat-18">assignment_late</mat-icon>
         </button>
-        <button mat-icon-button color='accent' matTooltip="Play Song" (click)="onCheckFileMp3(element)" [disabled]="element.mp3Url === ''">
+        <button mat-icon-button color='accent' matTooltip="Play Song" (click)="onCheckFileMp3(element)"
+          [disabled]="element.mp3Url === ''">
           <mat-icon class="mat-18">play_circle_outline</mat-icon>
         </button>
-        <button mat-icon-button color='accent' matTooltip="Play Video" (click)="onCheckFileMp4(element)" [disabled]="element.video === ''">
+        <button mat-icon-button color='accent' matTooltip="Play Video" (click)="onCheckFileMp4(element)"
+          [disabled]="element.video === ''">
           <mat-icon class="mat-18">airplay</mat-icon>
         </button>
       </mat-cell>
