@@ -89,6 +89,10 @@
   text-decoration: underline;
 }
 
+.onhoverIcon:hover {
+  color: #a2b1a4;
+}
+
 .video {
   width: 100%;
   position: relative;

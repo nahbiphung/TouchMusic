@@ -18,7 +18,7 @@
           <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="isPlay" (click)="playSong()"
             mdbWavesEffect>Pause</button>
           <div>
-            <i class="material-icons margin-right-10 context-menu" [ngbPopover]="popContent" [autoClose]="'outside'"
+            <!-- <i class="material-icons margin-right-10 context-menu" [ngbPopover]="popContent" [autoClose]="'outside'"
               triggers="click" #p="ngbPopover">more_horiz</i>
             <ng-template #popContent>
               <div class="d-flex flex-column">
@@ -33,8 +33,18 @@
                   <span>Add to queue</span>
                 </div>
               </div>
-            </ng-template>
-
+            </ng-template> -->
+            <mat-icon [matMenuTriggerFor]="menuSong" class="context-menu onhoverIcon">more_horiz</mat-icon>
+            <mat-menu #menuSong="matMenu">
+              <button mat-menu-item (click)="addToFavoritePlaylist(data, p)"  *ngIf="currentUser">
+                <mat-icon>playlist_add</mat-icon>
+                <span>Add to Favorite Playlist</span>
+              </button>
+              <button mat-menu-item (click)="addToPlaylist(data, p)">
+                <mat-icon>queue_music</mat-icon>
+                <span>Add to queue</span>
+              </button>
+            </mat-menu>
           </div>
 
           <div class="display-flex">
@@ -76,7 +86,7 @@
             <span class="hoverUnderline" *ngFor="let authors of item.author" (click)="changePerformer(authors)">{{authors.name}}</span>
           </div>
           <div class="context-menu" [ngbPopover]="popContent" [autoClose]="'outside'" triggers="click" #p="ngbPopover">
-            <mat-icon class="material-icons">more_vert</mat-icon>
+            <!-- <mat-icon class="material-icons">more_vert</mat-icon>
             <ng-template #popContent>
               <div class="d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
@@ -90,7 +100,18 @@
                   <span>Add to queue</span>
                 </div>
               </div>
-            </ng-template>
+            </ng-template> -->
+            <mat-icon [matMenuTriggerFor]="menuSong" class="context-menu onhoverIcon">more_vert</mat-icon>
+            <mat-menu #menuSong="matMenu">
+              <button mat-menu-item (click)="addToFavoritePlaylist(data, p)"  *ngIf="currentUser">
+                <mat-icon>playlist_add</mat-icon>
+                <span>Add to Favorite Playlist</span>
+              </button>
+              <button mat-menu-item (click)="addToPlaylist(data, p)">
+                <mat-icon>queue_music</mat-icon>
+                <span>Add to queue</span>
+              </button>
+            </mat-menu>
           </div>
         </div>
       </div>

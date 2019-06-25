@@ -314,18 +314,20 @@ export class DialogComponent implements OnInit {
                 id: result.id,
               });
               if (copyThis.isCreateNewFaList) {
+                copyThis.resetForm();
                 copyThis.dialogRef.close(falist);
-                this.resetForm();
               } else {
-                this.resetForm();
+                copyThis.resetForm();
+                copyThis.dialogRef.close();
               }
             }).catch((error) => {
               console.log('error when add collection' + error);
               if (copyThis.isCreateNewFaList) {
+                copyThis.resetForm();
                 copyThis.dialogRef.close(falist);
-                this.resetForm();
               } else {
-                this.resetForm();
+                copyThis.resetForm();
+                copyThis.dialogRef.close();
               }
             });
           });
@@ -344,18 +346,20 @@ export class DialogComponent implements OnInit {
           id: result.id,
         });
         if (this.isCreateNewFaList) {
-          this.dialogRef.close(falist);
           this.resetForm();
+          this.dialogRef.close(falist);
         } else {
           this.resetForm();
+          this.dialogRef.close();
         }
       }).catch((error) => {
         console.log('error when add collection' + error);
         if (this.isCreateNewFaList) {
-          this.dialogRef.close(falist);
           this.resetForm();
+          this.dialogRef.close(falist);
         } else {
           this.resetForm();
+          this.dialogRef.close();
         }
       });
 

@@ -334,8 +334,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  public onDelete(data: Song) {
-
+  public onDelete(data: Song, isSong: boolean) {
+    if (isSong) {
+      this.db.collection('Song').doc(data.id).delete();
+    } else {
+      this.db.collection('userUploadSong').doc(data.id).delete();
+    }
+    
   }
 }
 

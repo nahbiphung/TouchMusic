@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -10,7 +10,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
   templateUrl: './admin-check-upload-song.component.html',
   styleUrls: ['./admin-check-upload-song.component.scss']
 })
-export class AdminCheckUploadSongComponent implements OnInit {
+export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
 
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
@@ -18,6 +18,8 @@ export class AdminCheckUploadSongComponent implements OnInit {
   private listSongDataUncheck: any[];
   private storeData: any[];
   private isPlay: boolean;
+  private haveVideo: boolean;
+  private haveAudio: boolean;
   private audio: any;
   private duration: number;
   private curTime: number;
@@ -33,6 +35,8 @@ export class AdminCheckUploadSongComponent implements OnInit {
   ) {
     this.isPlay = false;
     this.audio = new Audio();
+    // this.haveAudio = false;
+    // this.haveVideo = false;
    }
 
   ngOnInit() {
@@ -91,11 +95,17 @@ export class AdminCheckUploadSongComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.audio.pause();
+    this.audio = new Audio();
+  }
+
   private onAccept(data: any) {
     const song = this.storeData.filter(s => s.id === data.id);
     delete song[0].status;
     this.db.collection('Song').doc(data.id).set(song[0]);
     this.db.collection('userUploadSong').doc(data.id).delete();
+    this.audio = new Audio();
   }
 
   private onReject(data: any) {
@@ -103,6 +113,7 @@ export class AdminCheckUploadSongComponent implements OnInit {
     this.db.collection('userUploadSong').doc(data.id).update({
       status: 'fail',
     });
+    this.audio = new Audio();
   }
 
   private onCheckFileMp3(data: any) {
@@ -111,6 +122,7 @@ export class AdminCheckUploadSongComponent implements OnInit {
   }
 
   private onCheckFileMp4(data: any) {
+    this.audio.pause();
     const song = this.storeData.filter(s => s.id === data.id);
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '70vw',
@@ -118,8 +130,7 @@ export class AdminCheckUploadSongComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      console.log('The dialog was closed');
+      this.audio.play();
     });
   }
 
@@ -140,9 +151,9 @@ export class AdminCheckUploadSongComponent implements OnInit {
       this.audio.pause();
       this.isPlay = false;
     }
-    const cur = document.getElementById('curTime-nav');
-    const dur = document.getElementById('durTime-nav');
     this.audio.addEventListener('timeupdate', () => {
+      const cur = document.getElementById('curTime-nav');
+      const dur = document.getElementById('durTime-nav');
       this.curTime = this.audio.currentTime;
       this.duration = (this.audio.currentTime / this.audio.duration) * 100;
       if (this.audio.currentTime && this.audio.duration) {

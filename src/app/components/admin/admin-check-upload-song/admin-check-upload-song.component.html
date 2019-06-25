@@ -50,16 +50,16 @@
     <ng-container matColumnDef="option">
       <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onAccept(element)">
+        <button mat-icon-button color="primary" (click)="onAccept(element)">
           <mat-icon class="mat-18">assignment_turned_in</mat-icon>
         </button>
         <button mat-icon-button color='warn' (click)="onReject(element)">
           <mat-icon class="mat-18">assignment_late</mat-icon>
         </button>
-        <button mat-icon-button color='warn' (click)="onCheckFileMp3(element)">
+        <button mat-icon-button color='accent' (click)="onCheckFileMp3(element)" [disabled]="element.mp3Url === ''">
           <mat-icon class="mat-18">play_circle_outline</mat-icon>
         </button>
-        <button mat-icon-button color='warn' (click)="onCheckFileMp4(element)">
+        <button mat-icon-button color='accent' (click)="onCheckFileMp4(element)" [disabled]="element.video === ''">
           <mat-icon class="mat-18">airplay</mat-icon>
         </button>
       </mat-cell>
@@ -85,7 +85,7 @@
     showFirstLastButtons></mat-paginator>
 
 </div>
-<nav class="navbar position-bottom navbar-expand-lg navbar-dark bg-dark height-nav-player">
+<nav class="navbar position-bottom navbar-expand-lg navbar-dark bg-dark height-nav-player" *ngIf="audio.src">
   <div class="container displayCenter">
 
     <div class="group-btn-player group-button">

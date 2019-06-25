@@ -14,6 +14,7 @@
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 color-organe contentProfile">
         <h1>{{userData.lastName}} {{userData.firstName}}</h1>
+        <button mat-raised-button color="accent" [routerLink]="[ '/admin/user']">Admin</button>
       </div>
     </div>
   </div>
@@ -138,7 +139,7 @@
                   <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                     <div>
-                      <button mat-icon-button color='warn' (click)="onDelete(element)">
+                      <button mat-icon-button color='warn' (click)="onDelete(element, true)">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
@@ -207,7 +208,7 @@
                       <button mat-icon-button (click)="onClickEdit(element)">
                         <mat-icon class="mat-18 iconFormat">create</mat-icon>
                       </button>
-                      <button mat-icon-button color='warn' (click)="onDelete(element)">
+                      <button mat-icon-button color='warn' (click)="onDelete(element, false)">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
