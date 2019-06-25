@@ -20,13 +20,16 @@ export class CountryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public searchValue: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private afs: AngularFirestore,
     private countryService: CountryService,
     private dialog: MatDialog,
     private storage: AngularFireStorage,
-  ) { }
+  ) {
+    this.loadingSpinner = true;
+   }
 
   ngOnInit() {
     this.getCountry = this.afs.collection('Country');
@@ -40,6 +43,7 @@ export class CountryComponent implements OnInit {
       this.listdata = new MatTableDataSource(this.listCountry);
       this.listdata.sort = this.sort;
       this.listdata.paginator = this.paginator;
+      this.loadingSpinner = false;
     });
   }
 

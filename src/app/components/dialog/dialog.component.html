@@ -4,10 +4,8 @@
     <h1 mat-dialog-title>Add new Favorite Playlist</h1>
     <div mat-dialog-content>
       <mat-form-field class="width-100 my-form-field">
-        <input matInput placeholder="Playlist Name" 
-          [formControl]="favoritePlaylistNameFCtrl" 
-          [errorStateMatcher]="matcher" 
-          [(ngModel)]="name">
+        <input matInput placeholder="Playlist Name" [formControl]="favoritePlaylistNameFCtrl"
+          [errorStateMatcher]="matcher" [(ngModel)]="name">
       </mat-form-field>
       <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('max')">
         Favorite playlist name is too long
@@ -19,7 +17,7 @@
     <div mat-dialog-content class="d-flex justify-content-between align-items-center">
       <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
       <span>Choose Image: </span>
-      <button mat-mini-fab class="my-form-field margin-5">
+      <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
         <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
       </button>
     </div>
@@ -32,8 +30,8 @@
       </div>
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="cancelEdit()">Reset</button>
-      <button mat-button cdkFocusInitial (click)="createNewPlaylist()">Create</button>
+      <button mat-raised-button (click)="cancelEdit()">Reset</button>
+      <button mat-raised-button cdkFocusInitial color="accent" (click)="createNewPlaylist()">Create</button>
       <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
     </div>
   </div>
@@ -44,8 +42,8 @@
       <img src="{{imagePreview}}" class="imagePreview" alt="Image preview">
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button cdkFocusInitial (click)="uploadNewAvatar()">Change</button>
+      <button mat-raised-button (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button cdkFocusInitial color="accent" (click)="uploadNewAvatar()">Change</button>
       <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
     </div>
   </div>
@@ -67,7 +65,7 @@
           <div mat-dialog-content class="d-flex justify-content-between align-items-center">
             <input type="file" (change)="onFileSelected($event)" accept="image/*" class="display-none" #openFile>
             <span>Choose Image: </span>
-            <button mat-mini-fab class="my-form-field margin-5">
+            <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
               <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
             </button>
           </div>
@@ -80,9 +78,10 @@
             </div>
           </div>
           <div mat-dialog-actions>
-            <button mat-button (click)="onNoClick()">No Thanks</button>
-            <button mat-button cdkFocusInitial (click)="createNewPlaylist()">Ok</button>
-            <mat-progress-bar mode="determinate" [(value)]="uploadProgress" class="my-form-field"></mat-progress-bar>
+            <button mat-raised-button (click)="onNoClick()">No Thanks</button>
+            <button mat-raised-button cdkFocusInitial color="accent" (click)="createNewPlaylist()">Ok</button>
+            <mat-progress-bar mode="determinate" color="accent" [(value)]="uploadProgress" class="my-form-field">
+            </mat-progress-bar>
           </div>
         </mat-expansion-panel>
 
@@ -106,7 +105,8 @@
       </mat-accordion>
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()" class="d-flex justify-content-center align-items-end">Cancel</button>
+      <button mat-raised-button (click)="onNoClick()"
+        class="d-flex justify-content-center align-items-end">Cancel</button>
     </div>
   </div>
 </div>
@@ -130,24 +130,17 @@
 
     <mat-form-field class="width-100 my-form-field">
       <mat-chip-list #chipListauth aria-label="Author selection">
-        <mat-chip *ngFor="let item of authors" 
-          [selectable]="true" 
-          [removable]="true" 
-          (removed)="remove(item, true)">
+        <mat-chip *ngFor="let item of authors" [selectable]="true" [removable]="true" (removed)="remove(item, true)">
           <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
           <span>{{item.name}}</span>
           <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
         </mat-chip>
-        <input matInput placeholder="Author" #authorInput
-          [formControl]="authorFormControl" 
-          [matAutocomplete]="authorauto"
-          [matChipInputFor]="chipListauth"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="true"
-          (matChipInputTokenEnd)="add($event, true)"
-          [errorStateMatcher]="matcher">
+        <input matInput placeholder="Author" #authorInput [formControl]="authorFormControl"
+          [matAutocomplete]="authorauto" [matChipInputFor]="chipListauth"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, true)" [errorStateMatcher]="matcher">
       </mat-chip-list>
-      
+
       <mat-autocomplete #authorauto="matAutocomplete" (optionSelected)="selected($event, true)">
         <mat-option *ngFor="let author of listAuthorDataFiltered | async" [value]="author">
           <img class="example-option-img" aria-hidden [src]="author.image" height="25">
@@ -165,24 +158,18 @@
 
     <mat-form-field class="width-100 my-form-field">
       <mat-chip-list #chipListper aria-label="Author selection">
-        <mat-chip *ngFor="let item of performers" 
-          [selectable]="true" 
-          [removable]="true" 
+        <mat-chip *ngFor="let item of performers" [selectable]="true" [removable]="true"
           (removed)="remove(item, false)">
           <img class="example-option-img" *ngIf="item.image" aria-hidden [src]="item.image" height="25">
           <span>{{item.name}}</span>
           <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
         </mat-chip>
-        <input matInput placeholder="Performer" #performerInput
-          [formControl]="performerFormControl"
-          [matAutocomplete]="performerauto"
-          [matChipInputFor]="chipListper"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="true"
-          (matChipInputTokenEnd)="add($event, false)"
-          [errorStateMatcher]="matcher">
+        <input matInput placeholder="Performer" #performerInput [formControl]="performerFormControl"
+          [matAutocomplete]="performerauto" [matChipInputFor]="chipListper"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event, false)" [errorStateMatcher]="matcher">
       </mat-chip-list>
-      
+
       <mat-autocomplete #performerauto="matAutocomplete" (optionSelected)="selected($event, false)">
         <mat-option *ngFor="let performer of listPerformerDataFiltered | async" [value]="performer">
           <img class="example-option-img" aria-hidden [src]="performer.image" height="25">
@@ -206,7 +193,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-  
+
       <mat-form-field class="my-form-field width-45-percent">
         <mat-label>Song Type</mat-label>
         <mat-select [(value)]="songTypeSelected">
@@ -216,56 +203,61 @@
         </mat-select>
       </mat-form-field>
     </div>
-    
+
 
     <mat-form-field class="width-100 my-form-field">
-      <textarea  matInput placeholder="Lyric" [formControl]="lyricFormControl" [errorStateMatcher]="matcher" class="size-height-100px"></textarea>
+      <textarea matInput placeholder="Lyric" [formControl]="lyricFormControl" [errorStateMatcher]="matcher"
+        class="size-height-100px"></textarea>
       <mat-error *ngIf="lyricFormControl.hasError('max')">
         Lyric content contain too many character
       </mat-error>
     </mat-form-field>
 
     <div class="width-100">
-      <input type="file" (change)="onFileSelected($event, 'songFile')" accept="audio/*" class="display-none" #openMP3File>
+      <input type="file" (change)="onFileSelected($event, 'songFile')" accept="audio/*" class="display-none"
+        #openMP3File>
       <span>Choose Song: </span>
       <div class="labelPreviewImage" *ngIf="songFile">
         <span class="loadImageName color-yellow">{{songFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()">
-        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
-      </button>
-    </div>
-
-    <div class="width-100"> 
-      <input type="file" (change)="onFileSelected($event, 'songImage')" accept="image/*" class="display-none" #openMP3ImageFile>
-      <span>Choose Image Song: </span>
-      <div class="labelPreviewImage" *ngIf="imageSong">
-        <span class="loadImageName color-yellow">{{imageSong.name}}</span>
-            </div>
-      <div class="position-relative" *ngIf="imageSong || isEditSongUpload">
-        <img src="{{previewImageSong}}" class="size-100px" alt="preview">
-      </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()">
-        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3File.click()" matTooltip="Attach Mp3 File">
+        <mat-icon class="material-icons color-dark-blue">attach_file</mat-icon>
       </button>
     </div>
 
     <div class="width-100">
-      <input type="file" (change)="onFileSelected($event, 'videoFile')" accept="video/*" class="display-none" #openMP4File>
+      <input type="file" (change)="onFileSelected($event, 'songImage')" accept="image/*" class="display-none"
+        #openMP3ImageFile>
+      <span>Choose Image Song: </span>
+      <div class="labelPreviewImage" *ngIf="imageSong">
+        <span class="loadImageName color-yellow">{{imageSong.name}}</span>
+      </div>
+      <div class="position-relative" *ngIf="imageSong || isEditSongUpload">
+        <img src="{{previewImageSong}}" class="size-100px" alt="preview">
+      </div>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP3ImageFile.click()" matTooltip="Attach Image">
+        <mat-icon class="material-icons color-dark-blue">attach_file</mat-icon>
+      </button>
+    </div>
+
+    <div class="width-100">
+      <input type="file" (change)="onFileSelected($event, 'videoFile')" accept="video/*" class="display-none"
+        #openMP4File>
       <span>Choose Video: </span>
       <div class="labelPreviewImage" *ngIf="videoFile">
         <span class="loadImageName color-yellow">{{videoFile.name}}</span>
       </div>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()">
-        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4File.click()" matTooltip="Attach Video File">
+        <mat-icon class="material-icons color-dark-blue">attach_file</mat-icon>
       </button>
     </div>
 
     <div class="width-100">
-      <input type="file" (change)="onFileSelected($event, 'videoImage')" accept="image/*" class="display-none" #openMP4ImageFile>
+      <input type="file" (change)="onFileSelected($event, 'videoImage')" accept="image/*" class="display-none"
+        #openMP4ImageFile>
       <span>Choose Image Video: </span>
-      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()">
-        <mat-icon class="material-icons color-dark-blue" >attach_file</mat-icon>
+      <button mat-mini-fab class="my-form-field margin-5" (click)="openMP4ImageFile.click()" matTooltip="Attach Image">
+        <mat-icon class="material-icons color-dark-blue">attach_file</mat-icon>
       </button>
       <div class="labelPreviewImage" *ngIf="imageVideo">
         <span class="loadImageName color-yellow">{{imageVideo.name}}</span>
@@ -276,9 +268,11 @@
     </div>
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button cdkFocusInitial *ngIf="isUploadSong" (click)="uploadNewSong()">Upload</button>
-    <button mat-button cdkFocusInitial *ngIf="isEditSongUpload" (click)="editUploadSong()">Edit</button>
+    <button mat-raised-button (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button cdkFocusInitial *ngIf="isUploadSong" color="accent"
+      (click)="uploadNewSong()">Upload</button>
+    <button mat-raised-button cdkFocusInitial *ngIf="isEditSongUpload" color="accent"
+      (click)="editUploadSong()">Edit</button>
   </div>
 </div>
 <div *ngIf="isEditFaPlaylist">
@@ -287,10 +281,8 @@
     <mat-tab label="Name & Image">
       <div mat-dialog-content>
         <mat-form-field class="width-100 my-form-field">
-          <input matInput placeholder="Playlist Name"
-            [(ngModel)]="data.data.name"
-            [formControl]="favoritePlaylistNameFCtrl" 
-            [errorStateMatcher]="matcher">
+          <input matInput placeholder="Playlist Name" [(ngModel)]="data.data.name"
+            [formControl]="favoritePlaylistNameFCtrl" [errorStateMatcher]="matcher">
         </mat-form-field>
         <mat-error *ngIf="favoritePlaylistNameFCtrl.hasError('max')">
           Favorite playlist name is too long
@@ -300,9 +292,10 @@
         </mat-error>
       </div>
       <div mat-dialog-content class="d-flex justify-content-between align-items-center">
-        <input type="file" (change)="onFileSelected($event, 'editFaImage')" accept="image/*" class="display-none" #openFile>
+        <input type="file" (change)="onFileSelected($event, 'editFaImage')" accept="image/*" class="display-none"
+          #openFile>
         <span>Choose Image: </span>
-        <button mat-mini-fab class="my-form-field margin-5">
+        <button mat-mini-fab class="my-form-field margin-5" matTooltip="Attach Image">
           <mat-icon class="material-icons color-dark-blue" (click)="openFile.click()">attach_file</mat-icon>
         </button>
       </div>
@@ -320,19 +313,19 @@
             <div>{{author.name}} </div>
           </div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-sx-12">
-            <button mat-icon-button color='warn' (click)="onRemoveSong(item)">
+            <button mat-icon-button color='warn' (click)="onRemoveSong(item)" matTooltip="Attach Image">
               <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
             </button>
           </div>
         </div>
         <mat-paginator class="position-relative" [length]="data.data.details.length" [pageSize]="5"
-            [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-tab>
   </mat-tab-group>
   <div mat-dialog-actions>
-    <button mat-button (click)="resetForm()">Cancel</button>
-    <button mat-button cdkFocusInitial (click)="onEditFaPlaylist()">Ok</button>
+    <button mat-raised-button (click)="resetForm()">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="accent" (click)="onEditFaPlaylist()">Ok</button>
   </div>
-  
+
 </div>

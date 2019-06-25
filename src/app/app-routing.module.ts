@@ -20,6 +20,7 @@ import { SearchComponent } from './components/search/search.component';
 import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.component';
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
+import { AdminCheckUploadSongComponent } from './components/admin/admin-check-upload-song/admin-check-upload-song.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
     { path: 'performer', component: AdminPerformerComponent },
     { path: 'songtype', component: SongTypeComponent },
     { path: 'album', component: AdminAlbumComponent },
+    { path: 'checkuploadsong', component: AdminCheckUploadSongComponent},
     { path: 'crawling', component: AdminCrawlingComponent},
   ]},
   { path: 'playlist/album/:id', component: PlaylistComponent},

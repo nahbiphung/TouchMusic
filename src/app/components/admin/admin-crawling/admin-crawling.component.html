@@ -1,3 +1,4 @@
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <div class="title color-dark-blue">
   Crawling New Song
 </div>
@@ -179,7 +180,7 @@
               [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
             </mat-footer-row>
           </mat-table>
-          <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          <mat-paginator class="position-relative" [length]="data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
 

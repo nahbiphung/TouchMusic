@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
   private listSongDataUncheck: any[];
   @ViewChild('paginatorUncheck') paginatorUncheck: MatPaginator;
   @ViewChild('paginatorCheck') paginatorCheck: MatPaginator;
-  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'albumId'];
+  displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'status'];
 
 
   constructor(
@@ -214,7 +214,8 @@ export class ProfileComponent implements OnInit {
                 mp3Url: s.mp3Url,
                 video: s.video,
                 imageVideo: s.imageVideo,
-                lyric: s.lyric
+                lyric: s.lyric,
+                status: s.status
               });
             });
             this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);
@@ -333,8 +334,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  public onDelete(data: Song) {
-
+  public onDelete(data: Song, isSong: boolean) {
+    if (isSong) {
+      this.db.collection('Song').doc(data.id).delete();
+    } else {
+      this.db.collection('userUploadSong').doc(data.id).delete();
+    }
+    
   }
 }
 

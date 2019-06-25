@@ -24,6 +24,7 @@ export class AdminSongComponent implements OnInit {
   displayedColumns: string[] = ['name', 'author', 'imageSong', 'mp3Url', 'album', 'video', 'country', 'songtype', 'performer', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public loadingSpinner: boolean;
   public searchValue: string;
 
   constructor(
@@ -31,7 +32,9 @@ export class AdminSongComponent implements OnInit {
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
     private dialog: MatDialog,
-  ) { }
+  ) {
+    this.loadingSpinner = true;
+   }
 
   ngOnInit() {
     this.getUser = this.afs.collection('users');
@@ -97,6 +100,7 @@ export class AdminSongComponent implements OnInit {
               || data.performerName.toLowerCase().indexOf(filter) !== -1
               || data.userName.toLowerCase().indexOf(filter) !== -1;
             };
+            this.loadingSpinner = false;
           });
         });
       });

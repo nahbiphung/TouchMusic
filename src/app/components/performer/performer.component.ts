@@ -156,14 +156,11 @@ export class PerformerComponent implements OnInit {
     }
   }
 
-  private addToPlaylist(data: any, p: any) {
+  private addToPlaylist(data: any) {
     this.songService.playlistSong.push(data);
-    p.toggle();
   }
 
-  private addToFavoritePlaylist(song: Song, p: any) {
-    console.log(song);
-    p.toggle();
+  private addToFavoritePlaylist(song: Song) {
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '70vw',

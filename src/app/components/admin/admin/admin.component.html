@@ -1,3 +1,4 @@
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <mat-sidenav-container style="height: 100vh;" autosize>
   <mat-sidenav #sidenav mode="side" opened>
     <div class="left-text menu-item-logout position-absolute zIndex-1">
@@ -8,7 +9,7 @@
       <div class="user-infor width-180px">
         <div class="back-img">
           <div>
-            <img src="{{this.avt}}" alt="user avt">
+            <img src="{{this.avt}}" alt="user avt" class="object-fit">
           </div>
         </div>
         <div class="padding-top-10">
@@ -36,12 +37,16 @@
       <div class="left-text menu-item padding-bottom-5"><a
           class="width-100 font-weight-400 margin-right-left-20 padding-left-right-10 border-bottom color-dark-blue"
           [routerLink]="[ './crawling' ]">Crawling</a></div>
+      <div class="left-text menu-item padding-bottom-5"><a
+            class="width-100 font-weight-400 margin-right-left-20 padding-left-right-10 border-bottom color-dark-blue"
+            [routerLink]="[ './checkuploadsong' ]">User upload</a></div>
     </div>
   </mat-sidenav>
 
   <!-- Body -->
   <mat-sidenav-content>
     <div class="padding-10"><i class="fas fa-bars" (click)="sidenav.toggle()"></i></div>
-    <router-outlet></router-outlet>
+    <router-outlet>
+    </router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

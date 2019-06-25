@@ -20,6 +20,7 @@ export class AdminAlbumComponent implements OnInit {
   displayedColumns: string[] = ['name', 'image', 'performer', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public loadingSpinner: boolean;
   public searchValue: string;
 
   constructor(
@@ -27,7 +28,9 @@ export class AdminAlbumComponent implements OnInit {
     private albumService: AdminAlbumService,
     private dialog: MatDialog,
     private storage: AngularFireStorage
-  ) {}
+  ) {
+    this.loadingSpinner = true;
+  }
 
   ngOnInit() {
     this.getUser = this.afs.collection('users');
@@ -63,6 +66,7 @@ export class AdminAlbumComponent implements OnInit {
             || data.userName.toLowerCase().indexOf(filter) !== -1
             || data.performerName.toLowerCase().indexOf(filter) !== -1;
           };
+          this.loadingSpinner = false;
         });
       });
     });

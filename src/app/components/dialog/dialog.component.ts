@@ -314,18 +314,20 @@ export class DialogComponent implements OnInit {
                 id: result.id,
               });
               if (copyThis.isCreateNewFaList) {
+                copyThis.resetForm();
                 copyThis.dialogRef.close(falist);
-                this.resetForm();
               } else {
-                this.resetForm();
+                copyThis.resetForm();
+                copyThis.dialogRef.close();
               }
             }).catch((error) => {
               console.log('error when add collection' + error);
               if (copyThis.isCreateNewFaList) {
+                copyThis.resetForm();
                 copyThis.dialogRef.close(falist);
-                this.resetForm();
               } else {
-                this.resetForm();
+                copyThis.resetForm();
+                copyThis.dialogRef.close();
               }
             });
           });
@@ -344,18 +346,20 @@ export class DialogComponent implements OnInit {
           id: result.id,
         });
         if (this.isCreateNewFaList) {
-          this.dialogRef.close(falist);
           this.resetForm();
+          this.dialogRef.close(falist);
         } else {
           this.resetForm();
+          this.dialogRef.close();
         }
       }).catch((error) => {
         console.log('error when add collection' + error);
         if (this.isCreateNewFaList) {
-          this.dialogRef.close(falist);
           this.resetForm();
+          this.dialogRef.close(falist);
         } else {
           this.resetForm();
+          this.dialogRef.close();
         }
       });
 
@@ -455,7 +459,7 @@ export class DialogComponent implements OnInit {
   private uploadNewSong() {
     if (this.validateSong()) {
       this.loadingSpinner = true;
-      const newData: Song = {
+      const newData = {
         id: '',
         like: 0,
         view: 0,
@@ -471,7 +475,8 @@ export class DialogComponent implements OnInit {
         video: '',
         imageVideo: '',
         country: this.countrySelected ? this.countrySelected : '',
-        songType: this.songTypeSelected ? this.songTypeSelected : ''
+        songType: this.songTypeSelected ? this.songTypeSelected : '',
+        status: 'waiting',
       };
       this.db.collection('userUploadSong').add(newData).then((res) => {
         if (res) {
@@ -533,7 +538,7 @@ export class DialogComponent implements OnInit {
     }
 
     if (this.videoFile) {
-      this.createImageVideo(songId);
+      this.createFileVideo(songId);
     }
   }
 

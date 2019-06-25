@@ -1,3 +1,4 @@
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <div class="title color-dark-blue">
   Peformer
 </div>
@@ -20,7 +21,8 @@
 
     <ng-container matColumnDef="image">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
-      <mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="performer {{element.name}} image"></mat-cell>
+      <mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="performer {{element.name}} image">
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="birthday">
@@ -36,10 +38,10 @@
     <ng-container matColumnDef="option">
       <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onClickEdit(element)">
+        <button mat-icon-button matTooltip="Edit" (click)="onClickEdit(element)">
           <mat-icon class="mat-18">launch</mat-icon>
         </button>
-        <button mat-icon-button color='warn' (click)="onDelete(element)">
+        <button mat-icon-button matTooltip="Delete" color='warn' (click)="onDelete(element)">
           <mat-icon class="mat-18">delete_outline</mat-icon>
         </button>
       </mat-cell>
@@ -62,9 +64,10 @@
     </mat-footer-row>
   </mat-table>
   <div class="create-user position-absolute">
-    <button mat-icon-button (click)="onClickCreate()">
+    <button mat-icon-button matTooltip="Add" (click)="onClickCreate()">
       <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
     </button>
   </div>
-  <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons></mat-paginator>
 </div>

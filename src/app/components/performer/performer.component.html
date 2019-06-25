@@ -29,23 +29,18 @@
                 class="material-icons logo-size margin-right-left-5 context-menu"
                 (click)="playSong(item)">pause</i></span>
             <span class="d-flex">
-              <i class="material-icons logo-size margin-right-left-5 context-menu" [ngbPopover]="popContent"
-                [autoClose]="'outside'" triggers="click" #p="ngbPopover" placement="bottom"
-                container="body">more_horiz</i>
-              <ng-template #popContent>
-                <div class="d-flex flex-column">
-                  <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
-                    (click)="addToFavoritePlaylist(item, p)">
-                    <i class="material-icons">playlist_add</i>
-                    <span>Add to favorite</span>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center pointer hoverList padding-left-right-15"
-                    (click)="addToPlaylist(item, p)">
-                    <i class="material-icons">queue_music</i>
-                    <span>Add to queue</span>
-                  </div>
-                </div>
-              </ng-template>
+              <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_horiz
+              </mat-icon>
+              <mat-menu #menuSong="matMenu">
+                <button mat-menu-item (click)="addToFavoritePlaylist(item)" *ngIf="currentUser">
+                  <mat-icon>playlist_add</mat-icon>
+                  <span>Add to Favorite Playlist</span>
+                </button>
+                <button mat-menu-item (click)="addToPlaylist(item)">
+                  <mat-icon>queue_music</mat-icon>
+                  <span>Add to queue</span>
+                </button>
+              </mat-menu>
             </span>
             <span class="d-flex"><i class="material-icons logo-size margin-right-left-5 context-menu">remove_red_eye</i>
               {{item.view}}</span>

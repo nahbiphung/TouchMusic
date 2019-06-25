@@ -21,13 +21,16 @@ export class UserComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public searchValue: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private afs: AngularFirestore,
     private dialog: MatDialog,
     private userService: UserService,
     private storage: AngularFireStorage,
-    ) { }
+    ) {
+      this.loadingSpinner = true;
+     }
 
   ngOnInit() {
     this.userService.getUsers();
@@ -86,6 +89,7 @@ export class UserComponent implements OnInit {
         || data.role.admin.toString().indexOf(filter) !== -1
         || data.role.subscriber.toString().indexOf(filter) !== -1;
       };
+      this.loadingSpinner = false;
     });
   }
 

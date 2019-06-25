@@ -39,9 +39,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // Angular Bootstrap
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // FireBase Module
@@ -83,6 +83,7 @@ import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.
 import { AdminAlbumDetailsComponent } from './components/admin/admin-album/admin-album-details/admin-album-details.component';
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
+import { AdminCheckUploadSongComponent } from './components/admin/admin-check-upload-song/admin-check-upload-song.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-
     AdminAlbumDetailsComponent,
     AdminSongDetailsComponent,
     AdminCrawlingComponent,
+    AdminCheckUploadSongComponent,
   ],
   imports: [
     BrowserModule,
@@ -158,12 +160,12 @@ import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-
     MatSortModule,
     MatTabsModule,
     MatExpansionModule,
-    NgbPopoverModule,
     MatSelectModule,
     MatSnackBarModule,
     MatAutocompleteModule,
     MatChipsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   providers: [AuthService, UserService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent],

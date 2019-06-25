@@ -15,20 +15,19 @@ export class AdminComponent implements OnInit {
   public name: string;
   public avt: string;
   public displayName: string;
+  public loadingSpinner: boolean;
 
   constructor(private authService: AuthService,
               private toast: ToastrService,
               private http: HttpClient) {
+                this.loadingSpinner = true;
                }
 
   ngOnInit() {
-
     const a = document.getElementById('nav-bar');
     a.setAttribute('style', 'display: none;');
-
     const b = document.getElementById('nav-player');
     b.setAttribute('style', 'display: none;');
-
     this.authService.getAuth().subscribe((user) => {
       if (user) {
         this.isLogin = true;
@@ -42,6 +41,7 @@ export class AdminComponent implements OnInit {
       } else {
         this.isLogin = false;
       }
+      this.loadingSpinner = false;
     });
   }
 

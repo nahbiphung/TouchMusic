@@ -145,14 +145,12 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  private addToPlaylist(data: any, p: any) {
+  private addToPlaylist(data: any) {
     this.songService.playlistSong.push(data);
-    p.toggle();
   }
 
-  private addToFavoritePlaylist(song: Song, p: any) {
+  private addToFavoritePlaylist(song: Song) {
     console.log(song);
-    p.toggle();
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '70vw',

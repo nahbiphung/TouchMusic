@@ -39,8 +39,9 @@
 .contentProfile {
   padding-top: 10px;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .img-playlist {

@@ -11,6 +11,7 @@ import { link } from 'fs';
   styleUrls: ['./admin-crawling.component.scss']
 })
 export class AdminCrawlingComponent implements OnInit {
+  public loadingSpinner: boolean;
   public numbersOfNhaccuatui: any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,6 +45,7 @@ export class AdminCrawlingComponent implements OnInit {
               private afs: AngularFirestore
   ) {
     this.data = [];
+    this.loadingSpinner = true;
   }
 
   ngOnInit() {
@@ -70,6 +72,7 @@ export class AdminCrawlingComponent implements OnInit {
       this.tableDataNCTFinish = new MatTableDataSource(this.arrNCT10);
       this.tableDataNCTFinish.sort = this.sort;
       this.tableDataNCTFinish.paginator = this.paginator;
+      this.loadingSpinner = false;
     });
 
     // zingmp3
@@ -96,12 +99,13 @@ export class AdminCrawlingComponent implements OnInit {
       this.tableDataZingFinish = new MatTableDataSource(this.arrZing10);
       this.tableDataZingFinish.sort = this.sort;
       this.tableDataZingFinish.paginator = this.paginator;
+      this.loadingSpinner = false;
     });
   }
   // nhacccuatui
 
   getNumberofPages() {
-    return this.http.get('http://localhost:3001/nhaccuatuiPages').subscribe((res: any) => {
+    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiPages').subscribe((res: any) => {
       if (res) {
         this.numbersOfNhaccuatui = res;
       }
@@ -113,7 +117,7 @@ export class AdminCrawlingComponent implements OnInit {
     const t = async () => {
       for (let index = 1; index <= numberPage; index++) {
         const dataPerPage: any = await new Promise((result) =>
-          this.http.get('http://localhost:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
+          this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + index).subscribe((res: any) => {
             if (res) {
               result(res);
             }
@@ -143,7 +147,7 @@ export class AdminCrawlingComponent implements OnInit {
     }
   }
   private getDataAPI(numberPage: number) {
-    return this.http.get('http://localhost:3001/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
+    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
       if (res) {
         // this.data = this.data.concat(res);
         // console.log(this.data);

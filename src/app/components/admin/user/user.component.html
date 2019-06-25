@@ -1,6 +1,4 @@
-<!-- <div class="create-user">
-  <div class="btn-create" (click)="openDialog()">btn create user</div>
-</div> -->
+<app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
 <div class="title color-dark-blue">
   User
 </div>
@@ -64,10 +62,10 @@
     <ng-container matColumnDef="option">
       <mat-header-cell *matHeaderCellDef> Option </mat-header-cell>
       <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="onClickEdit(element)">
+        <button mat-icon-button matTooltip="Edit" (click)="onClickEdit(element)">
           <mat-icon class="mat-18">launch</mat-icon>
         </button>
-        <button mat-icon-button color='warn' (click)="onDelete(element)">
+        <button mat-icon-button matTooltip="Delete" color='warn' (click)="onDelete(element)">
           <mat-icon class="mat-18">delete_outline</mat-icon>
         </button>
       </mat-cell>
@@ -89,5 +87,6 @@
     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(listdata!=null && listdata.data.length==0)}">
     </mat-footer-row>
   </mat-table>
-  <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+  </mat-paginator>
 </div>
