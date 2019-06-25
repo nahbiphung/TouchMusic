@@ -1,19 +1,21 @@
 <app-ui-loading *ngIf="loadingSpinner"></app-ui-loading>
-<section class="background-color-dark-blue padding-top-nav padding-bottom-nav-player min-height-100vh" *ngIf="!loadingSpinner">
+<section class="background-color-dark-blue padding-top-nav padding-bottom-nav-player min-height-100vh"
+  *ngIf="!loadingSpinner">
   <div class="container">
     <div class="row title background-color-white border-radius-10">
       <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 width-height-100">
         <div *ngIf="isCountry" class="width-height-100">
-            <img *ngIf="country.image" src="{{country.image}}" class="imageTitle" alt="">
-            <img *ngIf="country.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+          <img *ngIf="country.image" src="{{country.image}}" class="imageTitle" alt="">
+          <img *ngIf="country.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
         </div>
         <div *ngIf="isAlbum" class="width-height-100">
-            <img *ngIf="albumInfo.image" src="{{albumInfo.image}}" class="imageTitle" alt="">
-            <img *ngIf="albumInfo.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+          <img *ngIf="albumInfo.image" src="{{albumInfo.image}}" class="imageTitle" alt="">
+          <img *ngIf="albumInfo.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
         </div>
         <div *ngIf="isFavorite" class="width-height-100">
-            <img *ngIf="favoritePlaylist.image" src="{{favoritePlaylist.image}}" class="imageTitle" alt="">
-            <img *ngIf="favoritePlaylist.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle" alt="">
+          <img *ngIf="favoritePlaylist.image" src="{{favoritePlaylist.image}}" class="imageTitle" alt="">
+          <img *ngIf="favoritePlaylist.image === ''" src="../../../assets/images/musical-note.png" class="imageTitle"
+            alt="">
         </div>
       </div>
       <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 keyword">
@@ -29,34 +31,36 @@
           <div class="songName color-organe">{{favoritePlaylist.name}}</div>
           <div class="author color-organe">{{userData.lastName}} {{userData.firstName}}</div>
         </div>
-        
+
         <div class="songOption display-flex-spaceAround">
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!songService.isPlay" (click)="selectedAction()" mdbWavesEffect>Play</button>
-            <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="songService.isPlay" (click)="selectedAction()" mdbWavesEffect>Pause</button>
-            <i class="material-icons pointer" (click)="addAllToPlaylist()">playlist_play</i>
-            <div class="display-flex" *ngIf="(isAlbum || isFavorite)">
-                <i class="material-icons margin-right-10 context-menu">favorite_border</i>
-                <div>{{albumInfo.like}}</div>
-            </div>
-            <div class="display-flex" *ngIf="(isAlbum || isFavorite)">
-                <i class="material-icons margin-right-10 context-menu">remove_red_eye</i>
-                <div>{{albumInfo.view}}</div>
-            </div>
-            <div class="display-flex" *ngIf="verifyUser && isFavorite">
-                <button mat-icon-button [matMenuTriggerFor]="menuEditPlaylist" matTooltip="More">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menuEditPlaylist="matMenu">
-                  <button mat-menu-item (click)="editPlaylist()">
-                    <mat-icon>create</mat-icon>
-                    <span>Edit playlist</span>
-                  </button>
-                  <button mat-menu-item (click)="deletePlaylist()">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete playlist</span>
-                  </button>
-                </mat-menu>
-            </div>
+          <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="!songService.isPlay"
+            (click)="selectedAction()" mdbWavesEffect>Play</button>
+          <button mdbBtn type="button" color="amber" size="sm" class="waves-light" *ngIf="songService.isPlay"
+            (click)="selectedAction()" mdbWavesEffect>Pause</button>
+          <i class="material-icons pointer" (click)="addAllToPlaylist()">playlist_play</i>
+          <div class="display-flex" *ngIf="(isAlbum || isFavorite)">
+            <i class="material-icons margin-right-10 context-menu">favorite_border</i>
+            <div>{{albumInfo.like}}</div>
+          </div>
+          <div class="display-flex" *ngIf="(isAlbum || isFavorite)">
+            <i class="material-icons margin-right-10 context-menu">remove_red_eye</i>
+            <div>{{albumInfo.view}}</div>
+          </div>
+          <div class="display-flex" *ngIf="verifyUser && isFavorite">
+            <button mat-icon-button [matMenuTriggerFor]="menuEditPlaylist" matTooltip="More">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menuEditPlaylist="matMenu">
+              <button mat-menu-item (click)="editPlaylist()">
+                <mat-icon>create</mat-icon>
+                <span>Edit playlist</span>
+              </button>
+              <button mat-menu-item (click)="deletePlaylist()">
+                <mat-icon>delete</mat-icon>
+                <span>Delete playlist</span>
+              </button>
+            </mat-menu>
+          </div>
         </div>
       </div>
     </div>
@@ -64,46 +68,48 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 content border-radius-10 background-color-white">
         <div class="playlist">
           <h3 class="margin-top-20 color-organe font-weight-bold">Playlist</h3>
-            <div class="listSong display-flex width-height-100 display-column" *ngIf="playlistSong">
-              <div class="song" *ngFor="let item of playlistSong">
-                <div class="songTitle width-200px display-flex-start" [routerLink]="[ '/song', item.name, item.id.trim() ]">{{item.name}}</div>
-                <div class="songAuthor width-200px display-flex-center">
-                  <div *ngFor="let authors of item.author">
-                    {{authors.name}} 
-                  </div>
-                </div>
-                <div class="songDuration width-200px display-flex-end">
-                  <mat-icon (click)="likeSong()" matTooltip="Like">favorite_border</mat-icon>
-                  <mat-icon (click)="onClickSong(item)" matTooltip="Play">play_arrow</mat-icon>
-                  <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More">more_vert</mat-icon>
-                  <mat-menu #menuSong="matMenu">
-                    <button mat-menu-item (click)="addToFavoritePlaylist(item)">
-                      <mat-icon>playlist_add</mat-icon>
-                      <span>Add to Favorite Playlist</span>
-                    </button>
-                    <button mat-menu-item (click)="addToPlaylist(item)">
-                      <mat-icon>queue_music</mat-icon>
-                      <span>Add to queue</span>
-                    </button>
-                  </mat-menu>
+          <div class="listSong display-flex width-height-100 display-column" *ngIf="playlistSong">
+            <div class="song" *ngFor="let item of playlistSong">
+              <div class="songTitle width-200px display-flex-start"
+                [routerLink]="[ '/song', item.name, item.id.trim() ]">{{item.name}}</div>
+              <div class="songAuthor width-200px display-flex-center">
+                <div *ngFor="let authors of item.author">
+                  {{authors.name}}
                 </div>
               </div>
+              <div class="songDuration width-200px display-flex-end">
+                <mat-icon (click)="likeSong()" matTooltip="Like">favorite_border</mat-icon>
+                <mat-icon (click)="onClickSong(item)" matTooltip="Play">play_arrow</mat-icon>
+                <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More">more_vert</mat-icon>
+                <mat-menu #menuSong="matMenu">
+                  <button mat-menu-item (click)="addToFavoritePlaylist(item)">
+                    <mat-icon>playlist_add</mat-icon>
+                    <span>Add to Favorite Playlist</span>
+                  </button>
+                  <button mat-menu-item (click)="addToPlaylist(item)">
+                    <mat-icon>queue_music</mat-icon>
+                    <span>Add to queue</span>
+                  </button>
+                </mat-menu>
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white"
+    <div
+      class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-left-right-0 comment border-radius-10 background-color-white"
       *ngIf="isAlbum">
       <h3 class="margin-top-20 d-block width-height-100 color-organe font-weight-bold">Comment</h3>
       <div class="userComment width-100">
         <div class="media d-block d-md-flex mt-4">
-            <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
-            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
-                <mat-form-field class="my-form-field width-100">
-                  <textarea matInput placeholder="Say something"></textarea>
-                </mat-form-field>
-            </div>
+          <img class="d-flex mb-3 mx-auto avatar" src="{{avatar.avartar1}}" alt="Generic placeholder image">
+          <div class="media-body text-center text-md-left ml-md-3 ml-0">
+            <h5 class="mt-0 font-weight-bold">Miley Steward</h5>
+            <mat-form-field class="my-form-field width-100">
+              <textarea matInput placeholder="Say something"></textarea>
+            </mat-form-field>
+          </div>
         </div>
       </div>
       <div class="otherComment">
@@ -116,7 +122,7 @@
           </div>
         </div>
       </div>
-        
+
     </div>
   </div>
 </section>

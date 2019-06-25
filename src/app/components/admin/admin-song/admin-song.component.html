@@ -41,7 +41,8 @@
 
     <ng-container matColumnDef="video">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Video </mat-header-cell>
-      <mat-cell *matCellDef="let element"><a *ngIf="element.video" href="{{element.video}}" target="_blank">{{element.name}}</a></mat-cell>
+      <mat-cell *matCellDef="let element"><a *ngIf="element.video" href="{{element.video}}"
+          target="_blank">{{element.name}}</a></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="country">
@@ -97,5 +98,6 @@
       <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
     </button>
   </div>
-  <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons></mat-paginator>
 </div>

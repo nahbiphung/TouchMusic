@@ -87,5 +87,6 @@
     <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(listdata!=null && listdata.data.length==0)}">
     </mat-footer-row>
   </mat-table>
-  <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+  </mat-paginator>
 </div>

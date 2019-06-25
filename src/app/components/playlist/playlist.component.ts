@@ -45,7 +45,7 @@ export class PlaylistComponent implements OnInit {
     this.isCountry = false;
     this.verifyUser = false;
     this.playlistSong = [];
-   }
+  }
 
   ngOnInit() {
     this.imageColectionData = this.db.collection('imagesForView');
@@ -166,23 +166,23 @@ export class PlaylistComponent implements OnInit {
           if (song) {
             this.db.collection('Performer', query => query.where('countryId', '==', refCountry))
               .valueChanges().subscribe((listAuth: Performer[]) => {
-              if (listAuth) {
-                song.forEach((s) => {
-                  let listauthor = [];
-                  if (s.author.length > 0) {
-                    s.author.forEach((ea: any) => {
-                      listauthor = listauthor.concat(listAuth.filter(a => a.id === ea.id));
+                if (listAuth) {
+                  song.forEach((s) => {
+                    let listauthor = [];
+                    if (s.author.length > 0) {
+                      s.author.forEach((ea: any) => {
+                        listauthor = listauthor.concat(listAuth.filter(a => a.id === ea.id));
+                      });
+                    }
+                    this.playlistSong.push({
+                      id: s.id,
+                      name: s.name,
+                      author: listauthor,
+                      mp3Url: s.mp3Url
                     });
-                  }
-                  this.playlistSong.push({
-                    id: s.id,
-                    name: s.name,
-                    author: listauthor,
-                    mp3Url: s.mp3Url
                   });
-                });
-              }
-            });
+                }
+              });
 
           }
         }, (error) => {
@@ -207,14 +207,14 @@ export class PlaylistComponent implements OnInit {
   private editPlaylist() {
     const faPlaylist = {
       id: this.favoritePlaylist.id,
-      name : this.favoritePlaylist.name,
+      name: this.favoritePlaylist.name,
       image: this.favoritePlaylist.image,
       details: this.playlistSong
     };
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '50vw',
-      data: {data: faPlaylist, selector: 'EDIT_FAPLAYLIST' }
+      data: { data: faPlaylist, selector: 'EDIT_FAPLAYLIST' }
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
@@ -257,7 +257,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   private selectedAction() {
-    const newPlaylist =[];
+    const newPlaylist = [];
     this.playlistSong.forEach(element => {
       let authors = '';
       element.author.forEach(child => {
