@@ -16,12 +16,12 @@ export class AdminAlbumComponent implements OnInit {
   getPerformer: AngularFirestoreCollection<any>;
   getAlbum: AngularFirestoreCollection<any>;
   private listAlbum: Album[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'image', 'performer', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
   public loadingSpinner: boolean;
+  public searchValue: string;
 
   constructor(
     private afs: AngularFirestore,
@@ -72,16 +72,16 @@ export class AdminAlbumComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  public applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
-  private onClickClearSearch() {
+  public onClickClearSearch() {
     this.searchValue = '';
     this.applyFilter();
   }
 
-  private onClickCreate() {
+  public onClickCreate() {
     this.albumService.formReset();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

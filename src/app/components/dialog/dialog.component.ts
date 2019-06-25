@@ -42,13 +42,13 @@ export class DialogComponent implements OnInit {
   private isAvatar: boolean;
   private isCreateNewFaList: boolean;
   private isAddToFaList: boolean;
-  private isEditFaPlaylist: boolean;
-  private isEditSongUpload: boolean;
+  public isEditFaPlaylist: boolean;
+  public isEditSongUpload: boolean;
   public isVideo: boolean;
   private faPlaylist: FavoriteList[];
   private panelOpenState: boolean;
   public loadingSpinner: boolean;
-  private isUploadSong: boolean;
+  public isUploadSong: boolean;
 
   // edit favorite playlist
   private favoritePlaylistNameFCtrl: FormControl = new FormControl('', [
