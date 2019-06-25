@@ -41,7 +41,6 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatMenuModule} from '@angular/material/menu';
 
 // Angular Bootstrap
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 // FireBase Module
@@ -160,7 +159,6 @@ import { AdminCheckUploadSongComponent } from './components/admin/admin-check-up
     MatSortModule,
     MatTabsModule,
     MatExpansionModule,
-    NgbPopoverModule,
     MatSelectModule,
     MatSnackBarModule,
     MatAutocompleteModule,

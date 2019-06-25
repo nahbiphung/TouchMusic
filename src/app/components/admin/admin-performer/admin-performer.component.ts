@@ -21,13 +21,16 @@ export class AdminPerformerComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public searchValue: string;
   private countryName: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private afs: AngularFirestore,
     private performerService: PerformerService,
     private dialog: MatDialog,
     private storage: AngularFireStorage
-  ) {}
+  ) {
+    this.loadingSpinner = true;
+  }
 
   ngOnInit() {
     this.getCountry = this.afs.collection('Country');
@@ -65,6 +68,7 @@ export class AdminPerformerComponent implements OnInit {
             || data.birthday.toString().toLowerCase().indexOf(filter) !== -1
             || data.countryName.toLowerCase().indexOf(filter) !== -1;
         };
+        this.loadingSpinner = false;
       });
     });
   }

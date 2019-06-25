@@ -18,11 +18,10 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
   private listSongDataUncheck: any[];
   private storeData: any[];
   private isPlay: boolean;
-  private haveVideo: boolean;
-  private haveAudio: boolean;
   private audio: any;
   private duration: number;
   private curTime: number;
+  public loadingSpinner: boolean;
 
   displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
@@ -35,8 +34,7 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
   ) {
     this.isPlay = false;
     this.audio = new Audio();
-    // this.haveAudio = false;
-    // this.haveVideo = false;
+    this.loadingSpinner = true;
    }
 
   ngOnInit() {
@@ -84,6 +82,7 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
               });
             });
           }
+          this.loadingSpinner = false;
           this.listdata = new MatTableDataSource(this.listSongDataUncheck);
           this.listdata.sort = this.sort;
           this.listdata.paginator = this.paginator;

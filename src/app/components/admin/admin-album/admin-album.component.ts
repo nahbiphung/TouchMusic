@@ -21,13 +21,16 @@ export class AdminAlbumComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private searchValue: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private afs: AngularFirestore,
     private albumService: AdminAlbumService,
     private dialog: MatDialog,
     private storage: AngularFireStorage
-  ) {}
+  ) {
+    this.loadingSpinner = true;
+  }
 
   ngOnInit() {
     this.getUser = this.afs.collection('users');
@@ -63,6 +66,7 @@ export class AdminAlbumComponent implements OnInit {
             || data.userName.toLowerCase().indexOf(filter) !== -1
             || data.performerName.toLowerCase().indexOf(filter) !== -1;
           };
+          this.loadingSpinner = false;
         });
       });
     });

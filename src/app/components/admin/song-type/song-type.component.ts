@@ -18,12 +18,15 @@ export class SongTypeComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public searchValue: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private afs: AngularFirestore,
     private songtypeService: SongTypeService,
     private dialog: MatDialog,
-  ) { }
+  ) {
+    this.loadingSpinner = true;
+   }
 
   ngOnInit() {
     this.getSongType = this.afs.collection('SongType');
@@ -40,6 +43,7 @@ export class SongTypeComponent implements OnInit {
       this.listdata.filterPredicate = (data, filter) => {
         return data.name.toLowerCase().indexOf(filter) !== -1;
       };
+      this.loadingSpinner = false;
     });
   }
 

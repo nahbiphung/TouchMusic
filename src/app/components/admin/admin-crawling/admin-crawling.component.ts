@@ -11,6 +11,7 @@ import { link } from 'fs';
   styleUrls: ['./admin-crawling.component.scss']
 })
 export class AdminCrawlingComponent implements OnInit {
+  public loadingSpinner: boolean;
   public numbersOfNhaccuatui: any;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,6 +45,7 @@ export class AdminCrawlingComponent implements OnInit {
               private afs: AngularFirestore
   ) {
     this.data = [];
+    this.loadingSpinner = true;
   }
 
   ngOnInit() {
@@ -70,6 +72,7 @@ export class AdminCrawlingComponent implements OnInit {
       this.tableDataNCTFinish = new MatTableDataSource(this.arrNCT10);
       this.tableDataNCTFinish.sort = this.sort;
       this.tableDataNCTFinish.paginator = this.paginator;
+      this.loadingSpinner = false;
     });
 
     // zingmp3
@@ -96,6 +99,7 @@ export class AdminCrawlingComponent implements OnInit {
       this.tableDataZingFinish = new MatTableDataSource(this.arrZing10);
       this.tableDataZingFinish.sort = this.sort;
       this.tableDataZingFinish.paginator = this.paginator;
+      this.loadingSpinner = false;
     });
   }
   // nhacccuatui

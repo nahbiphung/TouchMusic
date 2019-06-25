@@ -25,13 +25,16 @@ export class AdminSongComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   private searchValue: string;
+  public loadingSpinner: boolean;
 
   constructor(
     private songService: AdminSongService,
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
     private dialog: MatDialog,
-  ) { }
+  ) {
+    this.loadingSpinner = true;
+   }
 
   ngOnInit() {
     this.getUser = this.afs.collection('users');
@@ -97,6 +100,7 @@ export class AdminSongComponent implements OnInit {
               || data.performerName.toLowerCase().indexOf(filter) !== -1
               || data.userName.toLowerCase().indexOf(filter) !== -1;
             };
+            this.loadingSpinner = false;
           });
         });
       });
