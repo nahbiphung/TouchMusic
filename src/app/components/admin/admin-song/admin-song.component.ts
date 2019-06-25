@@ -19,12 +19,12 @@ export class AdminSongComponent implements OnInit {
   getSong: AngularFirestoreCollection<any>;
   getSongType: AngularFirestoreCollection<any>;
   private listSong: Song[];
-  private listdata: MatTableDataSource<any>;
+  public listdata: MatTableDataSource<any>;
   // tslint:disable-next-line:max-line-length
   displayedColumns: string[] = ['name', 'author', 'imageSong', 'mp3Url', 'album', 'video', 'country', 'songtype', 'performer', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
 
   constructor(
     private songService: AdminSongService,
@@ -103,16 +103,16 @@ export class AdminSongComponent implements OnInit {
     });
   }
 
-  private applyFilter() {
+  public applyFilter() {
     this.listdata.filter = this.searchValue.trim().toLowerCase();
   }
 
-  private onClickClearSearch() {
+  public onClickClearSearch() {
     this.searchValue = '';
     this.applyFilter();
   }
 
-  private onClickCreate() {
+  public onClickCreate() {
     this.songService.formReset();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;

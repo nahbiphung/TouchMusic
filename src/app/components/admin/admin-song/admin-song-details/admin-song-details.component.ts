@@ -42,7 +42,7 @@ export class AdminSongDetailsComponent implements OnInit {
   uploadVideoPercent: Observable<number>;
 
   constructor(
-    private songService: AdminSongService,
+    public songService: AdminSongService,
     private afs: AngularFirestore,
     private storage: AngularFireStorage,
     public dialogRef: MatDialogRef<AdminSongDetailsComponent>
