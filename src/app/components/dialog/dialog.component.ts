@@ -107,7 +107,6 @@ export class DialogComponent implements OnInit {
     private storage: AngularFireStorage) {
     this.haveImage = false;
     this.uploadProgress = 0;
-    this.name = '';
     this.isAvatar = false;
     this.isCreateNewFaList = false;
     this.isVideo = false;
@@ -283,7 +282,7 @@ export class DialogComponent implements OnInit {
     // get data of falist
     const falist: FavoriteList = new FavoriteList();
     falist.userId = this.data.currentUser;
-    falist.name = this.name;
+    falist.name = this.favoritePlaylistNameFCtrl.value();
     if (this.loadImage) {
       const storageRef = firebase.storage().ref('images/' + this.loadImage.name);
 
@@ -418,12 +417,7 @@ export class DialogComponent implements OnInit {
       // nghĩa là ko bị trùng bài hát
       this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
       this.documentData.update({
-        details: firebase.firestore.FieldValue.arrayUnion({
-          author: this.data.data.author,
-          id: this.data.data.id,
-          mp3Url: this.data.data.mp3Url,
-          name: this.data.data.name,
-        })
+        details: firebase.firestore.FieldValue.arrayUnion(this.data.data.id)
       }).then(() => {
         this.loadingSpinner = false;
         this.dialogRef.close();

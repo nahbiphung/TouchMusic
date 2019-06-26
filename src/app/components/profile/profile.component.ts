@@ -30,7 +30,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class ProfileComponent implements OnInit {
-
+  
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
   public loadingSpinner: boolean;
@@ -68,10 +68,11 @@ export class ProfileComponent implements OnInit {
   private tableListSongDataUncheck: MatTableDataSource<any>;
   private listSongData: any[];
   private listSongDataUncheck: any[];
-  @ViewChild('paginatorUncheck') paginatorUncheck: MatPaginator;
-  @ViewChild('paginatorCheck') paginatorCheck: MatPaginator;
+  // @ViewChild('paginatorUncheck') paginatorUncheck: MatPaginator;
   displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'status'];
-
+  @ViewChild('matCheck') paginatorCheck: MatPaginator;
+  @ViewChild('matUncheck') paginatorUncheck: MatPaginator;
+  @ViewChild('matUncheck') sort: MatSort;
 
   constructor(
     private db: AngularFirestore,
@@ -165,8 +166,6 @@ export class ProfileComponent implements OnInit {
                 lyric: s.lyric
               });
             });
-            this.tableListSongData = new MatTableDataSource(this.listSongData);
-            this.tableListSongData.paginator = this.paginatorCheck;
           }
           if (this.userData) {
             this.loadingSpinner = false;
@@ -218,8 +217,6 @@ export class ProfileComponent implements OnInit {
                 status: s.status
               });
             });
-            this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);
-            this.tableListSongDataUncheck.paginator = this.paginatorUncheck;
           }
         });
       }
@@ -340,7 +337,22 @@ export class ProfileComponent implements OnInit {
     } else {
       this.db.collection('userUploadSong').doc(data.id).delete();
     }
-    
+  }
+
+  public setTable(event: any) {
+    if (event === 1) {
+      this.tableListSongData = new MatTableDataSource(this.listSongData);
+      this.tableListSongData.sort = this.sort;
+      setTimeout(() => {
+        this.tableListSongData.paginator = this.paginatorCheck;
+      }, 100);
+    } else if (event === 2) {
+      this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);
+      this.tableListSongDataUncheck.sort = this.sort;
+      setTimeout(() => {
+        this.tableListSongDataUncheck.paginator = this.paginatorUncheck;
+      }, 100);
+    }
   }
 }
 

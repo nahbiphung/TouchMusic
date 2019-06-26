@@ -85,7 +85,7 @@
     </div>
     <div
       class="col-lg-9 col-md-8 col-sm-12 col-xs-12 favoritePlaylist width-height-100 background-color-white border-radius-10">
-      <mat-tab-group color="accent">
+      <mat-tab-group color="accent" (selectedIndexChange)="setTable($event)">
         <mat-tab label="Favorite Playlist">
           <div class="row padding-20">
             <h1 class="font-weight color-organe text-align-center">Favorite Playlist</h1>
@@ -111,7 +111,7 @@
         <mat-tab label="Song checked">
           <h1 class="font-weight color-organe text-align-center">Song checked</h1>
           <div *ngIf="tableListSongData">
-            <table mat-table multiTemplateDataRows class="position-relative" [dataSource]='tableListSongData' matSort
+            <table mat-table class="position-relative" [dataSource]='tableListSongData' matSort multiTemplateDataRows 
               class="width-100">
               <!-- Đây là phần các cột -->
               <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -162,7 +162,7 @@
                 <mat-icon>add</mat-icon>
               </button>
             </div>
-            <mat-paginator #paginatorCheck class="position-relative" [length]="listSongData.length" [pageSize]="5"
+            <mat-paginator #matCheck class="position-relative" [length]="listSongData.length" [pageSize]="5"
               [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
           </div>
           <div *ngIf="!tableListSongData">
@@ -175,9 +175,9 @@
           </div>
         </mat-tab>
         <mat-tab label="Song uncheck">
-          <h1 class="font-weight color-organe text-align-center">Song checked</h1>
+          <h1 class="font-weight color-organe text-align-center">Song unchecked</h1>
           <div *ngIf="tableListSongDataUncheck">
-            <table mat-table multiTemplateDataRows class="position-relative" [dataSource]='tableListSongDataUncheck' matSort
+            <table mat-table class="position-relative" [dataSource]='tableListSongDataUncheck' matSort multiTemplateDataRows 
               class="width-100">
               <!-- Đây là phần các cột -->
               <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -231,7 +231,7 @@
                 <mat-icon>add</mat-icon>
               </button>
             </div>
-            <mat-paginator #paginatorUncheck class="position-relative" [length]="listSongDataUncheck.length" [pageSize]="5"
+            <mat-paginator #matUncheck class="position-relative" [length]="listSongDataUncheck.length" [pageSize]="5"
               [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
           </div>
           <div *ngIf="!tableListSongDataUncheck">

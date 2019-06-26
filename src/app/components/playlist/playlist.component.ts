@@ -26,6 +26,8 @@ export class PlaylistComponent implements OnInit {
   private country: Country;
   private albumInfo: Album;
   private favoritePlaylist: any;
+  private currentUser: firebase.User;
+  private currentUserRef: any;
 
   private videoSong: boolean;
   private isAlbum: boolean;
@@ -65,11 +67,11 @@ export class PlaylistComponent implements OnInit {
     const getParams = this.route.snapshot.paramMap.get('id');
     if (getDetectRoute === 'favoritePlaylist') {
       this.documentData = this.db.collection('FavoritePlaylist').doc(getParams);
-      this.documentData.valueChanges().subscribe(async (res: FavoriteList) => {
+      this.documentData.valueChanges().subscribe((res: FavoriteList) => {
         if (res) {
           this.playlistSong = [];
           if (res.details.length > 0) {
-            res.details.forEach((s) => {
+            res.details.forEach((s: any) => {
               this.documentData = this.db.collection('Song').doc(s);
               this.documentData.valueChanges().subscribe(async (song) => {
                 const listAuthor = [];
@@ -192,6 +194,16 @@ export class PlaylistComponent implements OnInit {
         console.log(error);
       });
     }
+    this.getCurrentUser();
+  }
+
+  private getCurrentUser() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUser = user;
+        this.currentUserRef = this.db.collection('users').doc(this.currentUser.uid).ref;
+      }
+    });
   }
 
   private verifyUserAuthenicate(userData: any) {
@@ -237,19 +249,20 @@ export class PlaylistComponent implements OnInit {
   }
 
   private addAllToPlaylist() {
-    const formatPlaylist = [];
-    this.playlistSong.forEach(s => {
-      let formatAuthor = '';
-      const newSong = s;
-      newSong.author.forEach(element => {
-        formatAuthor = formatAuthor + ' ' + element.name;
+    const newPlaylist = [];
+    this.playlistSong.forEach(element => {
+      let authors = '';
+      element.author.forEach(child => {
+        authors = authors + child.name + ' ';
       });
-      newSong['author'] = formatAuthor;
-      formatPlaylist.push(newSong);
+      newPlaylist.push({
+        id: element.id,
+        name: element.name,
+        author: authors,
+        mp3Url: element.mp3Url
+      });
     });
-
-    this.songService.playlistSong = formatPlaylist;
-    this.songService.PlayOrPause();
+    this.songService.playlistSong = this.songService.playlistSong.concat(newPlaylist);
   }
 
   private drop(event: CdkDragDrop<string[]>) {
@@ -278,9 +291,19 @@ export class PlaylistComponent implements OnInit {
     this.songService.playlistSong.push(data);
   }
 
-  private addToFavoritePlaylist(data: any) {
-    this.db.collection('Song').doc(data.id).update({
-      like: firebase.firestore.FieldValue.increment(1)
+  private addToFavoritePlaylist(song: any) {
+    // this.db.collection('Song').doc(data.id).update({
+    //   like: firebase.firestore.FieldValue.increment(1)
+    // });
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '70vw',
+      data: { currentUser: this.currentUserRef, data: song, selector: 'C' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      console.log('The dialog was closed');
     });
   }
 }
