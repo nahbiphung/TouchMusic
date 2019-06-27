@@ -72,7 +72,8 @@ export class ProfileComponent implements OnInit {
   displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'status'];
   @ViewChild('matCheck') paginatorCheck: MatPaginator;
   @ViewChild('matUncheck') paginatorUncheck: MatPaginator;
-  @ViewChild('matUncheck') sort: MatSort;
+  @ViewChild('matSortUncheck') sortUncheck: MatSort;
+  @ViewChild('matSortCheck') sortCheck: MatSort;
 
   constructor(
     private db: AngularFirestore,
@@ -342,13 +343,13 @@ export class ProfileComponent implements OnInit {
   public setTable(event: any) {
     if (event === 1) {
       this.tableListSongData = new MatTableDataSource(this.listSongData);
-      this.tableListSongData.sort = this.sort;
+      this.tableListSongData.sort = this.sortCheck;
       setTimeout(() => {
         this.tableListSongData.paginator = this.paginatorCheck;
       }, 100);
     } else if (event === 2) {
       this.tableListSongDataUncheck = new MatTableDataSource(this.listSongDataUncheck);
-      this.tableListSongDataUncheck.sort = this.sort;
+      this.tableListSongDataUncheck.sort = this.sortUncheck;
       setTimeout(() => {
         this.tableListSongDataUncheck.paginator = this.paginatorUncheck;
       }, 100);

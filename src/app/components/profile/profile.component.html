@@ -111,7 +111,7 @@
         <mat-tab label="Song checked">
           <h1 class="font-weight color-organe text-align-center">Song checked</h1>
           <div *ngIf="tableListSongData">
-            <table mat-table class="position-relative" [dataSource]='tableListSongData' matSort multiTemplateDataRows 
+            <table mat-table class="position-relative" [dataSource]='tableListSongData' #matSortCheck multiTemplateDataRows 
               class="width-100">
               <!-- Đây là phần các cột -->
               <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -138,14 +138,15 @@
                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
                   <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    <div>
-                      <button mat-icon-button color='warn' (click)="onDelete(element, true)" matTooltip="Delete">
+                    <div class="d-flex justify-content-start aligns-item-center">
+                      <button mat-icon-button color='warn' class="margin-right-left-5" (click)="onDelete(element, true)" matTooltip="Delete">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
                     <div class="example-element-description">
-                      {{element.lyric}}
-                      <span class="example-element-description-attribution"> -- Xem thêm </span>
+                      <h3 class="color-yellow">Lyric</h3>
+                      <p>{{element.lyric}}</p>
+                      <span class="example-element-description-attribution"> Xem thêm </span>
                     </div>
                   </div>
                 </td>
@@ -177,7 +178,7 @@
         <mat-tab label="Song uncheck">
           <h1 class="font-weight color-organe text-align-center">Song unchecked</h1>
           <div *ngIf="tableListSongDataUncheck">
-            <table mat-table class="position-relative" [dataSource]='tableListSongDataUncheck' matSort multiTemplateDataRows 
+            <table mat-table class="position-relative" [dataSource]='tableListSongDataUncheck' #matSortUncheck multiTemplateDataRows 
               class="width-100">
               <!-- Đây là phần các cột -->
               <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -202,18 +203,19 @@
               <!-- Đây là phần mở rộng khi click vào các row -->
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-                  <div class="example-element-detail"
+                  <div class="example-element-detail padding-left-1-5em"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    <div>
-                      <button mat-icon-button (click)="onClickEdit(element)" matTooltip="Create">
+                    <div class="d-flex justify-content-start aligns-item-center padding-left-1-5em">
+                      <button mat-icon-button class="margin-right-left-5" (click)="onClickEdit(element)" matTooltip="Create">
                         <mat-icon class="mat-18 iconFormat">create</mat-icon>
                       </button>
-                      <button mat-icon-button color='warn' (click)="onDelete(element, false)" matTooltip="Delete">
+                      <button mat-icon-button class="margin-right-left-5" color='warn' (click)="onDelete(element, false)" matTooltip="Delete">
                         <mat-icon class="mat-18 iconFormat">delete_outline</mat-icon>
                       </button>
                     </div>
                     <div class="example-element-description">
-                      {{element.lyric}}
+                      <h3 class="color-yellow">Lyric</h3>
+                      <p>{{element.lyric}}</p>
                       <span class="example-element-description-attribution"> -- Xem thêm </span>
                     </div>
                   </div>
