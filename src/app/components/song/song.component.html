@@ -72,11 +72,11 @@
           <div class="context-menu">
             <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_vert</mat-icon>
             <mat-menu #menuSong="matMenu">
-              <button mat-menu-item (click)="addToFavoritePlaylist(data, p)"  *ngIf="currentUser">
+              <button mat-menu-item (click)="addToFavoritePlaylist(item)"  *ngIf="currentUser">
                 <mat-icon>playlist_add</mat-icon>
                 <span>Add to Favorite Playlist</span>
               </button>
-              <button mat-menu-item (click)="addToPlaylist(data, p)">
+              <button mat-menu-item (click)="addToPlaylist(item)">
                 <mat-icon>queue_music</mat-icon>
                 <span>Add to queue</span>
               </button>

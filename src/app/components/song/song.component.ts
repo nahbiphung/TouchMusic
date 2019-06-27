@@ -291,17 +291,11 @@ export class SongComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  private addToPlaylist(data: any, p: any) {
+  private addToPlaylist(data: any) {
     this.songService.playlistSong.push(data);
-    p.toggle();
   }
 
-  private toggle(p: any) {
-    console.log(p);
-  }
-
-  private addToFavoritePlaylist(song: Song, p: any) {
-    p.toggle();
+  private addToFavoritePlaylist(song: Song) {
     const dialogRef = this.dialog.open(DialogComponent, {
       height: '78vh',
       width: '70vw',

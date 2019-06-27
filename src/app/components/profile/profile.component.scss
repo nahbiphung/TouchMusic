@@ -126,10 +126,15 @@ table {
 .example-element-detail {
   overflow: hidden;
   display: flex;
+  flex-direction: column;
 }
 
 .example-element-description {
   padding: 16px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 }
 
 .example-element-description-attribution {

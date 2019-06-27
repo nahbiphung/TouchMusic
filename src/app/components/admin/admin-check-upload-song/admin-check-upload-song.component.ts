@@ -14,11 +14,11 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
 
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
-  private listdata: MatTableDataSource<any>;
-  private listSongDataUncheck: any[];
-  private storeData: any[];
-  private isPlay: boolean;
-  private audio: any;
+  public listdata: MatTableDataSource<any>;
+  public listSongDataUncheck: any[];
+  public storeData: any[];
+  public isPlay: boolean;
+  public audio: any;
   private duration: number;
   private curTime: number;
   public loadingSpinner: boolean;
@@ -26,7 +26,7 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'imageSong', 'author', 'performerId', 'user', 'option'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private searchValue: string;
+  public searchValue: string;
   constructor(
     private afs: AngularFirestore,
     private dialog: MatDialog,
@@ -99,7 +99,16 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
     this.audio = new Audio();
   }
 
-  private onAccept(data: any) {
+  public applyFilter() {
+    this.listdata.filter = this.searchValue.trim().toLowerCase();
+  }
+
+  public onClickClearSearch() {
+    this.searchValue = '';
+    this.applyFilter();
+  }
+
+  public onAccept(data: any) {
     const song = this.storeData.filter(s => s.id === data.id);
     delete song[0].status;
     this.db.collection('Song').doc(data.id).set(song[0]);
@@ -107,7 +116,7 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
     this.audio = new Audio();
   }
 
-  private onReject(data: any) {
+  public onReject(data: any) {
     const song = this.storeData.filter(s => s.id === data.id);
     this.db.collection('userUploadSong').doc(data.id).update({
       status: 'fail',
@@ -115,12 +124,12 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
     this.audio = new Audio();
   }
 
-  private onCheckFileMp3(data: any) {
+  public onCheckFileMp3(data: any) {
     const song = this.storeData.filter(s => s.id === data.id);
     this.onplaySong(song[0]);
   }
 
-  private onCheckFileMp4(data: any) {
+  public onCheckFileMp4(data: any) {
     this.audio.pause();
     const song = this.storeData.filter(s => s.id === data.id);
     const dialogRef = this.dialog.open(DialogComponent, {
@@ -133,14 +142,14 @@ export class AdminCheckUploadSongComponent implements OnInit, OnDestroy {
     });
   }
 
-  private onplaySong(data: any) {
+  public onplaySong(data: any) {
     this.audio.src = data.mp3Url;
     this.audio.name = data.name;
     this.audio.load();
     this.isPlay = true;
     this.onSelectPlayOrPauseSong();
   }
-  private onSelectPlayOrPauseSong() {
+  public onSelectPlayOrPauseSong() {
     if (this.audio.paused) {
       if (this.audio.src) {
         this.audio.play();

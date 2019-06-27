@@ -18,6 +18,7 @@ import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/fo
 import { SongComponent } from '../song/song.component';
 import { Observable } from 'rxjs';
 import { finalize, tap, startWith, map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -103,11 +104,11 @@ export class DialogComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private db: AngularFirestore,
+    public toastr: ToastrService,
     private _snackBar: MatSnackBar,
     private storage: AngularFireStorage) {
     this.haveImage = false;
     this.uploadProgress = 0;
-    this.name = '';
     this.isAvatar = false;
     this.isCreateNewFaList = false;
     this.isVideo = false;
@@ -283,7 +284,7 @@ export class DialogComponent implements OnInit {
     // get data of falist
     const falist: FavoriteList = new FavoriteList();
     falist.userId = this.data.currentUser;
-    falist.name = this.name;
+    falist.name = this.favoritePlaylistNameFCtrl.value();
     if (this.loadImage) {
       const storageRef = firebase.storage().ref('images/' + this.loadImage.name);
 
@@ -418,12 +419,7 @@ export class DialogComponent implements OnInit {
       // nghĩa là ko bị trùng bài hát
       this.documentData = this.db.collection('FavoritePlaylist').doc(data.id);
       this.documentData.update({
-        details: firebase.firestore.FieldValue.arrayUnion({
-          author: this.data.data.author,
-          id: this.data.data.id,
-          mp3Url: this.data.data.mp3Url,
-          name: this.data.data.name,
-        })
+        details: firebase.firestore.FieldValue.arrayUnion(this.data.data.id)
       }).then(() => {
         this.loadingSpinner = false;
         this.dialogRef.close();
@@ -543,8 +539,26 @@ export class DialogComponent implements OnInit {
   }
 
   private validateSong(): boolean {
-    if (this.songNameFormControl.value === '' || this.performerFormControl.value === '' ||
-    this.authorFormControl.value === '' || !this.songFile || !this.imageSong) {
+    if (this.songNameFormControl.value === '') {
+      this.toastr.error('Song name is required', 'Error');
+      return false;
+    } else if (this.performers.length === 0) {
+      this.toastr.error('Song must has Performer', 'Error');
+      return false;
+    } else if (this.performers.length === 0) {
+      this.toastr.error('Song must has author', 'Error');
+      return false;
+    } else if (!this.songFile) {
+      this.toastr.error('Mp3 file is required', 'Error');
+      return false;
+    } else if (!this.imageSong) {
+      this.toastr.error('Mp3 image is required', 'Error');
+      return false;
+    } else if (!this.countrySelected) {
+      this.toastr.error('Song must have country', 'Error');
+      return false;
+    } else if (!this.songTypeSelected) {
+      this.toastr.error('Song must have country', 'Error');
       return false;
     }
     return true;
