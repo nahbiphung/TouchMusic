@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { SongService } from '../../services/song.service';
 import { MatDialog } from '@angular/material';
@@ -9,7 +9,7 @@ import { DialogComponent } from '../dialog/dialog.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
 
   constructor(
     private db: AngularFirestore,
@@ -46,7 +46,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   colectionPlaylist: AngularFirestoreCollection<any>;
   getPerformer: AngularFirestoreCollection<any>;
   documentAlbum: AngularFirestoreDocument<any>;
-
+  public crawlingZing: CrawlingZing[] = [];
+  public crawlingNhaccuatui: CrawlingNhaccuatui[] = [];
   public topPlaylist = [];
   public albums = [];
   public songs = [];
@@ -226,22 +227,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
     });
 
-  }
+    const crawlingZing = this.db.collection('CrawlingZing');
+    if (crawlingZing) {
+      crawlingZing.valueChanges().subscribe((zing: CrawlingZing[]) => {
+        if (zing) {
+          this.crawlingZing = zing.slice(0, 10);
+        }
+      });
+    }
 
-  ngAfterViewInit() {
-    // add event listener
-    // setTimeout(() => {
-    //   const songImg = document.querySelectorAll('.song-img');
-    //   songImg.forEach(item => {
-    //     console.log(item);
-    //     item.addEventListener('mouseover', (event) => {
-    //       const songId = event.srcElement.id;
-    //       console.log(songId);
-    //       const buttonPlay = document.querySelector('song-playButton');
-    //       buttonPlay.classList.add('display-block');
-    //     });
-    //   });
-    // }, 1500);
+    const crawlingNhaccuatui = this.db.collection('CrawlingNCT');
+    if (crawlingNhaccuatui) {
+      crawlingNhaccuatui.valueChanges().subscribe((nct: CrawlingNhaccuatui[]) => {
+        if (nct) {
+          this.crawlingNhaccuatui = nct.slice(0, 10);
+        }
+      });
+    }
   }
 
 
@@ -329,29 +331,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.songService.PlayOrPause();
       this.clickPlayorPause(this.songService.audio.src);
     }
-
-    // if (this.songService.audio.src === '') {
-    //   this.songService.playSong(data);
-    //   this.songService.audio.src = data.mp3Url;
-    //   this.songService.audio.name = data.name;
-    //   this.songService.audio.author = data.author;
-    //   this.songService.audio.load();
-    //   this.songService.isPlay = true;
-    //   this.songService.PlayOrPause();
-    //   return;
-    // }
-    // if (this.songService.audio.src === data.mp3Url) {
-    //   this.songService.PlayOrPause();
-    // } else {
-    //   this.songService.playlistSong = [];
-    //   this.songService.playlistSong.push(data);
-    //   this.songService.audio.src = data.mp3Url;
-    //   this.songService.audio.name = data.name;
-    //   this.songService.audio.author = data.author;
-    //   this.songService.audio.load();
-    //   this.songService.isPlay = true;
-    //   this.songService.PlayOrPause();
-    // }
   }
   // if.src >>>> if.1 pass >>> if1.1: 1st time play curSong - if.1.2: 2nd play curSong start at curTime
   // if.1 false: curSong pause and get the curTime
@@ -434,20 +413,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       });
     });
-
-    // this.db.collection('Album').add({
-    //   id: '',
-    //   name: 'Album2',
-    //   performerId: this.db.collection('Performer').doc('444aMwurKPLwFUvxPFOy').ref,
-    //   userId: this.db.collection('users').doc('3cYwzOHvCHZp82JAzeG9RTkKCWh2').ref
-    // }).then(res => {
-    //   if (res) {
-    //     this.db.collection('Album').doc(res.id).update({
-    //       id: res.id,
-    //     });
-    //   }
-    // });
   }
+
   public openVideo(songVideo: Song) {
     this.songService.audio.pause();
     this.songService.isPlay = false;

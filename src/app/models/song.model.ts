@@ -70,3 +70,22 @@ interface Performer {
     image: string;
 }
 
+interface CrawlingZing {
+    imageSong: string;
+    linkSong: string;
+    lyricSong: string;
+    performer: string;
+    songName: string;
+}
+
+interface CrawlingNhaccuatui {
+    imageSong: string;
+    linkSong: string;
+    lyricSong: string;
+    performer: [{
+        link: string;
+        name: string;
+    }];
+    songName: string;
+}
+
