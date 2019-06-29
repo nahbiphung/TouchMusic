@@ -70,11 +70,13 @@ export class UserService {
 
   getUsers() {
     this.userList = this.afs.collection('users');
-    return this.userList.snapshotChanges();
+    return this.userList.valueChanges();
   }
 
   popupForm(element) {
     this.formUser.setValue(element);
+    // tslint:disable-next-line:max-line-length
+    this.formUser.controls.birthday.setValue(new Date(this.formUser.controls.birthday.value).toISOString());
     this.imageURL = element.photoURL;
   }
 

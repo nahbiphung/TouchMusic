@@ -5,6 +5,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
@@ -27,7 +28,7 @@ export class UserDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userService.getUsers();
+
   }
 
   onSelectFile(event: any) {
@@ -83,6 +84,9 @@ export class UserDetailsComponent implements OnInit {
         )
           .subscribe();
       } else {
+        if (this.userService.formUser.controls.birthday.value) {
+          this.userService.formUser.controls.birthday.setValue(this.userService.formUser.controls.birthday.value);
+        }
         this.userService.updateUser(this.userService.formUser.value);
         this.onClose();
       }
