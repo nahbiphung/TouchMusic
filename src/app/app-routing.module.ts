@@ -21,6 +21,7 @@ import { AdminAlbumComponent } from './components/admin/admin-album/admin-album.
 import { AdminSongDetailsComponent } from './components/admin/admin-song/admin-song-details/admin-song-details.component';
 import { AdminCrawlingComponent } from './components/admin/admin-crawling/admin-crawling.component';
 import { AdminCheckUploadSongComponent } from './components/admin/admin-check-upload-song/admin-check-upload-song.component';
+import { AdminGuard } from './guard/admin.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -29,7 +30,7 @@ const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'song/:name/:id', component: SongComponent},
-  { path: 'admin', component: AdminComponent, children: [
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard], children: [
     { path: 'user', component: UserComponent, children: [] },
     { path: 'song', component: AdminSongComponent },
     { path: 'country', component: CountryComponent },
