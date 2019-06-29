@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-
+  listUser: AngularFirestoreCollection<any>;
   user: Observable<User>;
 
   constructor(public afAuth: AngularFireAuth,
@@ -106,14 +107,28 @@ export class AuthService {
   loginGoogle() {
     return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((credential) => {
-        this.updateUserDataforAnotherService(credential.user);
+        this.listUser = this.afs.collection('users', q => q.where('uid', '==', credential.user.uid));
+        this.listUser.valueChanges().subscribe(res => {
+          if (res.length > 0) {
+            console.log('Login');
+          } else {
+            this.updateUserDataforAnotherService(credential.user);
+          }
+        });
       });
   }
 
   loginFacebook() {
     return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
       .then((credential) => {
-        this.updateUserDataforAnotherService(credential.user);
+        this.listUser = this.afs.collection('users', q => q.where('uid', '==', credential.user.uid));
+        this.listUser.valueChanges().subscribe(res => {
+          if (res.length > 0) {
+            console.log('Login');
+          } else {
+            this.updateUserDataforAnotherService(credential.user);
+          }
+        });
       });
   }
 
