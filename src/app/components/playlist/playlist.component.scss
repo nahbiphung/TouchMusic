@@ -77,6 +77,10 @@
   font-size: 14px;
 }
 
+.song:hover {
+  background-color: rgba($color: #324a45, $alpha: 0.2);
+}
+
 .songTitle {
   font-weight: 500;
 }
@@ -85,10 +89,23 @@
   text-decoration: underline;
 }
 
-.songAuthor {
-
+.listSong {
+  height: 250px;
+  overflow-y: auto;
 }
 
-.songDuration {
+.listSong::-webkit-scrollbar-track {
+	border-radius: 8px;
+	background-color: #f8f8fa;
+}
 
+.listSong::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+  background-color: #f8f8fa;
+}
+
+.listSong::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+	background-color: rgba($color: #324a45, $alpha: 0.5);
 }
