@@ -379,7 +379,7 @@
                   <div class="baged-title line-height-nor">
                     <div class="font-size-14"><a class="color-999-100" href="#">{{item.author}}</a></div>
                     <div class="handal-content color-black">
-                      <a href="#" class="font-size-14 color-black margin-top-0">{{item.name}}</a>
+                      <a href="#" class="font-size-14 color-black margin-top-0" target="_blank">{{item.name}}</a>
                     </div>
                   </div>
                   <div class="baged-meta display-flex">
@@ -423,9 +423,9 @@
                     <!-- song detail -->
                     <div class="display-flex-250px flex-direction-column">
                       <div class="baged-title line-height-nor">
-                        <div class="font-size-14 d-flex justify-content-start"><a class="color-999-100" *ngFor="let per of item.performer" href="{{per.link}}"> {{per.name}} </a></div>
+                        <div class="font-size-14 d-flex justify-content-start"><a class="color-999-100" *ngFor="let per of item.performer" href="{{per.link}}" target="_blank"> {{per.name}} </a></div>
                         <div class="handal-content color-black">
-                          <a href="{{item.linkSong}}" class="font-size-14 color-black margin-top-0">{{item.songName}}</a>
+                          <a href="{{item.linkSong}}" class="font-size-14 color-black margin-top-0" target="_blank">{{item.songName}}</a>
                         </div>
                       </div>
                       <div class="baged-meta display-flex">

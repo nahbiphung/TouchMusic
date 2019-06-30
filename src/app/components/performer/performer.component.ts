@@ -157,7 +157,18 @@ export class PerformerComponent implements OnInit {
   }
 
   private addToPlaylist(data: any) {
-    this.songService.playlistSong.push(data);
+    const newFormat = [];
+    let formatAuthor = '';
+    data.author.forEach(element => {
+      formatAuthor = formatAuthor + element.name;
+    });
+    newFormat.push({
+      id: data.id,
+      name: data.name,
+      author: formatAuthor,
+      mp3Url: data.mp3Url
+    });
+    this.songService.playlistSong = this.songService.playlistSong.concat(newFormat);
   }
 
   private addToFavoritePlaylist(song: Song) {

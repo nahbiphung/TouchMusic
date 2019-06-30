@@ -106,7 +106,11 @@ export class ProfileComponent implements OnInit {
         this.lnameFormControl.setValue(this.userData.lastName);
         this.emailFormControl.setValue(this.userData.email);
         this.phoneFormControl.setValue(this.userData.phone);
-        this.dateFormControl = new FormControl(res.birthday.toDate());
+        if (res.birthday) {
+          this.dateFormControl = new FormControl(res.birthday.toDate());
+        } else {
+          this.dateFormControl = new FormControl(res.birthday);
+        }
         if (this.isBlock) {
           this.disableFormControl();
         } else {
