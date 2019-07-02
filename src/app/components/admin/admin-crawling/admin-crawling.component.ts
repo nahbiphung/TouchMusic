@@ -105,7 +105,7 @@ export class AdminCrawlingComponent implements OnInit {
   // nhacccuatui
 
   getNumberofPages() {
-    return this.http.get('ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiPages').subscribe((res: any) => {
+    return this.http.get('http://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiPages').subscribe((res: any) => {
       if (res) {
         this.numbersOfNhaccuatui = res;
       }
@@ -118,7 +118,7 @@ export class AdminCrawlingComponent implements OnInit {
       for (let index = 1; index <= numberPage; index++) {
         const dataPerPage: any = await new Promise((result) =>
 // tslint:disable-next-line: max-line-length
-          this.http.get('ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
+          this.http.get('http://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
             if (res) {
               result(res);
             }
@@ -147,18 +147,10 @@ export class AdminCrawlingComponent implements OnInit {
       });
     }
   }
-  private getDataAPI(numberPage: number) {
-    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
-      if (res) {
-        // this.data = this.data.concat(res);
-        // console.log(this.data);
-      }
-    });
-  }
 
   // ZINGMP3
   getNumberZing() {
-    return this.http.get('ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingSongsCount').subscribe((res: any) => {
+    return this.http.get('http://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingSongsCount').subscribe((res: any) => {
       if (res) {
         this.listZingSong = res;
         this.zingSongCount = this.listZingSong.length - 1;
@@ -173,7 +165,7 @@ export class AdminCrawlingComponent implements OnInit {
       for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
 // tslint:disable-next-line: max-line-length
-            this.http.get('ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
+            this.http.get('http://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
               if (res) {
                 for (const item of res) {
                   this.arrSong.push(item);
