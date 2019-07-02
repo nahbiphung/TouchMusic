@@ -122,7 +122,7 @@ export class AdminCrawlingComponent implements OnInit {
               result(res);
             }
           }));
-        console.log('phu');
+        console.log(index);
         this.data = this.data.concat(dataPerPage);
         this.tableData = new MatTableDataSource(this.data);
         this.tableData.sort = this.sort;
@@ -180,6 +180,7 @@ export class AdminCrawlingComponent implements OnInit {
                 result(res);
               }
         }));
+        console.log(i);
         this.tableZingData = new MatTableDataSource(this.arrSong);
         this.tableZingData.sort = this.sort;
         this.tableZingData.paginator = this.paginator;
