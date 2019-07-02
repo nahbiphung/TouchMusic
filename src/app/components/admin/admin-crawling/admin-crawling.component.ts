@@ -172,6 +172,7 @@ export class AdminCrawlingComponent implements OnInit {
     const t = async () => {
       for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
+// tslint:disable-next-line: max-line-length
             this.http.get('https://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
               if (res) {
                 for (const item of res) {
