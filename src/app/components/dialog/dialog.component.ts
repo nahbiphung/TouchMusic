@@ -102,7 +102,7 @@ export class DialogComponent implements OnInit {
   ]);
 
   // crawling song
-  private isCrawlingEditor: boolean;
+  public isCrawlingEditor: boolean;
   private crawlingImage: any;
   private previewCrawlingImage: any;
   private crawlingPer: any[];
