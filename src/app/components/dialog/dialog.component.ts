@@ -106,7 +106,12 @@ export class DialogComponent implements OnInit {
   private crawlingImage: any;
   private previewCrawlingImage: any;
   private crawlingPer: any[];
+  private isZing: boolean;
   private crawlingSongNameFCtrl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private crawlingPerformerFCtrl: FormControl = new FormControl('', [
     Validators.maxLength(30),
     Validators.required,
   ]);
@@ -137,6 +142,7 @@ export class DialogComponent implements OnInit {
     this.isEditSongUpload = false;
     this.isCrawlingEditor = false;
     this.crawlingPer = [];
+    this.isZing = false;
     // upload song
     this.listPerformerData = [];
     this.listAuthorData = [];
@@ -234,11 +240,17 @@ export class DialogComponent implements OnInit {
         this.isCrawlingEditor = true;
         this.previewCrawlingImage = this.data.data.avatar;
         this.crawlingSongNameFCtrl.setValue(this.data.data.name);
-        this.data.data.performer.forEach(crawlingper => {
-          this.crawlingPer.push({
-            name: crawlingper.name,
+        if (Array.isArray(this.data.data.performer)) {
+          this.isZing = false;
+          this.data.data.performer.forEach(crawlingper => {
+            this.crawlingPer.push({
+              name: crawlingper.name,
+            });
           });
-        });
+        } else {
+          this.isZing = true;
+          this.crawlingPerformerFCtrl.setValue(this.data.data.performer);
+        }
         this.crawlingLinkFCtrl.setValue(this.data.data.link);
         this.crawlingLyricFCtrl.setValue(this.data.data.lyric);
         this.loadingSpinner = false;
@@ -853,7 +865,7 @@ export class DialogComponent implements OnInit {
     const newCrawlingData = {
       avatar: this.previewCrawlingImage,
       name: this.crawlingSongNameFCtrl.value,
-      performer: this.crawlingPer,
+      performer: this.isZing ? this.crawlingPerformerFCtrl.value : this.performers,
       link: this.crawlingLinkFCtrl.value,
       lyric: this.crawlingLyricFCtrl.value,
     };

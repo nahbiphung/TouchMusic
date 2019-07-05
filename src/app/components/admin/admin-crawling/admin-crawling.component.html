@@ -49,6 +49,18 @@
                 <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
               </ng-container>
 
+              <ng-container matColumnDef="option">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editZingData(element)">
+                    <mat-icon class="mat-18">edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color='warn' matTooltip="Delete Song" (click)="deleteZingData(element)">
+                    <mat-icon class="mat-18">delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="loading">
                 <mat-footer-cell *matFooterCellDef>
                   Loading data....

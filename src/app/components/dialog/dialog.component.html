@@ -350,7 +350,18 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="width-100 my-form-field">
+    <mat-form-field class="width-100 my-form-field" *ngIf="isZing">
+        <input matInput placeholder="Song Name" [formControl]="crawlingPerformerFCtrl"
+          [errorStateMatcher]="matcher">
+        <mat-error *ngIf="crawlingPerformerFCtrl.hasError('max')">
+          Performer name is too long
+        </mat-error>
+        <mat-error *ngIf="crawlingPerformerFCtrl.hasError('required')">
+          Performer name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+    <mat-form-field class="width-100 my-form-field" *ngIf="!isZing">
       <mat-chip-list #chipListCrawlingPer aria-label="Fruit selection">
         <mat-chip *ngFor="let item of crawlingPer" [selectable]="selectable" [removable]="true"
           (removed)="crawlingRemove(item)">
