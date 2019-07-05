@@ -218,65 +218,91 @@ export class DialogComponent implements OnInit {
   }
 
   private onFileSelected(event: any, flag?: string) {
-    switch (flag) {
-      case 'songFile':
-        this.songFile = event.target.files[0];
-        // do something
-        break;
-      case 'songImage':
-        // do something
-        this.imageSong = event.target.files[0];
-        if (this.imageSong) {
-          this.haveImage = true;
-          const copyThis = this;
-          const previewImage = new FileReader();
-          previewImage.onload = (e: any) => {
-            copyThis.previewImageSong = e.currentTarget.result;
-          };
-          previewImage.readAsDataURL(this.imageSong);
-        }
-        break;
-      case 'videoFile':
-        this.videoFile = event.target.files[0];
-        break;
-      case 'videoImage':
-        this.imageVideo = event.target.files[0];
-        if (this.imageVideo) {
-          this.haveImage = true;
-          const copyThis = this;
-          const previewImage = new FileReader();
-          previewImage.onload = (e: any) => {
-            copyThis.previewImageVideo = e.currentTarget.result;
-          };
-          previewImage.readAsDataURL(this.imageVideo);
-        }
-        break;
-      case 'editFaImage':
-        // do something
-        if (event.target.files[0]) {
-          this.showImage = event.target.files[0];
-          // const copyThis = this;
-          const previewImage = new FileReader();
-          previewImage.onload = (e: any) => {
-            this.imagePreview = e.currentTarget.result;
-          };
-          previewImage.readAsDataURL(event.target.files[0]);
-        }
-        break;
-      default:
-        this.loadImage = event.target.files[0];
-        if (this.loadImage) {
-          this.haveImage = true;
-          const copyThis = this;
-          const previewImage = new FileReader();
-          previewImage.onload = (e: any) => {
-            copyThis.imagePreview = e.currentTarget.result;
-          };
-          previewImage.readAsDataURL(this.loadImage);
-        } else {
-          this.haveImage = false;
-        }
-        break;
+    if (event.target.files.length !== 0) {
+      switch (flag) {
+        case 'songFile':
+          if (this.calulateImageSize(event.target.files[0], 'mp3')) {
+            this.songFile = event.target.files[0];
+          } else {
+            this.toastr.error('Song file size is too large', 'Error');
+          }
+          break;
+        case 'songImage':
+          // do something
+          if (this.calulateImageSize(event.target.files[0], 'image')) {
+            this.imageSong = event.target.files[0];
+            if (this.imageSong) {
+              this.haveImage = true;
+              const copyThis = this;
+              const previewImage = new FileReader();
+              previewImage.onload = (e: any) => {
+                copyThis.previewImageSong = e.currentTarget.result;
+              };
+              previewImage.readAsDataURL(this.imageSong);
+            }
+          } else {
+            this.toastr.error('image size is too large', 'Error');
+          }
+          break;
+        case 'videoFile':
+          if (this.calulateImageSize(event.target.files[0], 'mp4')) {
+            this.videoFile = event.target.files[0];
+          } else {
+            this.toastr.error('Song file size is too large', 'Error');
+          }
+          break;
+        case 'videoImage':
+          if (this.calulateImageSize(event.target.files[0], 'image')) {
+            this.imageVideo = event.target.files[0];
+            if (this.imageVideo) {
+              this.haveImage = true;
+              const copyThis = this;
+              const previewImage = new FileReader();
+              previewImage.onload = (e: any) => {
+                copyThis.previewImageVideo = e.currentTarget.result;
+              };
+              previewImage.readAsDataURL(this.imageVideo);
+            }
+          } else {
+            this.toastr.error('Image size is too large', 'Error');
+          }
+          break;
+        case 'editFaImage':
+          if (this.calulateImageSize(event.target.files[0], 'image')) {
+            // do something
+            if (event.target.files[0]) {
+              this.showImage = event.target.files[0];
+              // const copyThis = this;
+              const previewImage = new FileReader();
+              previewImage.onload = (e: any) => {
+                this.imagePreview = e.currentTarget.result;
+              };
+              previewImage.readAsDataURL(event.target.files[0]);
+            }
+          } else {
+            this.toastr.error('Image size is too large', 'Error');
+          }
+          break;
+        default:
+          if (this.calulateImageSize(event.target.files[0], 'image')) {
+            this.loadImage = event.target.files[0];
+            if (this.loadImage) {
+              this.haveImage = true;
+              const copyThis = this;
+              const previewImage = new FileReader();
+              previewImage.onload = (e: any) => {
+                copyThis.imagePreview = e.currentTarget.result;
+              };
+              previewImage.readAsDataURL(this.loadImage);
+            } else {
+              this.haveImage = false;
+            }
+          } else {
+            this.toastr.error('Image size is too large', 'Error');
+            this.onNoClick();
+          }
+          break;
+      }
     }
   }
 
@@ -751,6 +777,30 @@ export class DialogComponent implements OnInit {
         this.createFileVideo(songId);
       }
     }
+  }
+
+  private calulateImageSize(file: any, flag: string): boolean {
+    const convertToMB = ((file.size / 1024) / 1024);
+    switch (flag) {
+      case 'image':
+        if (convertToMB > 5) {
+          return false;
+        }
+        break;
+      case 'mp3':
+        if (convertToMB > 50) {
+          return false;
+        }
+        break;
+      case 'mp4':
+        if (convertToMB > 100) {
+          return false;
+        }
+        break;
+      default:
+        break;
+    }
+    return true;
   }
 }
 
