@@ -5,9 +5,9 @@
 <div class="width-100 position-relative">
   <mat-tab-group [color]="'accent'">
     <mat-tab label="Zing Mp3">
-      <div *ngIf="!checkZingData">
+      <div *ngIf="!checkZingData" class="getNumberPage">
         <h2>Lấy số lượng bài hát</h2>
-        <button mat-raised-button color="accent" (click)="getNumberZing()">Lấy số lượng</button>
+        <button mat-raised-button color="accent" (click)="getNumberZing()" class="margin-bottom-10">Lấy số lượng</button>
         <div *ngIf="listZingSong">
           <p>Tổng số bài hát : {{zingSongCount}}</p>
           <p>Độ dài của bài hát: {{listZingSong.length}}</p>
@@ -119,18 +119,17 @@
       </div>
     </mat-tab>
     <mat-tab label="Nhaccuatui">
-      <div *ngIf="!checkNCTData">
-        <h2>Lấy số trang</h2>
-        <button mat-raised-button color="accent" (click)="getNumberofPages()">Lấy số trang</button>
+      <div *ngIf="!checkNCTData" class="getNumberPage">
+        <h2>Lấy số trang chứa bài hát</h2>
+        <button mat-raised-button color="accent" (click)="getNumberofPages()" class="margin-bottom-10">Lấy số trang</button>
         <div *ngIf="numbersOfNhaccuatui">
-            <span>{{numbersOfNhaccuatui.number[0]}}</span>
-            <span>{{numbersOfNhaccuatui.pageLink}}</span>
+          <span>{{numbersOfNhaccuatui.number[0]}}</span>
         </div>
       </div>
       <div *ngIf="numbersOfNhaccuatui && !checkNCTData">
-        <h2>Cào dữ liệu</h2>
+        <h2>Khai thác dữ liệu</h2>
         <button mat-raised-button color="accent" (click)="getDataofPages(numbersOfNhaccuatui.number[0])">Bắt đầu</button>
-        <p *ngIf="waitForLoadNCTData">Đang xữ lý dư liệu</p>
+        <p *ngIf="waitForLoadNCTData">Đang xữ lý dữ liệu</p>
         <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
         <div *ngIf="tableData">
           <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
