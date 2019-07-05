@@ -59,3 +59,21 @@ img{
     overflow: scroll; 
     height: 100px;
 }
+
+.getNumberPage {
+    width: 100%;
+    display: flex;
+    margin: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.resize-spinner {
+    width: 20px;
+    height: 20px;
+}
+
+.onhoverIcon:hover {
+    color: #a2b1a4;
+  }

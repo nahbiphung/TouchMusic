@@ -56,7 +56,7 @@ app.get('/zingTop100', async(req,res) => {
                     title: res.querySelector('div.z-card div.card-info div.title a').textContent,
                     song: res.querySelector('div.z-card div.extension') !== null ? 
                             res.querySelector('div.z-card div.extension ul.hover-view') !== null ?
-                                res.querySelector('div.z-card div.extension ul.hover-view a.z-btn-item').href : 'null' : 'null',
+                                res.querySelector('div.z-card div.card-info div.title a.--z--multiple-line').href : 'null' : 'null',
                     imgsrc: res.querySelector('div.z-card a.thumb-40 img').src,
                     // video: res.querySelector('div.z-card div.extension') !== null ? 
                     //         res.querySelector('div.z-card div.extension ul.hover-view') !== null ?

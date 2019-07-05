@@ -5,18 +5,21 @@
 <div class="width-100 position-relative">
   <mat-tab-group [color]="'accent'">
     <mat-tab label="Zing Mp3">
-      <div *ngIf="!checkZingData">
+      <div *ngIf="!checkZingData" class="getNumberPage">
         <h2>Lấy số lượng bài hát</h2>
-        <button mat-raised-button color="accent" (click)="getNumberZing()">Lấy số lượng</button>
-        <div *ngIf="listZingSong">
-          <p>Tổng số bài hát : {{zingSongCount}}</p>
-          <p>Độ dài của bài hát: {{listZingSong.length}}</p>
+        <button mat-raised-button color="accent" (click)="getNumberZing()" class="margin-bottom-10">Lấy số lượng</button>
+        <mat-spinner *ngIf="waitforLoadZingNumberSong" color="accent" [diameter]="50" class="margin-bottom-10 margin-top-10"></mat-spinner>
+        <div *ngIf="listZingSong" class="margin-bottom-10 margin-top-10 d-flex flex-column">
+          <span>Tổng số bài hát : {{zingSongCount}}</span>
+          <span>Độ dài của bài hát: {{listZingSong.length}}</span>
         </div>
       </div>
       <div *ngIf="listZingSong && !checkZingData">
-        <button mat-raised-button color="accent" (click)="getZingTop100(zing10Song)">Lấy Top 100</button>
-        <p *ngIf="waitForLoadZingData">Đang xữ lý dư liệu</p>
-        <button mat-raised-button color="accent" (click)="saveZingIntoFirebase()" *ngIf="finishZingData">Lưu dữ liệu vào Firebase</button>
+        <div class="getNumberPage">
+            <button mat-raised-button color="accent" (click)="getZingTop100(zing10Song)" *ngIf="!finishZingData || !waitForLoadZingData">Lấy Top 100</button>
+            <mat-spinner *ngIf="waitForLoadZingData" color="accent" [diameter]="50" class="margin-bottom-10 margin-top-10"></mat-spinner>
+            <button mat-raised-button color="accent" (click)="saveZingIntoFirebase()" *ngIf="finishZingData">Lưu dữ liệu vào Firebase</button>
+        </div>
         <div *ngIf="tableZingData">
             <mat-table mat-table class="position-relative" [dataSource]='tableZingData' matSort class="width-100">
 
@@ -44,6 +47,18 @@
               <ng-container matColumnDef="lyric">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
                 <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="option">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editZingData(element)">
+                    <mat-icon class="mat-18">edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color='warn' matTooltip="Delete Song" (click)="deleteZingData(element)">
+                    <mat-icon class="mat-18">delete</mat-icon>
+                  </button>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="loading">
@@ -119,19 +134,21 @@
       </div>
     </mat-tab>
     <mat-tab label="Nhaccuatui">
-      <div *ngIf="!checkNCTData">
-        <h2>Lấy số trang</h2>
+      <div *ngIf="!checkNCTData" class="getNumberPage">
+        <h2>Lấy số trang chứa bài hát</h2>
         <button mat-raised-button color="accent" (click)="getNumberofPages()">Lấy số trang</button>
-        <div *ngIf="numbersOfNhaccuatui">
-            <span>{{numbersOfNhaccuatui.number[0]}}</span>
-            <span>{{numbersOfNhaccuatui.pageLink}}</span>
+        <mat-spinner *ngIf="waitforLoadNCTNumberPage" color="accent" [diameter]="50" class="margin-bottom-10 margin-top-10"></mat-spinner>
+        <div *ngIf="numbersOfNhaccuatui" class="margin-bottom-10 margin-top-10">
+          <span>{{numbersOfNhaccuatui.number[0]}}</span>
         </div>
       </div>
       <div *ngIf="numbersOfNhaccuatui && !checkNCTData">
-        <h2>Cào dữ liệu</h2>
-        <button mat-raised-button color="accent" (click)="getDataofPages(numbersOfNhaccuatui.number[0])">Bắt đầu</button>
-        <p *ngIf="waitForLoadNCTData">Đang xữ lý dư liệu</p>
-        <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
+        <div class="getNumberPage">
+            <h2>Khai thác dữ liệu</h2>
+            <button mat-raised-button color="accent" (click)="getDataofPages(numbersOfNhaccuatui.number[0])" *ngIf="!waitForLoadNCTData || !finishLoadNCT">Bắt đầu</button>
+            <mat-spinner *ngIf="waitForLoadNCTData" color="accent" [diameter]="50" class="margin-bottom-10 margin-top-10"></mat-spinner>
+            <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
+        </div>
         <div *ngIf="tableData">
           <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
 
@@ -148,17 +165,29 @@
   
             <ng-container matColumnDef="performer">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
-              <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
+              <mat-cell *matCellDef="let element" class="d-flex flex-column justify-content-start align-items-start"><span *ngFor="let item of element.performer">{{item.name}}</span></mat-cell>
             </ng-container>
-  
+
             <ng-container matColumnDef="link">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Link</mat-header-cell>
               <mat-cell *matCellDef="let element">{{element.link}}</mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="lyric">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
               <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="option">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editNCTData(element)">
+                  <mat-icon class="mat-18">edit</mat-icon>
+                </button>
+                <button mat-icon-button color='warn' matTooltip="Delete Song" (click)="deleteNCTData(element)">
+                  <mat-icon class="mat-18">delete</mat-icon>
+                </button>
+              </mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="loading">

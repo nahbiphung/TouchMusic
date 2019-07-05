@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { async, reject } from 'q';
-import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialog } from '@angular/material';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { link } from 'fs';
+import { DialogComponent } from '../../dialog/dialog.component';
+
 
 @Component({
   selector: 'app-admin-crawling',
@@ -17,7 +18,7 @@ export class AdminCrawlingComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public data: CrawlingWebNhaccuatui[];
   public tableData: MatTableDataSource<any>;
-  public displayedColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric'];
+  public displayedColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric', 'option'];
   public dataSource: any;
   public waitForLoadNCTData = false;
   public finishLoadNCT = false;
@@ -33,19 +34,24 @@ export class AdminCrawlingComponent implements OnInit {
   public waitForLoadZingData = false;
   public finishZingData = false;
   public tableZingData: MatTableDataSource<any>;
-  public displayZingColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric'];
+  public displayZingColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric', 'option'];
   public arrSong = [];
+  public newFormatSongZing: CrawlingWebNhaccuatui[];
   public getZing: AngularFirestoreCollection<any>;
   public checkZingData = false;
   public listZing = [];
   public arrZing10 = [];
   public tableDataZingFinish: MatTableDataSource<any>;
+  public waitforLoadNCTNumberPage = false;
+  public waitforLoadZingNumberSong = false;
 
   constructor(private http: HttpClient,
-              private afs: AngularFirestore
+              private afs: AngularFirestore,
+              public dialog: MatDialog,
   ) {
     this.data = [];
     this.loadingSpinner = true;
+    this.newFormatSongZing = [];
   }
 
   ngOnInit() {
@@ -105,9 +111,11 @@ export class AdminCrawlingComponent implements OnInit {
   // nhacccuatui
 
   getNumberofPages() {
-    return this.http.get('https://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiPages').subscribe((res: any) => {
+    this.waitforLoadNCTNumberPage = true;
+    return this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiPages').subscribe((res: any) => {
       if (res) {
         this.numbersOfNhaccuatui = res;
+        this.waitforLoadNCTNumberPage = false;
       }
       console.log(this.numbersOfNhaccuatui);
     });
@@ -115,10 +123,11 @@ export class AdminCrawlingComponent implements OnInit {
   getDataofPages(numberPage) {
     this.waitForLoadNCTData = true;
     const t = async () => {
+      // change number
       for (let index = 1; index <= numberPage; index++) {
         const dataPerPage: any = await new Promise((result) =>
 // tslint:disable-next-line: max-line-length
-          this.http.get('https://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
+          this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
             if (res) {
               result(res);
             }
@@ -147,22 +156,16 @@ export class AdminCrawlingComponent implements OnInit {
       });
     }
   }
-  private getDataAPI(numberPage: number) {
-    return this.http.get('https://touchmusic.herokuapp.com/nhaccuatuiData?page=' + numberPage).subscribe((res: any) => {
-      if (res) {
-        // this.data = this.data.concat(res);
-        // console.log(this.data);
-      }
-    });
-  }
 
   // ZINGMP3
   getNumberZing() {
-    return this.http.get('https://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingSongsCount').subscribe((res: any) => {
+    this.waitforLoadZingNumberSong = true;
+    return this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3002/zingSongsCount').subscribe((res: any) => {
       if (res) {
         this.listZingSong = res;
         this.zingSongCount = this.listZingSong.length - 1;
         this.zing10Song = parseInt((this.listZingSong.length / 10).toString() , this.zing10Song);
+        this.waitforLoadZingNumberSong = false;
       }
     });
   }
@@ -170,9 +173,11 @@ export class AdminCrawlingComponent implements OnInit {
   getZingTop100(numberSong: number) {
     this.waitForLoadZingData = true;
     const t = async () => {
+      // chỉnh sữa pleaseeeeee
       for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
-            this.http.get('https://ec2-52-221-207-54.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
+// tslint:disable-next-line: max-line-length
+            this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
               if (res) {
                 for (const item of res) {
                   this.arrSong.push(item);
@@ -203,6 +208,62 @@ export class AdminCrawlingComponent implements OnInit {
         lyricSong: i.lyric
       });
     }
+  }
+
+  deleteNCTData(dataNCT: CrawlingWebNhaccuatui) {
+    this.data = this.data.filter(crawl => crawl.link !== dataNCT.link);
+    this.tableData.data = this.data;
+  }
+
+  editNCTData(dataNCT: CrawlingWebNhaccuatui) {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: { currentUser: '', data: dataNCT, selector: 'EDIT_CRAWLINGSONG' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.data.findIndex(x => x.link === dataNCT.link);
+        this.data = this.data.filter(crawl => crawl.link !== dataNCT.link);
+        this.data.splice(index, 0, result);
+        this.tableData.data = this.data;
+      }
+    });
+  }
+
+  deleteZingData(dataZing: any) {
+    this.arrSong = this.arrSong.filter(crawl => crawl.song !== dataZing.song);
+    this.tableZingData.data = this.arrSong;
+  }
+
+  editZingData(dataZing: any) {
+    const newDataZing = {
+      name: dataZing.title,
+      avatar: dataZing.imgsrc,
+      performer: dataZing.artist,
+      link: dataZing.song,
+      lyric: dataZing.lyric
+    };
+    const dialogRef = this.dialog.open(DialogComponent, {
+      height: '78vh',
+      width: '50vw',
+      data: { currentUser: '', data: newDataZing, selector: 'EDIT_CRAWLINGSONG' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const formatZing = {
+          title: result.name,
+          imgsrc: result.avatar,
+          artist: result.performer,
+          song: result.link,
+          lyric: result.lyric,
+        };
+        const index = this.arrSong.findIndex(x => x.song === dataZing.song);
+        this.arrSong = this.arrSong.filter(crawl => crawl.song !== dataZing.song);
+        this.arrSong.splice(index, 0, formatZing);
+        this.tableZingData.data = this.arrSong;
+      }
+    });
   }
 
 }

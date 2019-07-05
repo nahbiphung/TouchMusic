@@ -30,7 +30,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class ProfileComponent implements OnInit {
-  
   collectionData: AngularFirestoreCollection<any>;
   documentData: AngularFirestoreDocument<any>;
   public loadingSpinner: boolean;
