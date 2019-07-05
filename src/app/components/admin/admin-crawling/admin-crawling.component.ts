@@ -174,7 +174,7 @@ export class AdminCrawlingComponent implements OnInit {
     this.waitForLoadZingData = true;
     const t = async () => {
       // chỉnh sữa pleaseeeeee
-      for (let i = 1; i <= 1; i++) {
+      for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
 // tslint:disable-next-line: max-line-length
             this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
