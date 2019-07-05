@@ -3,7 +3,7 @@
   Crawling New Song
 </div>
 <div class="width-100 position-relative">
-  <mat-tab-group [color]="'accent'">
+  <mat-tab-group [color]="'accent'" (selectedIndexChange)="setTable($event)">
     <mat-tab label="Zing Mp3">
       <div *ngIf="!checkZingData" class="getNumberPage">
         <h2>Lấy số lượng bài hát</h2>
@@ -21,36 +21,36 @@
             <button mat-raised-button color="accent" (click)="saveZingIntoFirebase()" *ngIf="finishZingData">Lưu dữ liệu vào Firebase</button>
         </div>
         <div *ngIf="tableZingData">
-            <mat-table mat-table class="position-relative" [dataSource]='tableZingData' matSort class="width-100">
+            <mat-table mat-table class="position-relative" [dataSource]='tableZingData' class="width-100" #MatSortZing>
 
               <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Song </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="avatar">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Image </mat-header-cell>
                 <mat-cell *matCellDef="let element"><img src="{{element.imgsrc}}" alt="{{element.title}} image">
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="performer">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Performer </mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.artist}}</mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="link">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Link </mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.song}}</mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="lyric">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Lyric </mat-header-cell>
                 <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="option">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef > Option </mat-header-cell>
                 <mat-cell *matCellDef="let element">
                   <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editZingData(element)">
                     <mat-icon class="mat-18">edit</mat-icon>
@@ -79,35 +79,35 @@
               <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': !(displayZingColumns!=null && tableZingData.data.length==0)}">
               </mat-footer-row>
             </mat-table>
-            <mat-paginator class="position-relative" [length]="arrSong.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+            <mat-paginator #MatPaginatorZing class="position-relative" [length]="arrSong.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
       <div *ngIf="checkZingData">
-        <mat-table mat-table class="position-relative" [dataSource]='tableDataZingFinish' matSort class="width-100">
+        <mat-table mat-table class="position-relative" [dataSource]='tableDataZingFinish' #MatSortZing class="width-100">
 
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Song </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.songName}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="avatar">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Image </mat-header-cell>
             <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.songName}} image">
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="performer">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Performer </mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="link">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Link </mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.linkSong}}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="lyric">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Lyric </mat-header-cell>
             <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyricSong}}</p></mat-cell>
           </ng-container>
 
@@ -130,7 +130,7 @@
             [ngClass]="{'hide': !(tableDataZingFinish != null && tableDataZingFinish.data.length == 0)}">
           </mat-footer-row>
         </mat-table>
-        <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator #MatPaginatorZing class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-tab>
     <mat-tab label="Nhaccuatui">
@@ -150,36 +150,36 @@
             <button mat-raised-button color="accent" (click)="saveIntoFirebase()" *ngIf="finishLoadNCT">Lưu vào Firebase</button>
         </div>
         <div *ngIf="tableData">
-          <mat-table mat-table class="position-relative" [dataSource]='tableData' matSort class="width-100">
+          <mat-table mat-table class="position-relative" [dataSource]='tableData' class="width-100" #MatSortNCT>
 
             <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > Song </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="avatar">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > Image </mat-header-cell>
               <mat-cell *matCellDef="let element"><img src="{{element.avatar}}" alt="{{element.name}} image">
               </mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="performer">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > Performer </mat-header-cell>
               <mat-cell *matCellDef="let element" class="d-flex flex-column justify-content-start align-items-start"><span *ngFor="let item of element.performer">{{item.name}}</span></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="link">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Link</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef >Link</mat-header-cell>
               <mat-cell *matCellDef="let element">{{element.link}}</mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="lyric">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > Lyric </mat-header-cell>
               <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="option">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > Option </mat-header-cell>
               <mat-cell *matCellDef="let element">
                 <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editNCTData(element)">
                   <mat-icon class="mat-18">edit</mat-icon>
@@ -209,36 +209,36 @@
               [ngClass]="{'hide': !(tableData != null && tableData.data.length == 0)}">
             </mat-footer-row>
           </mat-table>
-          <mat-paginator class="position-relative" [length]="data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          <mat-paginator #MatPaginatorNCT class="position-relative" [length]="tableData.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
         </div>
       </div>
 
       <div *ngIf="checkNCTData">
-        <mat-table mat-table class="position-relative" [dataSource]='tableDataNCTFinish' matSort class="width-100">
+        <mat-table mat-table class="position-relative" [dataSource]='tableDataNCTFinish' #MatSortNCT class="width-100">
 
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Song </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Song </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.songName}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="avatar">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Image </mat-header-cell>
             <mat-cell *matCellDef="let element"><img src="{{element.imageSong}}" alt="{{element.songName}} image">
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="performer">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Performer </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Performer </mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.performer}}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="link">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Link </mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.linkSong}}</mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="lyric">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef > Lyric </mat-header-cell>
             <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyricSong}}</p></mat-cell>
           </ng-container>
 
@@ -261,7 +261,7 @@
             [ngClass]="{'hide': !(tableDataNCTFinish != null && listNTC.length == 0)}">
           </mat-footer-row>
         </mat-table>
-        <mat-paginator class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator #MatPaginatorNCT class="position-relative" [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
       </div>
     </mat-tab>
     <mat-tab label="Chiasenhac">Chiasenhac</mat-tab>

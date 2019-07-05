@@ -14,8 +14,10 @@ import { DialogComponent } from '../../dialog/dialog.component';
 export class AdminCrawlingComponent implements OnInit {
   public loadingSpinner: boolean;
   public numbersOfNhaccuatui: any;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('MatSortZing') sortZing: MatSort;
+  @ViewChild('MatSortNCT') sortNCT: MatSort;
+  @ViewChild('MatPaginatorZing') matPaginatorZing: MatPaginator;
+  @ViewChild('MatPaginatorNCT') matPaginatorNCT: MatPaginator;
   public data: CrawlingWebNhaccuatui[];
   public tableData: MatTableDataSource<any>;
   public displayedColumns: string[] = ['name', 'avatar', 'performer', 'link', 'lyric', 'option'];
@@ -76,8 +78,7 @@ export class AdminCrawlingComponent implements OnInit {
         this.arrNCT10[i] = this.listNTC[i];
       }
       this.tableDataNCTFinish = new MatTableDataSource(this.arrNCT10);
-      this.tableDataNCTFinish.sort = this.sort;
-      this.tableDataNCTFinish.paginator = this.paginator;
+      this.tableDataNCTFinish.paginator = this.matPaginatorNCT;
       this.loadingSpinner = false;
     });
 
@@ -103,16 +104,16 @@ export class AdminCrawlingComponent implements OnInit {
         this.arrZing10[i] = this.listZing[i];
       }
       this.tableDataZingFinish = new MatTableDataSource(this.arrZing10);
-      this.tableDataZingFinish.sort = this.sort;
-      this.tableDataZingFinish.paginator = this.paginator;
+      this.tableDataZingFinish.paginator = this.matPaginatorZing;
       this.loadingSpinner = false;
     });
   }
-  // nhacccuatui
 
+
+  // nhacccuatui
   getNumberofPages() {
     this.waitforLoadNCTNumberPage = true;
-    return this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiPages').subscribe((res: any) => {
+    return this.http.get('http://localhost:3001/nhaccuatuiPages').subscribe((res: any) => {
       if (res) {
         this.numbersOfNhaccuatui = res;
         this.waitforLoadNCTNumberPage = false;
@@ -126,17 +127,16 @@ export class AdminCrawlingComponent implements OnInit {
       // change number
       for (let index = 1; index <= numberPage; index++) {
         const dataPerPage: any = await new Promise((result) =>
-// tslint:disable-next-line: max-line-length
-          this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
+          // tslint:disable-next-line: max-line-length
+          this.http.get('http://localhost:3001/nhaccuatuiData?page=' + index).subscribe((res: any) => {
             if (res) {
               result(res);
             }
           }));
         console.log(index);
         this.data = this.data.concat(dataPerPage);
-        this.tableData = new MatTableDataSource(this.data);
-        this.tableData.sort = this.sort;
-        this.tableData.paginator = this.paginator;
+        this.tableData.data = this.data;
+        this.tableData.paginator = this.matPaginatorNCT;
       }
       this.waitForLoadNCTData = false;
       this.finishLoadNCT = true;
@@ -160,7 +160,7 @@ export class AdminCrawlingComponent implements OnInit {
   // ZINGMP3
   getNumberZing() {
     this.waitforLoadZingNumberSong = true;
-    return this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3002/zingSongsCount').subscribe((res: any) => {
+    return this.http.get('http://localhost:3002/zingSongsCount').subscribe((res: any) => {
       if (res) {
         this.listZingSong = res;
         this.zingSongCount = this.listZingSong.length - 1;
@@ -176,8 +176,8 @@ export class AdminCrawlingComponent implements OnInit {
       // chỉnh sữa pleaseeeeee
       for (let i = 1; i <= numberSong; i++) {
         await new Promise((result) =>
-// tslint:disable-next-line: max-line-length
-            this.http.get('http://ec2-18-138-251-49.ap-southeast-1.compute.amazonaws.com:3002/zingTop100?song=' + i).subscribe((res: any) => {
+            // tslint:disable-next-line: max-line-length
+            this.http.get('http://localhost:3002/zingTop100?song=' + i).subscribe((res: any) => {
               if (res) {
                 for (const item of res) {
                   this.arrSong.push(item);
@@ -187,9 +187,8 @@ export class AdminCrawlingComponent implements OnInit {
               }
         }));
         console.log(i);
-        this.tableZingData = new MatTableDataSource(this.arrSong);
-        this.tableZingData.sort = this.sort;
-        this.tableZingData.paginator = this.paginator;
+        this.tableZingData.data = this.arrSong;
+        this.tableZingData.paginator = this.matPaginatorZing;
       }
       this.waitForLoadZingData = false;
       this.finishZingData = true;
@@ -266,6 +265,21 @@ export class AdminCrawlingComponent implements OnInit {
     });
   }
 
+  public setTable(event: number) {
+    if (event === 1) {
+      if (!this.tableData && this.data) {
+        this.tableData = new MatTableDataSource(this.data);
+        this.tableData.sort = this.sortNCT;
+        this.tableData.paginator = this.matPaginatorNCT;
+      }
+    } else if (event === 0) {
+      if (this.arrSong && !this.tableZingData) {
+        this.tableZingData = new MatTableDataSource(this.arrSong);
+        this.tableZingData.sort = this.sortZing;
+        this.tableZingData.paginator = this.matPaginatorZing;
+      }
+    }
+  }
 }
 
 
