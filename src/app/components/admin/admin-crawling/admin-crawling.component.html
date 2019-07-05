@@ -137,7 +137,7 @@
       <div *ngIf="!checkNCTData" class="getNumberPage">
         <h2>Lấy số trang chứa bài hát</h2>
         <button mat-raised-button color="accent" (click)="getNumberofPages()">Lấy số trang</button>
-        <mat-spinner *ngIf="waitforLoadNCTNumberPage" color="accent" [diameter]="50"></mat-spinner>
+        <mat-spinner *ngIf="waitforLoadNCTNumberPage" color="accent" [diameter]="50" class="margin-bottom-10 margin-top-10"></mat-spinner>
         <div *ngIf="numbersOfNhaccuatui" class="margin-bottom-10 margin-top-10">
           <span>{{numbersOfNhaccuatui.number[0]}}</span>
         </div>
