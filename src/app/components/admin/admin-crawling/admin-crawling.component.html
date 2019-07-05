@@ -158,25 +158,24 @@
 
             <ng-container matColumnDef="link">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Link</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                <mat-icon [matMenuTriggerFor]="menuSong" matTooltip="More" class="context-menu onhoverIcon">more_vert
-                </mat-icon>
-                <mat-menu #menuSong="matMenu">
-                  <button mat-menu-item (click)="editNCTData(item)">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit Song</span>
-                  </button>
-                  <button mat-menu-item (click)="deleteNCTData(item)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete Song</span>
-                  </button>
-                </mat-menu>
-              </mat-cell>
+              <mat-cell *matCellDef="let element">{{element.link}}</mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="lyric">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Lyric </mat-header-cell>
               <mat-cell *matCellDef="let element"><p class="over-flow">{{element.lyric}}</p></mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="option">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> Option </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button mat-icon-button color="accent" matTooltip="Edit Song" (click)="editNCTData(element)">
+                  <mat-icon class="mat-18">edit</mat-icon>
+                </button>
+                <button mat-icon-button color='warn' matTooltip="Delete Song" (click)="deleteNCTData(element)">
+                  <mat-icon class="mat-18">delete</mat-icon>
+                </button>
+              </mat-cell>
             </ng-container>
   
             <ng-container matColumnDef="loading">

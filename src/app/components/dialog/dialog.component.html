@@ -335,5 +335,67 @@
     <button mat-raised-button (click)="onNoClick()">Cancel</button>
     <button mat-raised-button cdkFocusInitial color="accent" (click)="onEditFaPlaylist()">Ok</button>
   </div>
+</div>
+<div *ngIf="isCrawlingEditor && !loadingSpinner">
+  <h1 mat-dialog-title>Edit song crawling</h1>
+  <div mat-dialog-content>
+    <mat-form-field class="width-100 my-form-field">
+      <input matInput placeholder="Song Name" [formControl]="crawlingSongNameFCtrl"
+        [errorStateMatcher]="matcher">
+      <mat-error *ngIf="crawlingSongNameFCtrl.hasError('max')">
+        Song name is too long
+      </mat-error>
+      <mat-error *ngIf="crawlingSongNameFCtrl.hasError('required')">
+        Song name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
 
+    <mat-form-field class="width-100 my-form-field">
+      <mat-chip-list #chipListCrawlingPer aria-label="Fruit selection">
+        <mat-chip *ngFor="let item of crawlingPer" [selectable]="selectable" [removable]="true"
+          (removed)="crawlingRemove(item)">
+          {{item.name}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Performer" [matChipInputFor]="chipListCrawlingPer"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="crawlingAdd($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field class="width-100 my-form-field">
+      <input matInput placeholder="Link" [formControl]="crawlingLinkFCtrl"
+        [errorStateMatcher]="matcher">
+      <mat-error *ngIf="crawlingLinkFCtrl.hasError('required')">
+        Link is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="width-100 my-form-field">
+      <textarea matInput placeholder="Lyric" [formControl]="crawlingLyricFCtrl" [errorStateMatcher]="matcher"
+        class="size-height-100px"></textarea>
+      <mat-error *ngIf="crawlingLyricFCtrl.hasError('max')">
+        Lyric content contain too many character
+      </mat-error>
+    </mat-form-field>
+  </div>
+  
+  <div class="width-100">
+    <input type="file" (change)="onFileSelected($event, 'crawlingImage')" accept="image/*" class="display-none"
+      #opencrawlingImageFile>
+    <span>Choose Image Song: </span>
+    <div class="labelPreviewImage" *ngIf="crawlingImage">
+      <span class="loadImageName color-yellow">{{crawlingImage.name}}</span>
+    </div>
+    <div class="position-relative" *ngIf="crawlingImage || isCrawlingEditor">
+      <img src="{{previewCrawlingImage}}" class="size-100px" alt="preview">
+    </div>
+    <button mat-mini-fab class="my-form-field margin-5" (click)="opencrawlingImageFile.click()" matTooltip="Attach Image">
+      <mat-icon class="material-icons color-dark-blue">attach_file</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">Reset</button>
+    <button mat-raised-button cdkFocusInitial color="accent" (click)="editCrawlingSong()">Edit</button>
+  </div>
 </div>

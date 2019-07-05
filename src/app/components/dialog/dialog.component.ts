@@ -19,6 +19,7 @@ import { SongComponent } from '../song/song.component';
 import { Observable } from 'rxjs';
 import { finalize, tap, startWith, map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -100,12 +101,28 @@ export class DialogComponent implements OnInit {
     Validators.maxLength(500),
   ]);
 
+  // crawling song
+  private isCrawlingEditor: boolean;
+  private crawlingImage: any;
+  private previewCrawlingImage: any;
+  private crawlingPer: any[];
+  private crawlingSongNameFCtrl: FormControl = new FormControl('', [
+    Validators.maxLength(30),
+    Validators.required,
+  ]);
+  private crawlingLinkFCtrl: FormControl = new FormControl('', [
+    Validators.required,
+  ]);
+  private crawlingLyricFCtrl: FormControl = new FormControl('', [
+    Validators.maxLength(500),
+  ]);
+
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private db: AngularFirestore,
     public toastr: ToastrService,
-    private _snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private storage: AngularFireStorage) {
     this.haveImage = false;
     this.uploadProgress = 0;
@@ -118,6 +135,8 @@ export class DialogComponent implements OnInit {
     this.isUploadSong = false;
     this.isEditFaPlaylist = false;
     this.isEditSongUpload = false;
+    this.isCrawlingEditor = false;
+    this.crawlingPer = [];
     // upload song
     this.listPerformerData = [];
     this.listAuthorData = [];
@@ -211,6 +230,19 @@ export class DialogComponent implements OnInit {
         this.showImage = this.data.data.image;
         this.loadingSpinner = false;
         break;
+      case 'EDIT_CRAWLINGSONG':
+        this.isCrawlingEditor = true;
+        this.previewCrawlingImage = this.data.data.avatar;
+        this.crawlingSongNameFCtrl.setValue(this.data.data.name);
+        this.data.data.performer.forEach(crawlingper => {
+          this.crawlingPer.push({
+            name: crawlingper.name,
+          });
+        });
+        this.crawlingLinkFCtrl.setValue(this.data.data.link);
+        this.crawlingLyricFCtrl.setValue(this.data.data.lyric);
+        this.loadingSpinner = false;
+        break;
       default:
         this.loadingSpinner = false;
         break;
@@ -272,10 +304,24 @@ export class DialogComponent implements OnInit {
             // do something
             if (event.target.files[0]) {
               this.showImage = event.target.files[0];
-              // const copyThis = this;
               const previewImage = new FileReader();
               previewImage.onload = (e: any) => {
                 this.imagePreview = e.currentTarget.result;
+              };
+              previewImage.readAsDataURL(event.target.files[0]);
+            }
+          } else {
+            this.toastr.error('Image size is too large', 'Error');
+          }
+          break;
+        case 'crawlingImage':
+          if (this.calulateImageSize(event.target.files[0], 'image')) {
+            // do something
+            if (event.target.files[0]) {
+              this.showImage = event.target.files[0];
+              const previewImage = new FileReader();
+              previewImage.onload = (e: any) => {
+                this.previewCrawlingImage = e.currentTarget.result;
               };
               previewImage.readAsDataURL(event.target.files[0]);
             }
@@ -456,7 +502,7 @@ export class DialogComponent implements OnInit {
     }
   }
   private openMessage(message: string, action: string) {
-    this._snackBar.open(message, action, {
+    this.snackBar.open(message, action, {
       duration: 2000,
       verticalPosition: 'top',
     });
@@ -700,7 +746,7 @@ export class DialogComponent implements OnInit {
         performerId: this.changeToRef(this.performers),
         country: this.countrySelected ? this.countrySelected : '',
         songType: this.songTypeSelected ? this.songTypeSelected : ''
-      }
+      };
       this.db.collection('userUploadSong').doc(this.data.data.id).update(updateData).then(() => {
         this.loadingSpinner = false;
         this.dialogRef.close();
@@ -801,6 +847,38 @@ export class DialogComponent implements OnInit {
         break;
     }
     return true;
+  }
+
+  public editCrawlingSong() {
+    const newCrawlingData = {
+      avatar: this.previewCrawlingImage,
+      name: this.crawlingSongNameFCtrl.value,
+      performer: this.crawlingPer,
+      link: this.crawlingLinkFCtrl.value,
+      lyric: this.crawlingLyricFCtrl.value,
+    };
+    this.dialogRef.close(newCrawlingData);
+  }
+
+  public crawlingRemove(crawlingData: any) {
+    const index = this.crawlingPer.indexOf(crawlingData);
+
+    if (index >= 0) {
+      this.crawlingPer.splice(index, 1);
+    }
+  }
+
+  public crawlingAdd(event: MatChipInputEvent) {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      this.crawlingPer.push({name: value.trim()});
+    }
+
+    if (input) {
+      input.value = '';
+    }
   }
 }
 
